@@ -13,4 +13,4 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", home);
 
 module.exports = app;
-//rename
+//1-6 rename
