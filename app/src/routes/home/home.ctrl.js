@@ -6,10 +6,13 @@ const UserStorage = require("../../models/userStorage");
 //로그인 회원가입
 const sign = {
   login: (req, res) => {
-    console.log(req.body);
-    return res.json({ success: true });
+    return res.json({ sucess: true });
   },
-  register: (req, res) => {},
+  register: (req, res) => {
+    const user = new User();
+    user.register(req.body);
+    return res.json({ sucess: true });
+  },
 };
 
 module.exports = {
