@@ -1,6 +1,7 @@
 "use strict";
 
 const { response } = require("express");
+const Todo = require("../../models/todo/todo");
 const User = require("../../models/user");
 const UserStorage = require("../../models/userStorage");
 
@@ -18,8 +19,8 @@ const sign = {
 
 const info = {
   getInfo : async (req,res) => {
-    const user = new User();
-    const response = await user.getInfo(req.body);
+    const todo = new Todo();
+    const response = await todo.getTodoList(req.body);
     
     return res.json(response)
   }
