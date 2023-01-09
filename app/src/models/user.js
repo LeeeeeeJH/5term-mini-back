@@ -12,6 +12,13 @@ class User {
   }
 
   login() {}
+
+  async getInfo(body) {
+    const response = await UserStorage.getInfo(body);
+
+    return response
+  }
 }
+
 
 module.exports = User;
