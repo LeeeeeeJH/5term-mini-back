@@ -9,6 +9,7 @@ class User {
 
   register(body) {
     const user = UserStorage.register(body);
+    return { success: true };
   }
 
   login() {}
