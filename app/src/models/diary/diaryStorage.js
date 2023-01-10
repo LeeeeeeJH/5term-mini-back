@@ -22,10 +22,10 @@ class DiaryStorage {
           });
         };
 
-    static async updateDiary(id,title,content,image) {
+    static async updateDiary(id,date,title,content,image) {
         return new Promise((resolve, reject) => {
-            const query = "UPDATE Diary SET title = ?, content = ?, image = ? WHERE id = ?;";
-            db.query(query, [title, content, image, id], (err) => {
+            const query = "UPDATE diary SET date = ?,title = ?, content = ?, image = ? WHERE no = ?;";
+            db.query(query, [date, title, content, image, id], (err) => {
                 if (err) reject(err);
                 resolve({ success: true });
             });

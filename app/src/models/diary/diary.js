@@ -26,9 +26,9 @@ class Diary {
         }
     }
 
-    async updateDiary({id}, {description}) {
+    async updateDiary({id}, {date,title,content,image}) {
         try {
-            const response = await DiaryStorage.updateDiary(id,description)
+            const response = await DiaryStorage.updateDiary(id,date,title,content,image)
             return response
         }
         catch(err) {
