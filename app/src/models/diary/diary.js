@@ -16,9 +16,9 @@ class Diary {
         }
     }
 
-     async deleteDiary({no}) {
+     async deleteDiary({id}) {
         try {
-            const response = await DiaryStorage.deleteDiary(no)
+            const response = await DiaryStorage.deleteDiary(id)
             return response
         }
         catch(err) {
@@ -36,9 +36,9 @@ class Diary {
         }
     }
 
-    async readDiary() {
+    async readDiary({id}) {
         try {
-            const response = await DiaryStorage.readDiary()
+            const response = await DiaryStorage.readDiary(id)
             return response
         }
         catch(err) {

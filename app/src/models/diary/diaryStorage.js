@@ -32,15 +32,15 @@ class DiaryStorage {
             });
         }
 
-        static async readDiary() {
-          return new Promise((resolve, reject) => {
-              const query = "SELECT * FROM Diary;";
-              db.query(query, (err,data,a) => {
-                if (err) reject(err);
-                resolve({data});
-              });
+    static async readDiary(id) {
+        return new Promise((resolve, reject) => {
+            const query = "SELECT date, title, content, image FROM diary WHERE no = ?;";
+            db.query(query,[id], (err,data) => {
+            if (err) reject(err);
+            resolve({data});
             });
-          }
+        });
+        }
           
 
 }

@@ -32,7 +32,12 @@ const process = {
       const diary = new Diary()
       const response = await diary.updateDiary(req.params,req.body);
       return res.json(response);
-  }
+  },
+  getDiary: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.readDiary(req.params);
+    res.send(response)
+},
 }
 
 module.exports = {
