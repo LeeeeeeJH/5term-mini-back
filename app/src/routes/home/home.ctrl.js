@@ -15,7 +15,7 @@ const sign = {
     return res.json(response);
   },
 };
-
+//diary CRUD
 const process = {
   createDiary: async(req, res) => {
       const diary = new Diary()
