@@ -1,5 +1,6 @@
 "use strict";
 
+const Diary = require("../../models/diary/diary");
 const User = require("../../models/user/user");
 const UserStorage = require("../../models/user/userStorage");
 
@@ -15,6 +16,25 @@ const sign = {
   },
 };
 
+const process = {
+  createDiary: async(req, res) => {
+      const diary = new Diary()
+      const response = await diary.createDairy(req.body,req.params);
+      return res.json(response);
+  },
+
+  deleteDiary: async(req, res) => {
+      const diary = new Diary()
+      const response = await diary.deleteDiary(req.params);
+      return res.json(response);
+  },
+  updateDiary: async(req, res) => {
+      const diary = new Diary()
+      const response = await diary.updateDiary(req.params,req.body);
+      return res.json(response);
+  }
+}
+
 module.exports = {
-  sign,
+  sign,process
 };
