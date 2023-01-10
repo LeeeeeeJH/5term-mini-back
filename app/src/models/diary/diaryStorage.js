@@ -14,7 +14,7 @@ class DiaryStorage {
         }        
     static async deleteDiary(id) {
         return new Promise((resolve, reject) => {
-            const query = "DELETE FROM diary WHERE user_no = ?;";
+            const query = "DELETE FROM diary WHERE no = ?;";
             db.query(query, [id], (err) => {
               if (err) reject(err);
               resolve({success : true});
