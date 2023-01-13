@@ -3,10 +3,11 @@
 const db = require("../../config/db");
 
 class DiaryStorage {
-    static async createDiary(user_no,body) {
-        return new Promise((resolve, reject) => {
+    static createDiary(user_id,body) {
+        return new Promise(async (resolve, reject) => {
+            const user_no = await this.readUserNo(user_id.userId);
             const values = [
-                user_no.userId,
+                user_no,
                 body.date,
                 body.title,
                 body.content,
@@ -63,6 +64,16 @@ class DiaryStorage {
             db.query(query, [user_no], (err, data) => {
             if (err) reject(err);
             resolve({data});
+            });
+        });
+    }
+
+    static readUserNo(user_id) {
+        return new Promise((resolve, reject) => {
+            const query = "SELECT no FROM user WHERE id = ?;";
+            db.query(query, [user_id], (err, data) => {
+            if (err) reject(err);
+            resolve(data[0].no);
             });
         });
     }

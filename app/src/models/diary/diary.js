@@ -5,9 +5,9 @@ const DiaryStorage = require("./diaryStorage");
 class Diary {
     constructor() {}
 
-     async createDairy(user_no, body) {
+     async createDairy(user_id, body) {
         try {
-            const response = await DiaryStorage.createDiary(user_no,body)
+            const response = await DiaryStorage.createDiary(user_id,body)
             return response
         }
         catch(err) {
