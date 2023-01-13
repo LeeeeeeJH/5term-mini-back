@@ -15,6 +15,6 @@ router.get("/diaries/:userId/main/:diaryId", ctrl.process.getDiary) //해당하�
 router.post("/diaries/:userId/main", ctrl.process.createDiary); //다이어리 생성
 router.delete("/diaries/:userId/main/:diaryId", ctrl.process.deleteDiary); //다이어리 삭제
 router.patch("/diaries/:userId/main/:diaryId", ctrl.process.updateDiary); //다이어리 수정
-// router.get("/diaries/:diary-id/comment", ctrl.process.getDiaryComment)
+router.get("/diaries/:userId/main/:diaryId/comment", ctrl.process.getDiaryComment)
 
 module.exports = router;

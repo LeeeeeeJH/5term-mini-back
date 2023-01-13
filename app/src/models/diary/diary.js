@@ -54,6 +54,15 @@ class Diary {
             return {success: false, msg:err};
         }
     }
+    async readDiaryComment({diaryId}) {
+        try {
+            const response = await DiaryStorage.readDiaryComment(diaryId)
+            return response
+        }
+        catch(err) {
+            return {success: false, msg:"댓글 조회 실패!!"};
+        }
+    }
 }
 
 module.exports = Diary
