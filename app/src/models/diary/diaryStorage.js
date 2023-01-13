@@ -49,7 +49,6 @@ class DiaryStorage {
 
     static async readDiary(id) {
         return new Promise((resolve, reject) => {
-            console.log(id);
             const query = "SELECT date, title, content, image FROM diary WHERE no = ?;";
             db.query(query,[id], (err,data) => {
             if (err) reject(err);
