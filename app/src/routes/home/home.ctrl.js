@@ -19,7 +19,7 @@ const sign = {
 const process = {
   createDiary: async(req, res) => {
       const diary = new Diary()
-      const response = await diary.createDairy(req.body,req.params);
+      const response = await diary.createDairy(req.params,req.body);
       return res.json(response);
   },
 
@@ -37,7 +37,12 @@ const process = {
     const diary = new Diary()
     const response = await diary.readDiary(req.params);
     res.send(response)
-},
+  },
+  getSelectDiary: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.readSelectDiary(req.params);
+    res.send(response)
+  }
 }
 
 module.exports = {

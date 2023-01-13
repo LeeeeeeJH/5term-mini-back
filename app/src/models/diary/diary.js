@@ -5,10 +5,9 @@ const DiaryStorage = require("./diaryStorage");
 class Diary {
     constructor() {}
 
-     async createDairy(body,params) {
+     async createDairy(user_no,body) {
         try {
-            const response = await DiaryStorage.createDiary(params.id,body.date,body.title,body.content,body.image)
-
+            const response = await DiaryStorage.createDiary(user_no,body)
             return response
         }
         catch(err) {
@@ -16,9 +15,9 @@ class Diary {
         }
     }
 
-     async deleteDiary({id}) {
+     async deleteDiary({diaryId}) {
         try {
-            const response = await DiaryStorage.deleteDiary(id)
+            const response = await DiaryStorage.deleteDiary(diaryId)
             return response
         }
         catch(err) {
@@ -26,9 +25,9 @@ class Diary {
         }
     }
 
-    async updateDiary({id}, {date,title,content,image}) {
+    async updateDiary({diaryId}, body) {
         try {
-            const response = await DiaryStorage.updateDiary(id,date,title,content,image)
+            const response = await DiaryStorage.updateDiary(diaryId,body)
             return response
         }
         catch(err) {
@@ -36,9 +35,19 @@ class Diary {
         }
     }
 
-    async readDiary({id}) {
+    async readDiary({diaryId}) {
         try {
-            const response = await DiaryStorage.readDiary(id)
+            const response = await DiaryStorage.readDiary(diaryId)
+            return response
+        }
+        catch(err) {
+            return {success: false, msg:err};
+        }
+    }
+
+    async readSelectDiary({userId}) {
+        try {
+            const response = await DiaryStorage.readSelectDiary(userId)
             return response
         }
         catch(err) {
