@@ -43,11 +43,6 @@ const process = {
     const response = await diary.readSelectDiary(req.params);
     res.send(response)
   },
-  getDiaryComment: async(req, res) => {
-    const diary = new Diary()
-    const response = await diary.readDiaryComment(req.params);
-    res.send(response)
-  }
 }
 
 module.exports = {

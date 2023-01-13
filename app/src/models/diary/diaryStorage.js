@@ -66,18 +66,6 @@ class DiaryStorage {
             });
         });
     }
-
-
-    static async readDiaryComment(diary_no) {
-        return new Promise((resolve, reject) => {
-            const query = "SELECT writer_no,content FROM diary_comment WHERE diary_no = ?;";
-            db.query(query, [diary_no], (err, data) => {
-            if (err) reject(err);
-            resolve({data});
-            });
-        });
-    }
-
 }
 
 module.exports = DiaryStorage;
