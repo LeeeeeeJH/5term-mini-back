@@ -12,7 +12,6 @@ const sign = {
   idCheck: async (req, res) => {
     const user = new User(req.body);
     const response = await user.idCheck(req.body);
-    console.log(response);
     return response;
   },
 
