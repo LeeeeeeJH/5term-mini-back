@@ -13,9 +13,9 @@ class User {
     return response;
   }
 
-  nicknameCheck(body) {
-    const response = UserStorage.nicknameCheck(body);
-    return { data: response };
+  async nicknameCheck(body) {
+    const response = await UserStorage.nicknameCheck(body);
+    return response;
   }
 
   register(body) {

@@ -21,10 +21,7 @@ class UserStorage {
         }
 
         for (let id of idList) {
-          if (id == body.id) {
-            console.log("중복");
-            resolve({ success: false });
-          }
+          if (id == body.id) resolve({ success: false });
         }
         resolve({ success: true });
       });
@@ -32,11 +29,23 @@ class UserStorage {
   }
 
   static nicknameCheck(body) {
-    const sql = "SELECT (nickname) FROM user";
-    db.query(sql, function (err, result, fields) {
-      if (err) {
-        console.log(err);
-      }
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT (nickname) FROM user";
+      db.query(sql, (err, result, fields) => {
+        if (err) {
+          reject(err);
+        }
+
+        let nicknameList = [];
+        for (let data of result) {
+          nicknameList.push(data.nickname);
+        }
+
+        for (let nickname of nicknameList) {
+          if (nickname == body.nickname) resolve({ success: false });
+        }
+        resolve({ success: true });
+      });
     });
   }
 
