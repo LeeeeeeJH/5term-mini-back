@@ -58,8 +58,9 @@ class DiaryStorage {
         });
     }
 
-    static async readSelectDiary(user_no) {
-        return new Promise((resolve, reject) => {
+    static async readSelectDiary(user_id) {
+        return new Promise(async(resolve, reject) => {
+            const user_no = await this.readUserNo(user_id)
             const query = "SELECT no, user_no, date FROM diary WHERE user_no = ?;";
             db.query(query, [user_no], (err, data) => {
             if (err) reject(err);
@@ -80,3 +81,4 @@ class DiaryStorage {
 }
 
 module.exports = DiaryStorage;
+
