@@ -5,8 +5,10 @@ const UserStorage = require("../../models/user/userStorage");
 
 //로그인 회원가입
 const sign = {
-  login: (req, res) => {
-    return res.json({ sucess: true });
+  login: async (req, res) => {
+    const user = new User(req.body);
+    const response = await user.login(req.body);
+    return res.json(response);
   },
 
   idCheck: async (req, res) => {

@@ -6,7 +6,10 @@ class User {
   constructor(body) {
     this.body = body;
   }
-  login() {}
+  async login(body) {
+    const response = await UserStorage.login(body);
+    return response;
+  }
 
   async idCheck(body) {
     const response = await UserStorage.idCheck(body);
