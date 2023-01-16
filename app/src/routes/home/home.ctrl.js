@@ -1,7 +1,7 @@
 "use strict";
 
 const Todo = require("../../models/todo/todo");
-const User = require("../../models/user");
+const User = require("../../models/user/user");
 
 //로그인 회원가입
 const sign = {

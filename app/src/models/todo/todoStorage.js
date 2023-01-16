@@ -1,5 +1,6 @@
 "use strict";
 const db = require("../../config/db");
+const DataCheck = require("../dataCheck");
 
 class TodoStorage {
   static getTodoList(client) {
@@ -44,11 +45,9 @@ class TodoStorage {
   }
 
   static addTodoList(client) {
-    console.log(client);
     return new Promise(async (resolve, reject) => {
-      const no = await this.getUserNo(client.id);
+      const no = await DataCheck.getUserNo(client.id);
       const req = [no, client.date, client.content];
-      console.log(req);
 
       const sql = "INSERT INTO todo (user_no, date, content) VALUES (?,?,?)";
 

@@ -1,6 +1,5 @@
 "use strict";
 
-const { response } = require("express");
 const TodoStorage = require("./todoStorage");
 
 class Todo {
