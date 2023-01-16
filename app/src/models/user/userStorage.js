@@ -25,8 +25,8 @@ class UserStorage {
             console.log("중복");
             resolve({ success: false });
           }
-          resolve({ success: true });
         }
+        resolve({ success: true });
       });
     });
   }

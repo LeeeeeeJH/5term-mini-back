@@ -12,12 +12,12 @@ const sign = {
   idCheck: async (req, res) => {
     const user = new User(req.body);
     const response = await user.idCheck(req.body);
-    return response;
+    return res.json(response);
   },
 
-  nicknameCheck: (req, res) => {
+  nicknameCheck: async (req, res) => {
     const user = new User(req.body);
-    const response = user.nicknameCheck(req.body);
+    const response = await user.nicknameCheck(req.body);
     return res.json(response);
   },
 
