@@ -71,4 +71,3 @@ class DiaryStorage {
 }
 
 module.exports = DiaryStorage;
-

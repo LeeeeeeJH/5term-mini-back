@@ -3,6 +3,7 @@
 const Diary = require("../../models/diary/diary");
 const Todo = require("../../models/todo/todo");
 const User = require("../../models/user/user");
+const Profile = require("../../models/profile/profile");
 
 //로그인 회원가입
 const sign = {
@@ -15,8 +16,9 @@ const sign = {
     return res.json(response);
   },
 };
-//diary CRUD
+
 const process = {
+  //diary CRUD
   createDiary: async(req, res) => {
       const diary = new Diary()
       const response = await diary.createDairy(req.params,req.body);
@@ -43,6 +45,22 @@ const process = {
     const response = await diary.readSelectDiary(req.params);
     res.send(response)
   },
+  //프로필
+  getProfile: async(req, res) => {
+    const profile = new Profile()
+    const response = await profile.readProfile(req.params);
+    res.send(response)
+  },
+  getFriendProfile: async(req, res) => {
+    const profile = new Profile()
+    const response = await profile.readFriendProfile(req.params);
+    res.send(response)
+  },
+  updateProfile: async(req, res) => {
+    const profile = new Profile()
+    const response = await profile.updateProfile(req.params,req.body);
+    return res.json(response);
+  }
 }
 
 const info = {

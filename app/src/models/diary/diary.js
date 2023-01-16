@@ -1,5 +1,4 @@
 "use strict"
-const {respons} = require("express");
 const DiaryStorage = require("./diaryStorage");
 class Diary {
     constructor() {}
