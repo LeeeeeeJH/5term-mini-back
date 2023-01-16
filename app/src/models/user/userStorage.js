@@ -57,9 +57,9 @@ class UserStorage {
 
         for (let id of idList) {
           if (id == body.id)
-            resolve({ success: false, msg: "이미 존재하는 아이디입니다." });
+            resolve({ success: true, msg: "이미 존재하는 아이디입니다." });
         }
-        resolve({ success: true });
+        resolve({ success: false });
       });
     });
   }
@@ -79,9 +79,9 @@ class UserStorage {
 
         for (let nickname of nicknameList) {
           if (nickname == body.nickname)
-            resolve({ success: false, msg: "이미 존재하는 별명입니다." });
+            resolve({ success: true, msg: "이미 존재하는 별명입니다." });
         }
-        resolve({ success: true });
+        resolve({ success: false });
       });
     });
   }

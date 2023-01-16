@@ -3,6 +3,9 @@
 const User = require("../../models/user/user");
 const UserStorage = require("../../models/user/userStorage");
 
+const Friends = require("../../models/user/friends");
+const FriendsStorage = require("../../models/user/friendsStorage");
+
 //로그인 회원가입
 const sign = {
   login: async (req, res) => {
@@ -11,15 +14,9 @@ const sign = {
     return res.json(response);
   },
 
-  idCheck: async (req, res) => {
+  check: async (req, res) => {
     const user = new User(req.body);
-    const response = await user.idCheck(req.body);
-    return res.json(response);
-  },
-
-  nicknameCheck: async (req, res) => {
-    const user = new User(req.body);
-    const response = await user.nicknameCheck(req.body);
+    const response = await user.check(req.body);
     return res.json(response);
   },
 
@@ -30,6 +27,15 @@ const sign = {
   },
 };
 
+const relation = {
+  send: (req, res) => {
+    const request = new Friends(req.body);
+    const response = request.send(req.body);
+    return res.json(response);
+  },
+};
+
 module.exports = {
   sign,
+  relation,
 };

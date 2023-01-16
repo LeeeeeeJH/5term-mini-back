@@ -1,5 +1,6 @@
 "use strict";
 
+const { response } = require("../../../app");
 let UserStorage = require("./userStorage");
 
 class User {
@@ -11,13 +12,17 @@ class User {
     return response;
   }
 
-  async idCheck(body) {
-    const response = await UserStorage.idCheck(body);
-    return response;
-  }
+  async check(body) {
+    const type = Object.keys(body);
 
-  async nicknameCheck(body) {
-    const response = await UserStorage.nicknameCheck(body);
+    if (type[0] == "id") {
+      console.log("아이디");
+      const response = await UserStorage.idCheck(body);
+    } else {
+      console.log("닉네임");
+      const response = await UserStorage.nicknameCheck(body);
+    }
+    console.log(response);
     return response;
   }
 
