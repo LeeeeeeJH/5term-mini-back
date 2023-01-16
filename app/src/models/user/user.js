@@ -13,6 +13,8 @@ class User {
   }
 
   login() {}
+
 }
+
 
 module.exports = User;

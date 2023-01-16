@@ -1,8 +1,8 @@
 "use strict";
 
 const Diary = require("../../models/diary/diary");
+const Todo = require("../../models/todo/todo");
 const User = require("../../models/user/user");
-const UserStorage = require("../../models/user/userStorage");
 
 //로그인 회원가입
 const sign = {
@@ -45,6 +45,42 @@ const process = {
   },
 }
 
+const info = {
+  getInfo: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.getTodoList(req.body);
+
+    return res.json(response);
+  },
+
+  getCnt: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.getTodoCnt(req.body);
+
+    return res.json(response);
+  },
+
+  addTodo: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.addTodoList(req.body);
+
+    return res.json(response);
+  },
+  editTodo: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.editTodo(req.body);
+
+    return res.json(response);
+  },
+  deleteTodo: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.deleteTodo(req.body);
+
+    return res.json(response);
+  },
+};
 module.exports = {
-  sign,process
+  sign,
+  process,
+  info,
 };

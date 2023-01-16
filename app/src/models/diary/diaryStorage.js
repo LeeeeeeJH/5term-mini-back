@@ -1,11 +1,11 @@
 "use strict"
 
 const db = require("../../config/db");
-
+const DataCheck = require("../dataCheck");
 class DiaryStorage {
     static createDiary(user_id,body) {
         return new Promise(async (resolve, reject) => {
-            const user_no = await this.readUserNo(user_id.userId);
+            const user_no = await DataCheck.getUserNo(user_id.userId);
             const values = [
                 user_no,
                 body.date,
@@ -60,21 +60,11 @@ class DiaryStorage {
 
     static async readSelectDiary(user_id) {
         return new Promise(async(resolve, reject) => {
-            const user_no = await this.readUserNo(user_id)
+            const user_no = await DataCheck.getUserNo(user_id)
             const query = "SELECT no, user_no, date FROM diary WHERE user_no = ?;";
             db.query(query, [user_no], (err, data) => {
             if (err) reject(err);
             resolve({data});
-            });
-        });
-    }
-
-    static readUserNo(user_id) {
-        return new Promise((resolve, reject) => {
-            const query = "SELECT no FROM user WHERE id = ?;";
-            db.query(query, [user_id], (err, data) => {
-            if (err) reject(err);
-            resolve(data[0].no);
             });
         });
     }
