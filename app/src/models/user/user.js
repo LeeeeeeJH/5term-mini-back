@@ -6,13 +6,22 @@ class User {
   constructor(body) {
     this.body = body;
   }
+  login() {}
 
-  register(body) {
-    const user = UserStorage.register(body);
-    return { success: true };
+  async idCheck(body) {
+    const response = await UserStorage.idCheck(body);
+    return response;
   }
 
-  login() {}
+  nicknameCheck(body) {
+    const response = UserStorage.nicknameCheck(body);
+    return { data: response };
+  }
+
+  register(body) {
+    const response = UserStorage.register(body);
+    return response;
+  }
 }
 
 module.exports = User;
