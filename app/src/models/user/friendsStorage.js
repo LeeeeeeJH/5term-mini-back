@@ -30,7 +30,7 @@ class FriendsStorage {
 
   static reject(body) {
     return new Promise((resolve, reject) => {
-      const sql = "DELETE friends_list WHERE no = ?";
+      const sql = "DELETE FROM friends_list WHERE no = ?";
       db.query(sql, [body.no], function (err, result, fields) {
         if (err) console.log(err);
         resolve({ success: true });
