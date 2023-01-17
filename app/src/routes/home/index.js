@@ -14,13 +14,13 @@ router.post("/check", ctrl.sign.check);
 
 // 친구목록 조회
 
-// // 친구요청 보내기
-// router.post("/friends/request", ctrl.relation.send);
-// // 친구요청 수락
-// router.patch("/friends/request", ctrl.relation.accept);
-// // 친구요청 거절
-// router.delete("/friends/request", ctrl.relation.reject);
-// // 친구요청 조회
-// router.get("/friends/request", ctrl.relation.read);
+// 친구요청 보내기
+router.post("/friends/request", ctrl.relation.send);
+// 친구요청 수락
+router.patch("/friends/request", ctrl.relation.aceppt);
+// 친구요청 거절
+router.delete("/friends/request", ctrl.relation.reject);
+// 친구요청 조회
+router.get("/friends/request", ctrl.relation.read);
 
 module.exports = router;

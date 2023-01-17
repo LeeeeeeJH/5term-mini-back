@@ -20,17 +20,32 @@ const sign = {
     return res.json(response);
   },
 
-  register: (req, res) => {
+  register: async (req, res) => {
     const user = new User(req.body);
-    const response = user.register(req.body);
+    const response = await user.register(req.body);
     return res.json(response);
   },
 };
 
 const relation = {
-  send: (req, res) => {
-    const request = new Friends(req.body);
+  read: async (req, res) => {
+    const request = await new Friends(req.body);
     const response = request.send(req.body);
+  },
+  send: async (req, res) => {
+    const request = await new Friends(req.body);
+    const response = request.send(req.body);
+    return res.json(response);
+  },
+  aceppt: async (req, res) => {
+    const request = new Friends(req.body);
+    const response = await request.aceppt(req.body);
+    return res.json(response);
+  },
+  reject: async (req, res) => {
+    console.log(req);
+    const request = new Friends(req.body);
+    const response = await request.reject(req.body);
     return res.json(response);
   },
 };

@@ -1,6 +1,5 @@
 "use strict";
 
-const { request } = require("../../../app");
 let FriendsStorage = require("./friendsStorage");
 
 class Friends {

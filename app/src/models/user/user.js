@@ -1,6 +1,5 @@
 "use strict";
 
-const { response } = require("../../../app");
 let UserStorage = require("./userStorage");
 
 class User {

@@ -1,6 +1,5 @@
 "use strict";
 
-const { resolveInclude } = require("ejs");
 const db = require("../../config/db");
 const User = require("./user");
 
