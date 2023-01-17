@@ -26,7 +26,7 @@ class UserStorage {
         for (let id of idList) {
           if (id == body.id) {
             const idx = idList.indexOf(id);
-            console.log(passwordList[idx]);
+
             if (passwordList[idx] == body.password) {
               resolve({ success: true });
             }
@@ -83,24 +83,27 @@ class UserStorage {
   }
 
   static register(body) {
-    const sql =
-      "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
+    return new Promise((resolve, reject) => {
+      const sql =
+        "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
 
-    const phoneNum = "010-" + body.senterPhoneNum + "-" + body.lastPhoneNum;
-    const email = body.firstEmaile + body.lastEmaile;
-    const values = [
-      body.id,
-      body.password,
-      body.name,
-      phoneNum,
-      email,
-      body.nickName,
-    ];
+      const phoneNum = "010-" + body.senterPhoneNum + "-" + body.lastPhoneNum;
+      const email = body.firstEmaile + body.lastEmaile;
+      const values = [
+        body.id,
+        body.password,
+        body.name,
+        phoneNum,
+        email,
+        body.nickName,
+      ];
 
-    db.query(sql, values, function (err, result, fields) {
-      if (err) {
-        console.log(err);
-      }
+      db.query(sql, values, function (err, result, fields) {
+        if (err) {
+          console.log(err);
+        }
+        resolve({ success: true });
+      });
     });
   }
 }

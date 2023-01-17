@@ -7,8 +7,16 @@ class Friends {
     this.body = body;
   }
 
-  send(body) {
-    const response = FriendsStorage.send(body);
+  async send(body) {
+    const response = await FriendsStorage.send(body);
+    return response;
+  }
+  async aceppt(body) {
+    const response = await FriendsStorage.aceppt(body);
+    return response;
+  }
+  async reject(body) {
+    const response = await FriendsStorage.reject(body);
     return response;
   }
 }

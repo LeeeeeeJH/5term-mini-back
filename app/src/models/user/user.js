@@ -14,17 +14,16 @@ class User {
   async check(body) {
     const type = Object.keys(body);
 
-    if (type[0] == "id") {
-      const response = await UserStorage.idCheck(body);
-    } else {
-      const response = await UserStorage.nicknameCheck(body);
-    }
+    const response =
+      type[0] == "id"
+        ? await UserStorage.idCheck(body)
+        : await UserStorage.nicknameCheck(body);
 
     return response;
   }
 
-  register(body) {
-    const response = UserStorage.register(body);
+  async register(body) {
+    const response = await UserStorage.register(body);
     return response;
   }
 }
