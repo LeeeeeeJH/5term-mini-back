@@ -13,6 +13,12 @@ class Todo {
     return response;
   }
 
+  async getTodoLikes(body) {
+    const response = await TodoStorage.getTodoLikes(body);
+
+    return response;
+  }
+
   async addTodoList(body) {
     const response = await TodoStorage.addTodoList(body);
 
@@ -33,6 +39,18 @@ class Todo {
 
   async deleteTodo(body) {
     const response = await TodoStorage.deleteTodo(body);
+
+    return response;
+  }
+
+  async addTodoLike(body) {
+    const response = await TodoStorage.addTodoLike(body);
+
+    return response;
+  }
+
+  async deleteTodoLike(body) {
+    const response = await TodoStorage.deleteTodoLike(body);
 
     return response;
   }

@@ -4,21 +4,22 @@ const DataCheck = require("../dataCheck");
 
 class TodoStorage {
   static getTodoList(client) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const req = [client.date, client.id];
-
       const sql =
-        "SELECT todo.no, todo.is_checked, todo.content " +
+        "SELECT todo.no, todo.is_checked, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
         "FROM todo " +
         "INNER JOIN user ON todo.user_no = user.no " +
-        "WHERE date_format( todo.created_date , '%Y-%m') = ? AND user.id = ?;";
+        "INNER JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
+        "WHERE todo.date = ? AND user.id = ? " +
+        "GROUP BY todo.no;";
 
-      db.query(sql, req, (err, client) => {
+      db.query(sql, req, (err, data) => {
         if (err) {
           console.log("에러", err);
-          reject({ sucess: false, msg: "실패" });
+          reject({ sucess: false });
         }
-        resolve(client);
+        resolve(data);
       });
     });
   }
@@ -37,7 +38,7 @@ class TodoStorage {
       db.query(sql, req, (err, client) => {
         if (err) {
           console.log("에러", err);
-          reject({ sucess: false, msg: "실패" });
+          reject({ sucess: false });
         }
         resolve(client);
       });
@@ -54,7 +55,7 @@ class TodoStorage {
       db.query(sql, req, (err) => {
         if (err) {
           console.log("에러 :", err);
-          reject({ sucess: false, msg: "실패" });
+          reject({ sucess: false });
         }
         resolve({ sucess: true });
       });
@@ -77,7 +78,7 @@ class TodoStorage {
       db.query(sql, req, (err) => {
         if (err) {
           console.log(err);
-          reject({ success: false, msg: "수정 실패" });
+          reject({ success: false });
         }
         resolve({ success: true });
       });
@@ -105,7 +106,38 @@ class TodoStorage {
       db.query(sql, req, (err) => {
         if (err) {
           console.log(err);
-          reject({ success: false, msg: "일정 삭제 실패" });
+          reject({ success: false });
+        }
+        resolve({ success: true });
+      });
+    });
+  }
+
+  static addTodoLike(client) {
+    return new Promise(async (resolve, reject) => {
+      const sql = "INSERT INTO todo_likes (todo_no, liker_no) VALUES (?,?)";
+      const user_no = await DataCheck.getUserNo(client.id);
+      const req = [client.todo_no, user_no];
+      console.log(req);
+      db.query(sql, req, (err) => {
+        if (err) {
+          console.log(err);
+          reject({ success: false });
+        }
+        resolve({ success: true });
+      });
+    });
+  }
+
+  static deleteTodoLike(client) {
+    return new Promise(async (resolve, reject) => {
+      const sql = "DELETE FROM todo_likes WHERE todo_no= ? AND liker_no = ?";
+      const user_no = await DataCheck.getUserNo(client.id);
+      const req = [client.todo_no, user_no];
+      db.query(sql, req, (err) => {
+        if (err) {
+          console.log(err);
+          reject({ success: false });
         }
         resolve({ success: true });
       });

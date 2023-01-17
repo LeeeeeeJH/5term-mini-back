@@ -48,6 +48,21 @@ const info = {
 
     return res.json(response);
   },
+
+  addTodoLike: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.addTodoLike(req.body);
+
+    return res.json(response);
+  },
+
+  deleteTodoLike: async (req, res) => {
+    console.log(1);
+    const todo = new Todo();
+    const response = await todo.deleteTodoLike(req.body);
+
+    return res.json(response);
+  },
 };
 module.exports = {
   sign,
