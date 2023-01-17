@@ -45,6 +45,22 @@ const process = {
     const response = await diary.readSelectDiary(req.params);
     res.send(response)
   },
+  //다이어리 좋아요
+  createDiaryLike: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.createDairyLike(req.params);
+    return res.json(response);
+  },
+  deleteDiaryLike: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.deleteDiaryLike(req.params);
+    return res.json(response);
+  },
+  getDiaryLike: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.readDiaryLike(req.params);
+    res.send(response)
+  },
   //프로필
   getProfile: async(req, res) => {
     const profile = new Profile()
