@@ -22,5 +22,5 @@ router.patch("/friends/request", ctrl.relation.aceppt);
 router.delete("/friends/request", ctrl.relation.reject);
 // 친구요청 조회
 router.get("/friends/request", ctrl.relation.read);
-
+// add
 module.exports = router;

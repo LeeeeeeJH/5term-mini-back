@@ -43,7 +43,6 @@ const relation = {
     return res.json(response);
   },
   reject: async (req, res) => {
-    console.log(req);
     const request = new Friends(req.body);
     const response = await request.reject(req.body);
     return res.json(response);
