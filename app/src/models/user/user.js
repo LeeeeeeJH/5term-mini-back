@@ -24,6 +24,7 @@ class User {
 
   async register(body) {
     const response = await UserStorage.register(body);
+
     return response;
   }
 }
