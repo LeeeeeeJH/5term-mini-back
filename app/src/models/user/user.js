@@ -26,10 +26,12 @@ class User {
     return response;
   }
 
+
   register(body) {
     const response = UserStorage.register(body);
     return response;
   }
-}
+
+
 
 module.exports = User;
