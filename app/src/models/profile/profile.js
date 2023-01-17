@@ -9,7 +9,7 @@ class Profile {
             return response
         }
         catch(err) {
-            return {success: false, msg:"프로필 수정 실패!!"};
+            return {success: false, msg:"프로필 수정 실패"};
         }
     }
 
@@ -19,7 +19,7 @@ class Profile {
             return response
         }
         catch(err) {
-            return {success: false, msg:"프로필 조회 실패!"};
+            return {success: false, msg:"프로필 조회 실패"};
         }
     }
 
@@ -29,7 +29,7 @@ class Profile {
             return response
         }
         catch(err) {
-            return {success: false, msg:err};
+            return {success: false, msg:"프로필 조회 실패"};
         }
     }
 }
