@@ -28,15 +28,14 @@ class UserStorage {
             const idx = idList.indexOf(id);
             console.log(passwordList[idx]);
             if (passwordList[idx] == body.password) {
-              console.log("성공");
               resolve({ success: true });
             }
-            console.log("비번 다름");
-            resolve({ success: false, msg: "비밀번호가 맞지 않습니다." });
+
+            resolve({ success: false });
           }
         }
-        console.log("아이디 다름");
-        resolve({ success: false, msg: "존재하지 않는 아이디 입니다." });
+
+        resolve({ success: false });
       });
     });
   }
@@ -55,8 +54,7 @@ class UserStorage {
         }
 
         for (let id of idList) {
-          if (id == body.id)
-            resolve({ success: true, msg: "이미 존재하는 아이디입니다." });
+          if (id == body.id) resolve({ success: true });
         }
         resolve({ success: false });
       });
@@ -77,8 +75,7 @@ class UserStorage {
         }
 
         for (let nickname of nicknameList) {
-          if (nickname == body.nickname)
-            resolve({ success: true, msg: "이미 존재하는 별명입니다." });
+          if (nickname == body.nickname) resolve({ success: true });
         }
         resolve({ success: false });
       });
@@ -89,13 +86,15 @@ class UserStorage {
     const sql =
       "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
 
+    const phoneNum = "010-" + body.senterPhoneNum + "-" + body.lastPhoneNum;
+    const email = body.firstEmaile + body.lastEmaile;
     const values = [
       body.id,
       body.password,
       body.name,
-      body.phone,
-      body.email,
-      body.nickname,
+      phoneNum,
+      email,
+      body.nickName,
     ];
 
     db.query(sql, values, function (err, result, fields) {

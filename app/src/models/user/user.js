@@ -15,13 +15,11 @@ class User {
     const type = Object.keys(body);
 
     if (type[0] == "id") {
-      console.log("아이디");
       const response = await UserStorage.idCheck(body);
     } else {
-      console.log("닉네임");
       const response = await UserStorage.nicknameCheck(body);
     }
-    console.log(response);
+
     return response;
   }
 
