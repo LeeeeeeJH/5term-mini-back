@@ -9,7 +9,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 생성 실패!!"};
+            return {success: false, msg:"다이어리 생성 실패"};
         }
     }
 
@@ -19,7 +19,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 삭제 실패!!"};
+            return {success: false, msg:"다이어리 삭제 실패"};
         }
     }
 
@@ -29,7 +29,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 수정 실패!!"};
+            return {success: false, msg:"다이어리 수정 실패"};
         }
     }
 
@@ -39,7 +39,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 조회 실패!"};
+            return {success: false, msg:"다이어리 조회 실패"};
         }
     }
 
@@ -49,7 +49,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:err};
+            return {success: false, msg:"사용자의 다이어리 조회 실패"};
         }
     }
 
@@ -59,7 +59,7 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 생성 실패!!"};
+            return {success: false, msg:"다이어리 좋아요 추가 실패"};
         }
     }
 
@@ -69,17 +69,17 @@ class Diary {
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 삭제 실패!!"};
+            return {success: false, msg:"다이어리 좋아요 삭제 실패"};
         }
     }
 
-    async readDiary({diaryId}) {
+    async readDiaryLike({diaryId}) {
         try {
             const response = await DiaryStorage.readDiary(diaryId)
             return response
         }
         catch(err) {
-            return {success: false, msg:"다이어리 조회 실패!"};
+            return {success: false, msg:"다이어리 좋아요 조회 실패"};
         }
     }
 }
