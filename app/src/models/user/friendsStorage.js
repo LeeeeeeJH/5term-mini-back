@@ -2,7 +2,6 @@
 
 const { resolveInclude } = require("ejs");
 const db = require("../../config/db");
-const Friends = require("./friends");
 
 class FriendsStorage {
   static send(body) {
