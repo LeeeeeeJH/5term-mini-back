@@ -53,9 +53,9 @@ class Diary {
         }
     }
 
-    async createDairyLike(user_id, body) {
+    async createDairyLike(params) {
         try {
-            const response = await DiaryStorage.createDiary(user_id,body)
+            const response = await DiaryStorage.createDiaryLike(params)
             return response
         }
         catch(err) {
@@ -65,7 +65,7 @@ class Diary {
 
      async deleteDiaryLike({diaryId}) {
         try {
-            const response = await DiaryStorage.deleteDiary(diaryId)
+            const response = await DiaryStorage.deleteDiaryLike(diaryId)
             return response
         }
         catch(err) {
@@ -75,7 +75,7 @@ class Diary {
 
     async readDiaryLike({diaryId}) {
         try {
-            const response = await DiaryStorage.readDiary(diaryId)
+            const response = await DiaryStorage.readDiaryLike(diaryId)
             return response
         }
         catch(err) {

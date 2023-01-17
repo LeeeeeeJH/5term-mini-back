@@ -68,6 +68,40 @@ class DiaryStorage {
             });
         });
     }
+
+    static createDiaryLike(params) {
+        return new Promise(async (resolve, reject) => {
+            const user_no = await DataCheck.getUserNo(params.userId);
+            const values = [
+                Number(params.diaryNo),
+                user_no
+            ];
+            const query = "INSERT INTO diary_likes(diary_no,liker_no) VALUES(?,?);";
+            db.query(query, values, (err) => {
+              if (err) reject(err);
+              resolve({success:true});
+            });
+          });
+    }        
+    static deleteDiaryLike(id) {
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM diary WHERE no = ?;";
+            db.query(query, [id], (err) => {
+              if (err) reject(err);
+              resolve({success : true});
+            });
+          });
+    };
+
+    static readDiaryLike(id) {
+        return new Promise((resolve, reject) => {
+            const query = "SELECT date, title, content, image FROM diary WHERE no = ?;";
+            db.query(query,[id], (err,data) => {
+            if (err) reject(err);
+            resolve(data);
+            });
+        });
+    }
 }
 
 module.exports = DiaryStorage;
