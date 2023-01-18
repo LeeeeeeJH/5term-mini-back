@@ -13,7 +13,7 @@ router.post("/login", ctrl.sign.login);
 router.post("/check", ctrl.sign.check);
 
 // 친구목록 조회
-// router.get("/friends/request", ctrl.relation.read);
+router.get("/friends/:userId", ctrl.relation.read);
 // // 친구요청 보내기
 router.post("/friends/request", ctrl.relation.send);
 // // 친구요청 수락

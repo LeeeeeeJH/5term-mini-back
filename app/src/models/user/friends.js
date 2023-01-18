@@ -7,6 +7,11 @@ class Friends {
     this.body = body;
   }
 
+  async read(user) {
+    const response = await FriendsStorage.read(user);
+    return response;
+  }
+
   async send(body) {
     const response = await FriendsStorage.send(body);
     return response;

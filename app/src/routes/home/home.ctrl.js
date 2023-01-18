@@ -29,8 +29,10 @@ const sign = {
 
 const relation = {
   read: async (req, res) => {
-    const request = await new Friends(req.body);
-    const response = request.send(req.body);
+    const user = req.path.split("/");
+    const request = await new Friends(user[2]);
+    const response = await request.read(user[2]);
+    return res.json(response);
   },
   send: async (req, res) => {
     const request = await new Friends(req.body);
