@@ -6,78 +6,45 @@ const User = require("./user");
 class UserStorage {
   static login(body) {
     return new Promise((resolve, reject) => {
-      const sql = "SELECT id,password FROM user";
-      db.query(sql, (err, result, fields) => {
-        if (err) {
-          reject(err);
-          console.log(err);
-        }
+      const idSql = "SELECT id FROM user WHERE id = ?";
+      const passwordSql = "SELECT password FROM user WHERE password = ?";
 
-        let idList = [];
-        for (let data of result) {
-          idList.push(data.id);
-        }
-
-        let passwordList = [];
-        for (let data of result) {
-          passwordList.push(data.password);
-        }
-
-        for (let id of idList) {
-          if (id == body.id) {
-            const idx = idList.indexOf(id);
-
-            if (passwordList[idx] == body.password) {
-              resolve({ success: true });
-            }
-
-            resolve({ success: false });
-          }
-        }
-
-        resolve({ success: false });
+      db.query(idSql, [body.id], (err, result, fields) => {
+        console.log(result);
+        if (result[0]) {
+          db.query(passwordSql, [body.passWord], (err, result, fields) => {
+            console.log(result);
+            if (result[0]) resolve({ success: true });
+            else resolve({ success: false });
+          });
+        } else resolve({ success: false });
       });
     });
   }
 
   static idCheck(body) {
     return new Promise((resolve, reject) => {
-      const sql = "SELECT (id) FROM user";
-      db.query(sql, (err, result, fields) => {
+      const sql = "SELECT (id) FROM user WHERE id = ?";
+      db.query(sql, [body.id], (err, result, fields) => {
         if (err) {
           reject(err);
         }
 
-        let idList = [];
-        for (let data of result) {
-          idList.push(data.id);
-        }
-
-        for (let id of idList) {
-          if (id == body.id) resolve({ success: true });
-        }
-        resolve({ success: false });
+        if (result[0]) resolve({ success: false });
+        else resolve({ success: true });
       });
     });
   }
 
   static nicknameCheck(body) {
     return new Promise((resolve, reject) => {
-      const sql = "SELECT (nickname) FROM user";
-      db.query(sql, (err, result, fields) => {
+      const sql = "SELECT (nickname) FROM user WHERE id = ?";
+      db.query(sql, body.nickName, (err, result, fields) => {
         if (err) {
           reject(err);
         }
-
-        let nicknameList = [];
-        for (let data of result) {
-          nicknameList.push(data.nickname);
-        }
-
-        for (let nickname of nicknameList) {
-          if (nickname == body.nickname) resolve({ success: true });
-        }
-        resolve({ success: false });
+        if (result[0]) resolve({ success: false });
+        else resolve({ success: true });
       });
     });
   }
