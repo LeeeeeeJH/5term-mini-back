@@ -7,7 +7,7 @@ class TodoStorage {
     return new Promise(async (resolve, reject) => {
       const req = [client.date, client.id];
       const sql =
-        "SELECT todo.no, todo.is_checked, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
+        "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
         "FROM todo " +
         "INNER JOIN user ON todo.user_no = user.no " +
         "INNER JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
@@ -81,20 +81,6 @@ class TodoStorage {
           reject({ success: false });
         }
         resolve({ success: true });
-      });
-    });
-  }
-
-  static getUserNo(id) {
-    return new Promise((resolve, reject) => {
-      const req = [id];
-
-      const sql = "SELECT no FROM user WHERE id = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) reject(err);
-
-        resolve(client[0].no);
       });
     });
   }

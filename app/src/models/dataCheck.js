@@ -10,7 +10,7 @@ class DataCheck {
 
       db.query(sql, req, (err, client) => {
         if (err) reject(err);
-
+        console.log();
         resolve(client[0].no);
       });
     });
