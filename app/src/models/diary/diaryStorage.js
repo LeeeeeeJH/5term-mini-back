@@ -3,9 +3,9 @@
 const db = require("../../config/db");
 const DataCheck = require("../dataCheck");
 class DiaryStorage {
-    static createDiary(user_id,body) {
+    static createDiary(params,body) {
         return new Promise(async (resolve, reject) => {
-            const user_no = await DataCheck.getUserNo(user_id.userId);
+            const user_no = await DataCheck.getUserNo(params.userId);
             const values = [
                 user_no,
                 body.date,
@@ -20,24 +20,28 @@ class DiaryStorage {
             });
           });
     }        
-    static deleteDiary(id) {
-        return new Promise((resolve, reject) => {
-            const query = "DELETE FROM diary WHERE no = ?;";
-            db.query(query, [id], (err) => {
-              if (err) reject(err);
-              resolve({success : true});
-            });
+    static deleteDiary(params) {
+        return new Promise(async(resolve, reject) => {
+          const values = [
+            user_no,
+            params.date
+          ]
+          const query = "DELETE FROM diary WHERE no = ?;";
+          db.query(query, values, (err) => {
+            if (err) reject(err);
+            resolve({success : true});
           });
+        });
     };
 
-    static updateDiary(id,body) {
-        return new Promise((resolve, reject) => {
+    static updateDiary(params,body) {
+        return new Promise(async(resolve, reject) => {
             const values = [
-                body.date,
-                body.title,
-                body.content,
-                body.image,
-                id
+              body.date,
+              body.title,
+              body.content,
+              body.image,
+              params.diaryNo
             ]
             const query = "UPDATE diary SET date = ?,title = ?, content = ?, image = ? WHERE no = ?;";
 
@@ -48,23 +52,36 @@ class DiaryStorage {
         });
     }
 
-    static readDiary(id) {
-        return new Promise((resolve, reject) => {
-            const query = "SELECT date, title, content, image FROM diary WHERE no = ?;";
-            db.query(query,[id], (err,data) => {
-            if (err) reject(err);
-            resolve(data);
-            });
+    static readDiary(params) {
+        return new Promise(async(resolve, reject) => {
+          const user_no = await DataCheck.getUserNo(params.userId)
+          const values = [
+            params.date,
+            user_no
+          ]
+          const query = "SELECT no,date, title, content, image FROM diary WHERE DATE_FORMAT(diary.date,'%y-%m-%d') = ? AND user_no = ?;";
+          db.query(query,values, (err,data) => {
+          if (err) reject(err);
+          resolve(data);
+          });
         });
     }
 
-    static readSelectDiary(user_id) {
+    static readSelectDiary(params) {
         return new Promise(async(resolve, reject) => {
-            const user_no = await DataCheck.getUserNo(user_id)
-            const query = "SELECT no, user_no, date FROM diary WHERE user_no = ?;";
-            db.query(query, [user_no], (err, data) => {
-            if (err) reject(err);
-            resolve(data);
+            const user_no = await DataCheck.getUserNo(params.userId)
+            const values = [
+                params.date,
+                user_no
+            ]
+            const query = "SELECT DATE_FORMAT(diary.date,'%d') AS days FROM diary WHERE DATE_FORMAT(diary.date,'%y-%m') = ? AND user_no = ? ORDER BY days";
+            db.query(query, values, (err, data) => {
+                const diaryDay = [];
+                for (let i of data) {
+                    diaryDay.push(i.days); 
+                }
+                if (err) reject(err);
+                resolve(diaryDay);
             });
         });
     }
@@ -83,20 +100,25 @@ class DiaryStorage {
             });
           });
     }        
-    static deleteDiaryLike(id) {
-        return new Promise((resolve, reject) => {
-            const query = "DELETE FROM diary WHERE no = ?;";
-            db.query(query, [id], (err) => {
-              if (err) reject(err);
-              resolve({success : true});
-            });
+    static deleteDiaryLike(params) {
+        return new Promise(async(resolve, reject) => {
+          const user_no = await DataCheck.getUserNo(params.userId);
+          const values = [
+            user_no,
+            params.diaryNo
+          ]
+          const query = "DELETE FROM diary_likes WHERE liker_no = ? AND diary_no = ?;";
+          db.query(query, values, (err) => {
+            if (err) reject(err);
+            resolve({success : true});
           });
+        });
     };
 
-    static readDiaryLike(id) {
+    static readDiaryLike(params) {
         return new Promise((resolve, reject) => {
-            const query = "SELECT date, title, content, image FROM diary WHERE no = ?;";
-            db.query(query,[id], (err,data) => {
+            const query = "SELECT COUNT(liker_no) FROM diary_likes WHERE diary_no = ?;";
+            db.query(query, params.diaryNo, (err,data) => {
             if (err) reject(err);
             resolve(data);
             });

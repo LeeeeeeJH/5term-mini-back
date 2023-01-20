@@ -3,9 +3,9 @@ const DiaryStorage = require("./diaryStorage");
 class Diary {
     constructor() {}
 
-     async createDairy(user_id, body) {
+     async createDairy(params, body) {
         try {
-            const response = await DiaryStorage.createDiary(user_id,body)
+            const response = await DiaryStorage.createDiary(params,body)
             return response
         }
         catch(err) {
@@ -13,9 +13,9 @@ class Diary {
         }
     }
 
-     async deleteDiary({diaryId}) {
+     async deleteDiary(params) {
         try {
-            const response = await DiaryStorage.deleteDiary(diaryId)
+            const response = await DiaryStorage.deleteDiary(params)
             return response
         }
         catch(err) {
@@ -23,9 +23,9 @@ class Diary {
         }
     }
 
-    async updateDiary({diaryId}, body) {
+    async updateDiary(params, body) {
         try {
-            const response = await DiaryStorage.updateDiary(diaryId,body)
+            const response = await DiaryStorage.updateDiary(params,body)
             return response
         }
         catch(err) {
@@ -33,9 +33,9 @@ class Diary {
         }
     }
 
-    async readDiary({diaryId}) {
+    async readDiary(params) {
         try {
-            const response = await DiaryStorage.readDiary(diaryId)
+            const response = await DiaryStorage.readDiary(params)
             return response
         }
         catch(err) {
@@ -43,9 +43,9 @@ class Diary {
         }
     }
 
-    async readSelectDiary({userId}) {
+    async readSelectDiary(params) {
         try {
-            const response = await DiaryStorage.readSelectDiary(userId)
+            const response = await DiaryStorage.readSelectDiary(params)
             return response
         }
         catch(err) {
@@ -63,9 +63,9 @@ class Diary {
         }
     }
 
-     async deleteDiaryLike({diaryId}) {
+     async deleteDiaryLike(params) {
         try {
-            const response = await DiaryStorage.deleteDiaryLike(diaryId)
+            const response = await DiaryStorage.deleteDiaryLike(params)
             return response
         }
         catch(err) {
@@ -73,9 +73,9 @@ class Diary {
         }
     }
 
-    async readDiaryLike({diaryId}) {
+    async readDiaryLike(params) {
         try {
-            const response = await DiaryStorage.readDiaryLike(diaryId)
+            const response = await DiaryStorage.readDiaryLike(params)
             return response
         }
         catch(err) {

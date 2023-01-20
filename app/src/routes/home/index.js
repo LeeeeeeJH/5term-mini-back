@@ -5,15 +5,21 @@ const router = express.Router();
 
 const ctrl = require("./home.ctrl");
 
+
 // router.get("/",)
 router.post("/login", ctrl.sign.login);
 router.post("/register", ctrl.sign.register);
 //다이어리
-router.get("/diaries/:userId", ctrl.process.getSelectDiary) //처음에 프론트단에 사용자의 데이터 조회
-router.get("/diaries/:userId/main/:diaryId", ctrl.process.getDiary) //해당하는 날짜의 다이어리 조회
+router.get("/diaries/:userId/calendars/:date", ctrl.process.getSelectDiary) //처음에 프론트단에 사용자의 데이터 조회
+router.get("/diaries/:userId/main/:date", ctrl.process.getDiary) //해당하는 날짜의 다이어리 조회
 router.post("/diaries/:userId/main", ctrl.process.createDiary); //다이어리 생성
-router.delete("/diaries/:userId/main/:diaryId", ctrl.process.deleteDiary); //다이어리 삭제
-router.patch("/diaries/:userId/main/:diaryId", ctrl.process.updateDiary); //다이어리 수정
+router.delete("/diaries/:userId/main/:date", ctrl.process.deleteDiary); //다이어리 삭제
+router.patch("/diaries/:userId/main/:date", ctrl.process.updateDiary); //다이어리 수정
+//다이어리 댓글
+router.get("/diaries/:userId/comments/:diaryId", ctrl.process.getDiary) //해당하는 날짜의 다이어리 조회
+router.post("/diaries/:userId/comments", ctrl.process.createDiary); //다이어리 생성
+router.delete("/diaries/:userId/comments/:diaryId", ctrl.process.deleteDiary); //다이어리 삭제
+router.patch("/diaries/:userId/comments/:diaryId", ctrl.process.updateDiary);
 //다이어리 좋아요
 router.get("/diary-likes/:diaryNo", ctrl.process.getDiaryLike);//좋아요 확인
 router.post("/diary-likes/:diaryNo/liker/:userId", ctrl.process.createDiaryLike);//좋아요 추가
