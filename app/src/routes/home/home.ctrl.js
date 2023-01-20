@@ -18,22 +18,22 @@ const sign = {
 };
 
 const process = {
-  //diary CRUD
+//diary CRUD
   createDiary: async(req, res) => {
-      const diary = new Diary()
-      const response = await diary.createDairy(req.params,req.body);
-      return res.json(response);
+    const diary = new Diary()
+    const response = await diary.createDiary(req.params,req.body);
+    return res.json(response);
   },
 
   deleteDiary: async(req, res) => {
-      const diary = new Diary()
-      const response = await diary.deleteDiary(req.params);
-      return res.json(response);
+    const diary = new Diary()
+    const response = await diary.deleteDiary(req.params);
+    return res.json(response);
   },
   updateDiary: async(req, res) => {
-      const diary = new Diary()
-      const response = await diary.updateDiary(req.params,req.body);
-      return res.json(response);
+    const diary = new Diary()
+    const response = await diary.updateDiary(req.params,req.body);
+    return res.json(response);
   },
   getDiary: async(req, res) => {
     const diary = new Diary()
@@ -45,10 +45,31 @@ const process = {
     const response = await diary.readSelectDiary(req.params);
     res.send(response)
   },
+  //다이어리 댓글
+  createDiaryComment: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.createDiaryComment(req.params,req.body);
+    return res.json(response);
+  },
+  deleteDiaryComment: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.deleteDiaryComment(req.params);
+    return res.json(response);
+  },
+  updateDiaryComment: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.updateDiaryComment(req.params,req.body);
+    return res.json(response);
+  },
+  getDiaryComment: async(req, res) => {
+    const diary = new Diary()
+    const response = await diary.readDiaryComment(req.params);
+    res.send(response)
+  },
   //다이어리 좋아요
   createDiaryLike: async(req, res) => {
     const diary = new Diary()
-    const response = await diary.createDairyLike(req.params);
+    const response = await diary.createDiaryLike(req.params);
     return res.json(response);
   },
   deleteDiaryLike: async(req, res) => {
