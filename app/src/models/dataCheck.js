@@ -2,18 +2,11 @@
 const db = require("../config/db");
 
 class DataCheck {
-  static getUserNo(id) {
-    return new Promise((resolve, reject) => {
-      const req = [id];
+  static async getUserNo(id) {
+    const sql = "SELECT no FROM user WHERE id = ?;";
+    const result = await db.query(sql, id);
 
-      const sql = "SELECT no FROM user WHERE id = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) reject(err);
-        console.log();
-        resolve(client[0].no);
-      });
-    });
+    return result[0][0].no;
   }
 }
 

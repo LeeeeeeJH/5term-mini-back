@@ -8,6 +8,7 @@ const db = mysql.createPool({
   password: process.env.DB_PSWORD,
   database: process.env.DB_DATABASE,
   multipleStatements: true,
+  dateStrings: "date",
 });
 
 db.js;

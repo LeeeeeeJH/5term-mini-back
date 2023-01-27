@@ -1,6 +1,7 @@
 "use strict";
 const db = require("../../config/db");
 const DataCheck = require("../dataCheck");
+const todoCommentStorage = require("./todoCommentStorage");
 
 class TodoStorage {
   static async getTodoList(client) {
@@ -13,10 +14,12 @@ class TodoStorage {
       "WHERE todo.date = ? AND user.id = ? " +
       "GROUP BY todo.no;";
     const result = await db.query(sql, req);
+
     return result[0];
   }
 
   static async getTodoCount(client) {
+    console.log(client);
     const req = [client.id, client.date];
     const sql =
       "SELECT DATE_FORMAT(todo.date, '%d') AS date, COUNT(*) AS cnt " +
@@ -27,6 +30,7 @@ class TodoStorage {
       "ORDER BY date ASC;";
 
     const result = await db.query(sql, req);
+
     return result[0];
   }
 
@@ -34,9 +38,11 @@ class TodoStorage {
     const no = await DataCheck.getUserNo(client.id);
     const req = [no, client.date, client.content];
     const sql = "INSERT INTO todo (user_no, date, content) VALUES (?,?,?)";
-    const result = await db.query(sql, req);
+    const result = { success: false };
+    const isCheck = (await db.query(sql, req))[0].affectedRows;
+    if (isCheck) result.success = true;
 
-    return result[0];
+    return result;
   }
 
   static async editTodo(client) {
@@ -50,35 +56,70 @@ class TodoStorage {
       update = client.content;
     }
     const req = [update, client.id];
-    const result = await db.query(sql, req);
+    const result = { success: false };
+    const isCheck = (await db.query(sql, req))[0].affectedRows;
+    if (isCheck) {
+      result.success = true;
+    }
 
-    return result[0];
+    return result;
   }
 
   static async deleteTodo(client) {
+    const date = await this.getDate(client.id);
     const sql = "DELETE FROM todo WHERE no= ?";
     const req = [client.id];
-    const result = await db.query(sql, req);
+    const result = { success: false };
+    let cmtDeleteResult = true;
+    const todoDeleteResult = (await db.query(sql, req))[0].affectedRows;
 
-    return result[0];
+    const cnt = await this.getTodoCnt(date);
+    if (cnt === 0) {
+      cmtDeleteResult = todoCommentStorage.deleteComment(date);
+    }
+    if (todoDeleteResult && cmtDeleteResult) {
+      result.success = true;
+    }
+
+    return result;
   }
 
   static async addTodoLike(client) {
     const sql = "INSERT INTO todo_likes (todo_no, liker_no) VALUES (?,?)";
     const user_no = await DataCheck.getUserNo(client.id);
     const req = [client.todo_no, user_no];
-    const result = await db.query(sql, req);
+    const result = { success: false };
+    const isCheck = (await db.query(sql, req))[0].affectedRows;
+    if (isCheck) result.success = true;
 
-    return result[0];
+    return result;
   }
 
   static async deleteTodoLike(client) {
     const sql = "DELETE FROM todo_likes WHERE todo_no= ? AND liker_no = ?";
     const user_no = await DataCheck.getUserNo(client.id);
     const req = [client.todo_no, user_no];
-    const result = await db.query(sql, req);
+    const result = { success: false };
+    const isCheck = (await db.query(sql, req))[0].affectedRows;
+    if (isCheck) result.success = true;
 
-    return result[0];
+    return result;
+  }
+
+  static async getDate(no) {
+    const req = [no];
+    const sql = "SELECT date FROM todo WHERE no = ?";
+    const result = (await db.query(sql, req))[0][0].date;
+
+    return result;
+  }
+
+  static async getTodoCnt(date) {
+    const req = [date];
+    const sql = "SELECT COUNT(*) AS cnt FROM todo WHERE date = ?";
+    const result = (await db.query(sql, req))[0][0].cnt;
+
+    return result;
   }
 }
 
