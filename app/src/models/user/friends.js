@@ -7,11 +7,22 @@ class Friends {
     this.body = body;
   }
 
-  async read(user) {
+  async getList(user) {
     try {
-      const response = await FriendsStorage.read(user);
+      let receiverList = await FriendsStorage.getReceiverList(user);
+      let senderList = await FriendsStorage.getSenderList(user);
+      let friendsList = [];
+      for (let arr of receiverList) {
+        friendsList.push(arr);
+      }
+      for (let arr of senderList) {
+        friendsList.push(arr);
+      }
+      let friendsProfileList = await FriendsStorage.getFriendProfile(
+        friendsList
+      );
 
-      return response;
+      return friendsProfileList;
     } catch (error) {
       console.log(error);
     }

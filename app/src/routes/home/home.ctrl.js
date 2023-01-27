@@ -28,10 +28,10 @@ const sign = {
 };
 
 const relation = {
-  read: async (req, res) => {
+  getList: async (req, res) => {
     const user = req.params.userId;
     const request = await new Friends(user);
-    const response = await request.read(user);
+    const response = await request.getList(user);
     return res.json(response);
   },
   send: async (req, res) => {

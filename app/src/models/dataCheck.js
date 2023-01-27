@@ -2,32 +2,18 @@
 const db = require("../config/db");
 
 class DataCheck {
-  static getUserNo(id) {
-    return new Promise((resolve, reject) => {
-      const req = [id];
+  static async getUserNo(id) {
+    const sql = "SELECT no FROM user WHERE id = ?;";
+    const result = await db.query(sql, id);
 
-      const sql = "SELECT no FROM user WHERE id = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) reject(err);
-
-        resolve(client[0].no);
-      });
-    });
+    return result[0][0].no;
   }
 
-  static getProfileImage(no) {
-    return new Promise((resolve, reject) => {
-      const req = [no];
+  static async getUserImage(id) {
+    const sql = "SELECT image FROM user WHERE id = ?;";
+    const result = await db.query(sql, id);
 
-      const sql = "SELECT image FROM user WHERE no = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) reject(err);
-
-        resolve(client[0].image);
-      });
-    });
+    return result[0][0].image;
   }
 }
 

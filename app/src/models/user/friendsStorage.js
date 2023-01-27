@@ -3,21 +3,53 @@
 const db = require("../../config/db");
 const Friends = require("./friends");
 const DataCheck = require("../dataCheck");
-const { getProfileImage } = require("../dataCheck");
 
 class FriendsStorage {
-  static read(user) {
-    return new Promise(async (resolve, reject) => {
+  // url nickname is_aceppted tag
+  static async getReceiverList(user) {
+    try {
       const userNo = await DataCheck.getUserNo(user);
-      console.log(userNo);
+      const sql =
+        "SELECT receiver, is_aceppted FROM friends_list WHERE sender = ?";
+      let list = await db.query(sql, userNo);
+      let receiverList = [];
+      for (let obj of list[0]) {
+        obj.tag = "receiver";
+        receiverList.push(Object.values(obj));
+      }
+
+      return receiverList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  static async getSenderList(user) {
+    try {
+      const userNo = await DataCheck.getUserNo(user);
       const sql =
         "SELECT sender, is_aceppted FROM friends_list WHERE receiver = ?";
+      let list = await db.query(sql, userNo);
+      let senderList = [];
+      for (let obj of list[0]) {
+        obj.tag = "sender";
+        senderList.push(Object.values(obj));
+      }
+      return senderList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-      db.query(sql, userNo, result => {
-        console.log(result);
-      });
-      resolve({ success: true });
-    });
+  static async getFriendProfile(friendsList) {
+    const sql = "SELECT nickName, image FROM user WHERE no = ?";
+    for (let user of friendsList) {
+      let profile = await db.query(sql, user[0]);
+      let profileArray = Object.values(profile[0][0]);
+      user.unshift(profileArray[0]);
+      user.unshift(profileArray[1]);
+    }
+
+    return friendsList;
   }
 
   static send(body) {
