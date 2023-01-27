@@ -64,6 +64,13 @@ const todo = {
     return res.json(response);
   },
 
+  getTodoComment: async (req, res) => {
+    const todoComment = new TodoComment();
+    const response = await todoComment.getComment(req.body);
+
+    return res.json(response);
+  },
+
   addTodoComment: async (req, res) => {
     const todoComment = new TodoComment();
     const response = await todoComment.addComment(req.body);

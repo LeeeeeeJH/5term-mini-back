@@ -3,131 +3,82 @@ const db = require("../../config/db");
 const DataCheck = require("../dataCheck");
 
 class TodoStorage {
-  static getTodoList(client) {
-    return new Promise(async (resolve, reject) => {
-      const req = [client.date, client.id];
-      const sql =
-        "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
-        "FROM todo " +
-        "INNER JOIN user ON todo.user_no = user.no " +
-        "INNER JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
-        "WHERE todo.date = ? AND user.id = ? " +
-        "GROUP BY todo.no;";
-
-      db.query(sql, req, (err, data) => {
-        if (err) {
-          console.log("에러", err);
-          reject({ sucess: false });
-        }
-        resolve(data);
-      });
-    });
+  static async getTodoList(client) {
+    const req = [client.date, client.id];
+    const sql =
+      "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
+      "FROM todo " +
+      "INNER JOIN user ON todo.user_no = user.no " +
+      "INNER JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
+      "WHERE todo.date = ? AND user.id = ? " +
+      "GROUP BY todo.no;";
+    const result = await db.query(sql, req);
+    return result[0];
   }
 
-  static getTodoCount(client) {
-    return new Promise(async (resolve, reject) => {
-      const req = [client.id, client.date];
-      const sql =
-        "SELECT DATE_FORMAT(todo.date, '%d') AS date, COUNT(*) AS cnt " +
-        "FROM todo " +
-        "INNER JOIN user ON todo.user_no = user.no " +
-        "WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? " +
-        "GROUP BY DATE_FORMAT(todo.date, '%Y-%m-%d') " +
-        "ORDER BY date ASC;";
+  static async getTodoCount(client) {
+    const req = [client.id, client.date];
+    const sql =
+      "SELECT DATE_FORMAT(todo.date, '%d') AS date, COUNT(*) AS cnt " +
+      "FROM todo " +
+      "INNER JOIN user ON todo.user_no = user.no " +
+      "WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? " +
+      "GROUP BY DATE_FORMAT(todo.date, '%Y-%m-%d') " +
+      "ORDER BY date ASC;";
 
-      db.query(sql, req, (err, client) => {
-        if (err) {
-          console.log("에러", err);
-          reject({ sucess: false });
-        }
-        resolve(client);
-      });
-    });
+    const result = await db.query(sql, req);
+    return result[0];
   }
 
-  static addTodoList(client) {
-    return new Promise(async (resolve, reject) => {
-      const no = await DataCheck.getUserNo(client.id);
-      const req = [no, client.date, client.content];
+  static async addTodoList(client) {
+    const no = await DataCheck.getUserNo(client.id);
+    const req = [no, client.date, client.content];
+    const sql = "INSERT INTO todo (user_no, date, content) VALUES (?,?,?)";
+    const result = await db.query(sql, req);
 
-      const sql = "INSERT INTO todo (user_no, date, content) VALUES (?,?,?)";
-
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log("에러 :", err);
-          reject({ sucess: false });
-        }
-        resolve({ sucess: true });
-      });
-    });
+    return result[0];
   }
 
-  static editTodo(client) {
-    return new Promise((resolve, reject) => {
-      let sql;
-      let update;
-      if (client.is_checked == 0 || client.is_checked == 1) {
-        sql = "UPDATE todo SET is_checked= ? WHERE no= ?;";
-        update = client.is_checked;
-      } else {
-        sql = "UPDATE todo SET content= ? WHERE no= ?;";
-        update = client.content;
-      }
-      const req = [update, client.id];
+  static async editTodo(client) {
+    let sql;
+    let update;
+    if (client.is_checked == 0 || client.is_checked == 1) {
+      sql = "UPDATE todo SET is_checked= ? WHERE no= ?;";
+      update = client.is_checked;
+    } else {
+      sql = "UPDATE todo SET content= ? WHERE no= ?;";
+      update = client.content;
+    }
+    const req = [update, client.id];
+    const result = await db.query(sql, req);
 
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false });
-        }
-        resolve({ success: true });
-      });
-    });
+    return result[0];
   }
 
-  static deleteTodo(client) {
-    return new Promise((resolve, reject) => {
-      const sql = "DELETE FROM todo WHERE no= ?";
-      const req = [client.id];
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false });
-        }
-        resolve({ success: true });
-      });
-    });
+  static async deleteTodo(client) {
+    const sql = "DELETE FROM todo WHERE no= ?";
+    const req = [client.id];
+    const result = await db.query(sql, req);
+
+    return result[0];
   }
 
-  static addTodoLike(client) {
-    return new Promise(async (resolve, reject) => {
-      const sql = "INSERT INTO todo_likes (todo_no, liker_no) VALUES (?,?)";
-      const user_no = await DataCheck.getUserNo(client.id);
-      const req = [client.todo_no, user_no];
-      console.log(req);
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false });
-        }
-        resolve({ success: true });
-      });
-    });
+  static async addTodoLike(client) {
+    const sql = "INSERT INTO todo_likes (todo_no, liker_no) VALUES (?,?)";
+    const user_no = await DataCheck.getUserNo(client.id);
+    const req = [client.todo_no, user_no];
+    const result = await db.query(sql, req);
+
+    return result[0];
   }
 
-  static deleteTodoLike(client) {
-    return new Promise(async (resolve, reject) => {
-      const sql = "DELETE FROM todo_likes WHERE todo_no= ? AND liker_no = ?";
-      const user_no = await DataCheck.getUserNo(client.id);
-      const req = [client.todo_no, user_no];
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false });
-        }
-        resolve({ success: true });
-      });
-    });
+  static async deleteTodoLike(client) {
+    const sql = "DELETE FROM todo_likes WHERE todo_no= ? AND liker_no = ?";
+    const user_no = await DataCheck.getUserNo(client.id);
+    const req = [client.todo_no, user_no];
+    const result = await db.query(sql, req);
+
+    return result[0];
   }
 }
 

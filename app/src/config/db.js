@@ -1,14 +1,15 @@
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PSWORD,
   database: process.env.DB_DATABASE,
+  multipleStatements: true,
 });
 
-db.connect();
+db.js;
 
 module.exports = db;
