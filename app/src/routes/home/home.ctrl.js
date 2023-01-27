@@ -18,87 +18,87 @@ const sign = {
 };
 
 const process = {
-//diary CRUD
-  createDiary: async(req, res) => {
-    const diary = new Diary()
-    const response = await diary.createDiary(req.params,req.body);
+  //diary CRUD
+  createDiary: async (req, res) => {
+    const diary = new Diary();
+    const response = await diary.createDiary(req.params, req.body);
     return res.json(response);
   },
 
-  deleteDiary: async(req, res) => {
-    const diary = new Diary()
+  deleteDiary: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.deleteDiary(req.params);
     return res.json(response);
   },
-  updateDiary: async(req, res) => {
-    const diary = new Diary()
-    const response = await diary.updateDiary(req.params,req.body);
+  updateDiary: async (req, res) => {
+    const diary = new Diary();
+    const response = await diary.updateDiary(req.params, req.body);
     return res.json(response);
   },
-  getDiary: async(req, res) => {
-    const diary = new Diary()
+  getDiary: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.readDiary(req.params);
-    res.send(response)
+    res.send(response);
   },
-  getSelectDiary: async(req, res) => {
-    const diary = new Diary()
+  getSelectDiary: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.readSelectDiary(req.params);
-    res.send(response)
+    res.send(response);
   },
   //다이어리 댓글
-  createDiaryComment: async(req, res) => {
-    const diary = new Diary()
-    const response = await diary.createDiaryComment(req.params,req.body);
+  createDiaryComment: async (req, res) => {
+    const diary = new Diary();
+    const response = await diary.createDiaryComment(req.params, req.body);
     return res.json(response);
   },
-  deleteDiaryComment: async(req, res) => {
-    const diary = new Diary()
+  deleteDiaryComment: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.deleteDiaryComment(req.params);
     return res.json(response);
   },
-  updateDiaryComment: async(req, res) => {
-    const diary = new Diary()
-    const response = await diary.updateDiaryComment(req.params,req.body);
+  updateDiaryComment: async (req, res) => {
+    const diary = new Diary();
+    const response = await diary.updateDiaryComment(req.params, req.body);
     return res.json(response);
   },
-  getDiaryComment: async(req, res) => {
-    const diary = new Diary()
+  getDiaryComment: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.readDiaryComment(req.params);
-    res.send(response)
+    res.send(response);
   },
   //다이어리 좋아요
-  createDiaryLike: async(req, res) => {
-    const diary = new Diary()
+  createDiaryLike: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.createDiaryLike(req.params);
     return res.json(response);
   },
-  deleteDiaryLike: async(req, res) => {
-    const diary = new Diary()
+  deleteDiaryLike: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.deleteDiaryLike(req.params);
     return res.json(response);
   },
-  getDiaryLike: async(req, res) => {
-    const diary = new Diary()
+  getDiaryLike: async (req, res) => {
+    const diary = new Diary();
     const response = await diary.readDiaryLike(req.params);
-    res.send(response)
+    res.send(response);
   },
   //프로필
-  getProfile: async(req, res) => {
-    const profile = new Profile()
+  getProfile: async (req, res) => {
+    const profile = new Profile();
     const response = await profile.readProfile(req.params);
-    res.send(response)
+    res.send(response);
   },
-  getFriendProfile: async(req, res) => {
-    const profile = new Profile()
+  getFriendProfile: async (req, res) => {
+    const profile = new Profile();
     const response = await profile.readFriendProfile(req.params);
-    res.send(response)
+    res.send(response);
   },
-  updateProfile: async(req, res) => {
-    const profile = new Profile()
-    const response = await profile.updateProfile(req.params,req.body);
+  updateProfile: async (req, res) => {
+    const profile = new Profile();
+    const response = await profile.updateProfile(req.params, req.body);
     return res.json(response);
-  }
-}
+  },
+};
 
 const info = {
   getInfo: async (req, res) => {
