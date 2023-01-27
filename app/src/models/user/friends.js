@@ -8,8 +8,13 @@ class Friends {
   }
 
   async read(user) {
-    const response = await FriendsStorage.read(user);
-    return response;
+    try {
+      const response = await FriendsStorage.read(user);
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async send(body) {
@@ -18,6 +23,7 @@ class Friends {
   }
   async aceppt(body) {
     const response = await FriendsStorage.aceppt(body);
+
     return response;
   }
   async reject(body) {

@@ -20,6 +20,5 @@ router.post("/friends/request", ctrl.relation.send);
 router.patch("/friends/request", ctrl.relation.aceppt);
 // // 친구요청 거절
 router.delete("/friends/request", ctrl.relation.reject);
-// // 친구요청 조회
 
 module.exports = router;

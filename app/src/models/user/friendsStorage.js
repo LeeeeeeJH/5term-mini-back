@@ -3,20 +3,20 @@
 const db = require("../../config/db");
 const Friends = require("./friends");
 const DataCheck = require("../dataCheck");
+const { getProfileImage } = require("../dataCheck");
 
 class FriendsStorage {
   static read(user) {
     return new Promise(async (resolve, reject) => {
-      const user_no = await DataCheck.getUserNo(user);
+      const userNo = await DataCheck.getUserNo(user);
+      console.log(userNo);
+      const sql =
+        "SELECT sender, is_aceppted FROM friends_list WHERE receiver = ?";
 
-      const sql = "SELECT * FROM friends_list WHERE sender = ? OR receiver = ?";
-
-      const values = [user_no, user_no];
-      db.query(sql, values, function (err, result, fields) {
-        if (err) console.log(err);
-
-        resolve({ result });
+      db.query(sql, userNo, result => {
+        console.log(result);
       });
+      resolve({ success: true });
     });
   }
 

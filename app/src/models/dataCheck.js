@@ -15,6 +15,20 @@ class DataCheck {
       });
     });
   }
+
+  static getProfileImage(no) {
+    return new Promise((resolve, reject) => {
+      const req = [no];
+
+      const sql = "SELECT image FROM user WHERE no = ?;";
+
+      db.query(sql, req, (err, client) => {
+        if (err) reject(err);
+
+        resolve(client[0].image);
+      });
+    });
+  }
 }
 
 module.exports = DataCheck;
