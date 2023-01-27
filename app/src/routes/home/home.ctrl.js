@@ -35,8 +35,8 @@ const relation = {
     return res.json(response);
   },
   send: async (req, res) => {
-    const request = await new Friends(req.body);
-    const response = request.send(req.body);
+    const request = new Friends(req.body);
+    const response = await request.send(req.body);
     return res.json(response);
   },
   aceppt: async (req, res) => {

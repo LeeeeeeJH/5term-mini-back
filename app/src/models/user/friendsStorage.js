@@ -52,16 +52,12 @@ class FriendsStorage {
     return friendsList;
   }
 
-  static send(body) {
+  static async send(body) {
     try {
       const sql = "INSERT INTO friends_list (sender,receiver) VALUES (?,?)";
       const values = [body.sender, body.receiver];
-      db.query(sql, values, function (err, result, fields) {
-        if (err) {
-          console.log(err);
-        }
-        resolve({ success: true });
-      });
+      db.query(sql, values);
+      return { success: true };
     } catch (err) {
       console.log(err);
     }
@@ -69,12 +65,8 @@ class FriendsStorage {
   static aceppt(body) {
     try {
       const sql = "UPDATE friends_list SET is_aceppted = 1 WHERE no = ?";
-      db.query(sql, [body.no], function (err, result, fields) {
-        if (err) {
-          console.log(err);
-        }
-        resolve({ success: true });
-      });
+      db.query(sql, [body.no]);
+      return { success: true };
     } catch (err) {
       console.log(err);
     }
@@ -83,10 +75,8 @@ class FriendsStorage {
   static reject(body) {
     try {
       const sql = "DELETE FROM friends_list WHERE no = ?";
-      db.query(sql, [body.no], function (err, result, fields) {
-        if (err) console.log(err);
-        resolve({ success: true });
-      });
+      db.query(sql, [body.no]);
+      return { success: true };
     } catch (err) {
       console.log(err);
     }
