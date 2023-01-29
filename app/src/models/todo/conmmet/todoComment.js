@@ -1,19 +1,26 @@
 "use strict";
 
 const TodoCommentStorage = require("./todoCommentStorage");
+const DataCheck = require("../../dataCheck");
 
 class TodoComment {
   constructor(body) {
     this.body = body;
   }
-  async getComment(body) {
-    const response = await TodoCommentStorage.getComment(body);
+  async getComment(params) {
+    const response = await TodoCommentStorage.getComment(params);
 
     return response;
   }
 
   async addComment(body) {
-    const response = await TodoCommentStorage.addComment(body);
+    const user_no = await DataCheck.getUserNo(body.user_id);
+    const writer_no = await DataCheck.getUserNo(body.writer_id);
+    const response = await TodoCommentStorage.addComment(
+      body,
+      user_no,
+      writer_no
+    );
 
     return response;
   }

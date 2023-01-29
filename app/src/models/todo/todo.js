@@ -1,58 +1,60 @@
 "use strict";
 
 const TodoStorage = require("./todoStorage");
+const todoCommentStorage = require("./conmmet/todoCommentStorage");
+const DataCheck = require("../dataCheck");
 
 class Todo {
   constructor(body) {
     this.body = body;
   }
 
-  async getTodoList(body) {
-    const response = await TodoStorage.getTodoList(body);
+  async getTodoList(params) {
+    const result = await TodoStorage.getTodoList(params);
 
-    return response;
+    return result;
   }
 
-  async getTodoLikes(body) {
-    const response = await TodoStorage.getTodoLikes(body);
+  async getTodoCnt(params) {
+    const result = await TodoStorage.getTodoCount(params);
 
-    return response;
+    return result;
   }
 
   async addTodoList(body) {
-    const response = await TodoStorage.addTodoList(body);
+    const userNo = await DataCheck.getUserNo(body.id);
+    const result = await TodoStorage.addTodoList(body, userNo);
 
-    return response;
-  }
-
-  async getTodoCnt(body) {
-    const response = await TodoStorage.getTodoCount(body);
-
-    return response;
+    return result;
   }
 
   async editTodo(body) {
-    const response = await TodoStorage.editTodo(body);
+    const result = await TodoStorage.editTodo(body);
 
-    return response;
+    return result;
+  }
+
+  async editChecked(body) {
+    const result = await TodoStorage.editChecked(body);
+
+    return result;
   }
 
   async deleteTodo(body) {
-    const response = await TodoStorage.deleteTodo(body);
+    const date = await TodoStorage.getDate(body.id);
+    const todoDelResult = await TodoStorage.deleteTodo(body);
+    const cnt = await TodoStorage.getTodoCnt(date);
+    if (cnt === 0) {
+      const cmtDelResult = todoCommentStorage.deleteComment(date);
+      if (todoDelResult && cmtDelResult) {
+        return { success: true };
+      }
+    }
+    if (todoDelResult) {
+      return { success: true };
+    }
 
-    return response;
-  }
-
-  async addTodoLike(body) {
-    const response = await TodoStorage.addTodoLike(body);
-
-    return response;
-  }
-
-  async deleteTodoLike(body) {
-    const response = await TodoStorage.deleteTodoLike(body);
-
-    return response;
+    return { success: false };
   }
 }
 
