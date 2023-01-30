@@ -2,6 +2,23 @@
 const db = require("../../config/db");
 
 class TodoStorage {
+  static async getTodoList(client) {
+    try {
+      const req = [client.date, client.id];
+      const sql =
+        "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
+        "FROM todo " +
+        "INNER JOIN user ON todo.user_no = user.no " +
+        "LEFT JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
+        "WHERE todo.date = ? AND user.id = ? " +
+        "GROUP BY todo.no;";
+      const result = await db.query(sql, req);
+      return result[0];
+    } catch (e) {
+      console.log("getTodoList 에러 : ", e);
+    }
+  }
+
   static async getTodoCount(client) {
     try {
       const req = [client.id, client.date];
@@ -12,12 +29,12 @@ class TodoStorage {
         "WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? " +
         "GROUP BY DATE_FORMAT(todo.date, '%Y-%m-%d') " +
         "ORDER BY date ASC;";
-
       const result = await db.query(sql, req);
 
       return result[0];
     } catch (e) {
       console.log("getTodoCount 에러 : ", e);
+      return { success: false };
     }
   }
 
@@ -33,6 +50,7 @@ class TodoStorage {
       return { success: false };
     } catch (e) {
       console.log("addTodoList 에러 : ", e);
+      return { success: false };
     }
   }
 
@@ -49,6 +67,7 @@ class TodoStorage {
       return { success: false };
     } catch (e) {
       console.log("editTodo 에러 : ", e);
+      return { success: false };
     }
   }
 
@@ -64,6 +83,7 @@ class TodoStorage {
       return { success: false };
     } catch (e) {
       console.log("editChecked 에러 : ", e);
+      return { success: false };
     }
   }
 
@@ -80,6 +100,7 @@ class TodoStorage {
       return false;
     } catch (e) {
       console.log("deleteTodo 에러 : ", e);
+      return false;
     }
   }
 
@@ -92,6 +113,7 @@ class TodoStorage {
       return result;
     } catch (e) {
       console.log("getDate 에러 : ", e);
+      return 0;
     }
   }
 
@@ -104,6 +126,7 @@ class TodoStorage {
       return result;
     } catch (e) {
       console.log("getTodoCnt 에러 : ", e);
+      return 0;
     }
   }
 }

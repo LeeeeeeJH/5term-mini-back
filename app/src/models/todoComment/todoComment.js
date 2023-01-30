@@ -4,9 +4,6 @@ const TodoCommentStorage = require("./todoCommentStorage");
 const DataCheck = require("../dataCheck");
 
 class TodoComment {
-  constructor(body) {
-    this.body = body;
-  }
   async getComment(params) {
     const response = await TodoCommentStorage.getComment(params);
 

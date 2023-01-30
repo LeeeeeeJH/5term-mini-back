@@ -4,10 +4,6 @@ const TodoLikeStorage = require("./todoLikeStorage");
 const DataCheck = require("../dataCheck");
 
 class TodoLike {
-  constructor(body) {
-    this.body = body;
-  }
-
   async getTodoLikes(body) {
     const result = await TodoLikeStorage.getTodoLikes(body);
 
