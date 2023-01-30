@@ -1,5 +1,5 @@
 "use strict";
-const TodoLike = require("../../models/todo/like/todoLike");
+const TodoLike = require("../../models/todoLike/todoLike");
 
 const todoLike = {
   addTodoLike: async (req, res) => {

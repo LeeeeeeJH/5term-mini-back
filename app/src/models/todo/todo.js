@@ -1,7 +1,7 @@
 "use strict";
 
 const TodoStorage = require("./todoStorage");
-const todoCommentStorage = require("./conmmet/todoCommentStorage");
+const todoCommentStorage = require("../todoComment/todoCommentStorage");
 const DataCheck = require("../dataCheck");
 
 class Todo {

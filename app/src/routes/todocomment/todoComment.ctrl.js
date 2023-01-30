@@ -1,5 +1,5 @@
 "use strict";
-const TodoComment = require("../../models/todo/conmmet/todoComment");
+const TodoComment = require("../../models/todoComment/todoComment");
 
 const todoComment = {
   getTodoComment: async (req, res) => {

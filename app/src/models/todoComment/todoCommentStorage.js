@@ -1,5 +1,5 @@
 "use strict";
-const db = require("../../../config/db");
+const db = require("../../config/db");
 
 class TodoCommentStorage {
   static async getComment(client) {

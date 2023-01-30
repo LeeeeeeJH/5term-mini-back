@@ -1,5 +1,5 @@
 "use strict";
-const db = require("../../../config/db");
+const db = require("../../config/db");
 
 class TodoLikeStorage {
   static async addTodoLike(todo_no, user_no) {

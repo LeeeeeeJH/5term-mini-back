@@ -9,7 +9,6 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(express.static(`${__dirname}/src/public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -19,4 +18,3 @@ app.use("/todoLike", todoLike);
 app.use("/todoComment", todoComment);
 
 module.exports = app;
-//1-6 rename

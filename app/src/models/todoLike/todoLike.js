@@ -1,7 +1,7 @@
 "use strict";
 
 const TodoLikeStorage = require("./todoLikeStorage");
-const DataCheck = require("../../dataCheck");
+const DataCheck = require("../dataCheck");
 
 class TodoLike {
   constructor(body) {
