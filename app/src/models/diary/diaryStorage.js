@@ -63,21 +63,35 @@ class DiaryStorage {
       const user_no = await DataCheck.getUserNo(params.userId);
       const req = [params.diaryNo, user_no, body.content];
       const sql = "INSERT INTO diary_comment(diary_no,writer_no,content) VALUES(?,?,?);";
-      const [data, buff] = await db.query(sql, req);
+      await db.query(sql, req);
       const result = { success: true };
       return result;
     } catch (error) {
-      console.log("다이어리 댓글 db 작성 오류");
+      throw new Error("다이어리 댓글 db 작성 오류");
     }
   }
 
   static async deleteDiaryComment(params) {
-    const req = [user_no, params.date];
-    const sql = "DELETE FROM diary_comment WHERE no = ?;";
-    const [data, buff] = await db.query(sql, req);
-    const result = { success: false };
-    if (data.affectedRows) {
-      result.success = true;
+    try {
+      const req = [user_no, params.date];
+      const sql = "DELETE FROM diary_comment WHERE no = ?;";
+      await db.query(sql, req);
+      const result = { success: true };
+      return result;
+    } catch (error) {
+      throw new Error("다이어리 댓글 db 수정 오류");
+    }
+  }
+
+  static async updateDiaryComment(params, body) {
+    try {
+      const req = [body.content, params.id];
+      const sql = "UPDATE diary_comment SET content = ? WHERE no = ?;";
+      const data = await db.query(sql, req);
+      const result = { success: true };
+      return result;
+    } catch (error) {
+      throw new Error("다이어리 댓글 db 작성 오류");
     }
   }
 
