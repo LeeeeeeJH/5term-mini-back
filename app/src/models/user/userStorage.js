@@ -9,11 +9,7 @@ class UserStorage {
       const sql = "SELECT id,password FROM user WHERE id = ?";
 
       const check = await db.query(sql, user.id);
-      if (check[0][0]) {
-        if (check[0][0].password === user.passWord) {
-          return { success: true };
-        } else return { success: false };
-      } else return { success: false };
+      return check;
     } catch (err) {
       console.log(err);
     }

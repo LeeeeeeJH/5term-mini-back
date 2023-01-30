@@ -10,15 +10,9 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT receiver, is_accepted FROM friends_list WHERE sender = ?";
+        "SELECT receiver, is_aceppted FROM friends_list WHERE sender = ?";
       let list = await db.query(sql, userNo);
-      let receiverList = [];
-      for (let obj of list[0]) {
-        obj.tag = "receiver";
-        receiverList.push(Object.values(obj));
-      }
-
-      return receiverList;
+      return list[0];
     } catch (err) {
       console.log(err);
     }
@@ -27,14 +21,10 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT sender, is_accepted FROM friends_list WHERE receiver = ?";
+        "SELECT sender, is_aceppted FROM friends_list WHERE receiver = ?";
       let list = await db.query(sql, userNo);
-      let senderList = [];
-      for (let obj of list[0]) {
-        obj.tag = "sender";
-        senderList.push(Object.values(obj));
-      }
-      return senderList;
+
+      return list[0];
     } catch (err) {
       console.log(err);
     }
@@ -46,8 +36,8 @@ class FriendsStorage {
       for (let user of friendsList) {
         let profile = await db.query(sql, user[0]);
         let profileArray = Object.values(profile[0][0]);
-        user.unshift(profileArray[0]);
-        user.unshift(profileArray[1]);
+        friendsList.unshift(profileArray[0]);
+        friendsList.unshift(profileArray[1]);
       }
 
       return friendsList;
@@ -68,7 +58,7 @@ class FriendsStorage {
   }
   static aceppt(user) {
     try {
-      const sql = "UPDATE friends_list SET is_aceppted = 1 WHERE no = ?";
+      const sql = "UPDATE friends_list SET is_accepted = 1 WHERE no = ?";
       db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {
