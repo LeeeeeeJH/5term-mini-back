@@ -8,7 +8,7 @@ class Profile {
       const response = await ProfileStorage.updateProfile(userId, body);
       return response;
     } catch (err) {
-      return { success: false, msg: "프로필 수정 실패" };
+      throw new Error("프로필 수정 오류");
     }
   }
 
@@ -17,7 +17,7 @@ class Profile {
       const response = await ProfileStorage.readProfile(userId);
       return response;
     } catch (err) {
-      return { success: false, msg: "프로필 조회 실패" };
+      throw new Error("프로필 db 조회 오류");
     }
   }
 
@@ -26,7 +26,7 @@ class Profile {
       const response = await ProfileStorage.readFriendProfile(userId);
       return response;
     } catch (err) {
-      return { success: false, msg: "프로필 조회 실패" };
+      throw new Error("친구 프로필 db 조회 오류");
     }
   }
 }

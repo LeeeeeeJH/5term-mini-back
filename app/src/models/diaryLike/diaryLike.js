@@ -7,26 +7,26 @@ class DiaryLike {
   async createDiaryLike(params) {
     const userNo = await DataCheck.getUserNo(params.userId);
     if (!userNo) {
-      throw new Error("사용자 id 변환 에러");
+      throw new Error("사용자 id 변환 오류");
     }
     try {
       const response = await DiaryLikeStorage.createDiaryLike(params, userNo);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 좋아요 추가 실패" };
+      throw new Error("다이어리 좋아요 생성 오류");
     }
   }
 
   async deleteDiaryLike(params) {
     const userNo = await DataCheck.getUserNo(params.userId);
     if (!userNo) {
-      throw new Error("사용자 id 변환 에러");
+      throw new Error("사용자 id 변환 오류");
     }
     try {
       const response = await DiaryLikeStorage.deleteDiaryLike(params, userNo);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 좋아요 삭제 실패" };
+      throw new Error("다이어리 좋아요 삭제 오류");
     }
   }
 
@@ -35,7 +35,7 @@ class DiaryLike {
       const response = await DiaryLikeStorage.readDiaryLike(params);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 좋아요 조회 실패" };
+      throw new Error("다이어리 좋아요 조회 오류");
     }
   }
 }

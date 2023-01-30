@@ -8,13 +8,13 @@ class DiaryComment {
   async createDiaryComment(params, body) {
     const userNo = await DataCheck.getUserNo(params.userId);
     if (!userNo) {
-      throw new Error("사용자 id 변환 에러");
+      throw new Error("사용자 id 변환 오류");
     }
     try {
       const response = await DiaryCommentStorage.createDiaryComment(params, userNo, body);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 댓글 생성 실패" };
+      throw new Error("다이어리 댓글 생성 오류");
     }
   }
 
@@ -23,7 +23,7 @@ class DiaryComment {
       const response = await DiaryCommentStorage.deleteDiaryComment(params);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 댓글 삭제 실패" };
+      throw new Error("다이어리 댓글 삭제 오류");
     }
   }
 
@@ -32,7 +32,7 @@ class DiaryComment {
       const response = await DiaryCommentStorage.updateDiaryComment(params, body);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 댓글 수정 실패" };
+      throw new Error("다이어리 댓글 수정 오류");
     }
   }
 
@@ -41,7 +41,7 @@ class DiaryComment {
       const response = await DiaryCommentStorage.readDiaryComment(params);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 댓글 조회 실패" };
+      throw new Error("다이어리 댓글 조회 오류");
     }
   }
 }

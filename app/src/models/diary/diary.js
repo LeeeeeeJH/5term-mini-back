@@ -21,7 +21,7 @@ class Diary {
       const response = await DiaryStorage.deleteDiary(params);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 삭제 실패" };
+      throw new Error("다이어리 삭제 오류");
     }
   }
 
@@ -30,7 +30,7 @@ class Diary {
       const response = await DiaryStorage.updateDiary(params, body);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 수정 실패" };
+      throw new Error("다이어리 수정 오류");
     }
   }
 
@@ -43,7 +43,7 @@ class Diary {
       const response = await DiaryStorage.readDiary(userNo, params);
       return response;
     } catch (error) {
-      return { success: false, msg: "다이어리 조회 실패" };
+      throw new Error("다이어리 조회 오류");
     }
   }
 
