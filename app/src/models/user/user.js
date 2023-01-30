@@ -6,26 +6,39 @@ class User {
   constructor(body) {
     this.body = body;
   }
-  async login(body) {
-    const response = await UserStorage.login(body);
+  async login(user) {
+    const response = await UserStorage.login(user);
     return response;
   }
 
-  async check(body) {
-    const type = Object.keys(body);
+  async check(user) {
+    const type = Object.keys(user);
 
     const response =
       type[0] == "id"
-        ? await UserStorage.idCheck(body)
-        : await UserStorage.nicknameCheck(body);
-
+        ? await UserStorage.idCheck(user)
+        : await UserStorage.nicknameCheck(user);
     return response;
   }
 
-  async register(body) {
-    const response = await UserStorage.register(body);
+  async register(user) {
+    //중복확인 아이디 닉네임
+    const phoneNum = "010-" + user.senterPhoneNum + "-" + user.lastPhoneNum;
+    const email = user.firstEmaile + user.lastEmaile;
+    const values = [
+      user.id,
+      user.password,
+      user.name,
+      phoneNum,
+      email,
+      user.nickName,
+    ];
+    const insetResult = await UserStorage.register(values);
+    if (!insetResult.affectedRows) {
+      //에러처리
+    }
 
-    return response;
+    return insetResult;
   }
 }
 

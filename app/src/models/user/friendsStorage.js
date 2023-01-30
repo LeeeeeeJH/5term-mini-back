@@ -10,7 +10,7 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT receiver, is_aceppted FROM friends_list WHERE sender = ?";
+        "SELECT receiver, is_accepted FROM friends_list WHERE sender = ?";
       let list = await db.query(sql, userNo);
       let receiverList = [];
       for (let obj of list[0]) {
@@ -27,7 +27,7 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT sender, is_aceppted FROM friends_list WHERE receiver = ?";
+        "SELECT sender, is_accepted FROM friends_list WHERE receiver = ?";
       let list = await db.query(sql, userNo);
       let senderList = [];
       for (let obj of list[0]) {
@@ -41,41 +41,45 @@ class FriendsStorage {
   }
 
   static async getFriendProfile(friendsList) {
-    const sql = "SELECT nickName, image FROM user WHERE no = ?";
-    for (let user of friendsList) {
-      let profile = await db.query(sql, user[0]);
-      let profileArray = Object.values(profile[0][0]);
-      user.unshift(profileArray[0]);
-      user.unshift(profileArray[1]);
-    }
+    try {
+      const sql = "SELECT nickName, image FROM user WHERE no = ?";
+      for (let user of friendsList) {
+        let profile = await db.query(sql, user[0]);
+        let profileArray = Object.values(profile[0][0]);
+        user.unshift(profileArray[0]);
+        user.unshift(profileArray[1]);
+      }
 
-    return friendsList;
+      return friendsList;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  static async send(body) {
+  static async send(user) {
     try {
       const sql = "INSERT INTO friends_list (sender,receiver) VALUES (?,?)";
-      const values = [body.sender, body.receiver];
+      const values = [user.sender, user.receiver];
       db.query(sql, values);
       return { success: true };
     } catch (err) {
       console.log(err);
     }
   }
-  static aceppt(body) {
+  static aceppt(user) {
     try {
       const sql = "UPDATE friends_list SET is_aceppted = 1 WHERE no = ?";
-      db.query(sql, [body.no]);
+      db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {
       console.log(err);
     }
   }
 
-  static reject(body) {
+  static reject(user) {
     try {
       const sql = "DELETE FROM friends_list WHERE no = ?";
-      db.query(sql, [body.no]);
+      db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {
       console.log(err);

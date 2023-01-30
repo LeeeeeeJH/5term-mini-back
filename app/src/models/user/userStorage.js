@@ -4,13 +4,13 @@ const db = require("../../config/db");
 const User = require("./user");
 
 class UserStorage {
-  static async login(body) {
+  static async login(user) {
     try {
       const sql = "SELECT id,password FROM user WHERE id = ?";
 
-      const check = await db.query(sql, body.id);
+      const check = await db.query(sql, user.id);
       if (check[0][0]) {
-        if (check[0][0].password === body.passWord) {
+        if (check[0][0].password === user.passWord) {
           return { success: true };
         } else return { success: false };
       } else return { success: false };
@@ -19,10 +19,10 @@ class UserStorage {
     }
   }
 
-  static async idCheck(body) {
+  static async idCheck(user) {
     try {
       const sql = "SELECT id FROM user WHERE id = ?";
-      const check = await db.query(sql, [body.id]);
+      const check = await db.query(sql, [user.id]);
       if (check[0][0]) return { success: true };
       else return { success: false };
     } catch (err) {
@@ -30,10 +30,10 @@ class UserStorage {
     }
   }
 
-  static async nicknameCheck(body) {
+  static async nicknameCheck(user) {
     try {
       const sql = "SELECT nickName FROM user WHERE nickName = ?";
-      const check = await db.query(sql, [body.nickName]);
+      const check = await db.query(sql, [user.nickName]);
       if (check[0][0]) return { success: true };
       else return { success: false };
     } catch (err) {
@@ -41,26 +41,15 @@ class UserStorage {
     }
   }
 
-  static async register(body) {
+  static async register(values) {
     try {
       const sql =
         "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
 
-      const phoneNum = "010-" + body.senterPhoneNum + "-" + body.lastPhoneNum;
-      const email = body.firstEmaile + body.lastEmaile;
-      const values = [
-        body.id,
-        body.password,
-        body.name,
-        phoneNum,
-        email,
-        body.nickName,
-      ];
-
-      db.query(sql, values);
-      return { success: true };
+      const insetResult = await db.query(sql, values);
+      return insetResult[0];
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 }
