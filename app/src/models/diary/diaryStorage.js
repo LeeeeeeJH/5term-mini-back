@@ -39,7 +39,7 @@ class DiaryStorage {
   static async readDiary(userNo, params) {
     try {
       const sql =
-        "SELECT no, date, title, content, image FROM diary WHERE DATE_FORMAT(diary.date,'%y-%m-%d') = ? AND user_no = ?;";
+        "SELECT no, date, title, content, image FROM diary WHERE DATE_FORMAT(diary.date,'%Y-%m-%d') = ? AND user_no = ?;";
       const req = [params.date, userNo];
       const diary = await db.query(sql, req);
       return diary[0][0];
@@ -52,7 +52,7 @@ class DiaryStorage {
     try {
       const req = [params.date, userNo];
       const sql =
-        "SELECT DATE_FORMAT(diary.date,'%d') AS days FROM diary WHERE DATE_FORMAT(diary.date,'%y-%m') = ? AND user_no = ? ORDER BY days";
+        "SELECT DATE_FORMAT(diary.date,'%d') AS days FROM diary WHERE DATE_FORMAT(diary.date,'%Y-%m') = ? AND user_no = ? ORDER BY days";
       const diaries = await db.query(sql, req);
       return diaries[0];
     } catch (error) {
