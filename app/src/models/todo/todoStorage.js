@@ -1,30 +1,26 @@
 "use strict";
 const db = require("../../config/db");
-const DataCheck = require("../dataCheck");
 
 class TodoStorage {
-  static getTodoList(client) {
-    return new Promise((resolve, reject) => {
+  static async getTodoList(client) {
+    try {
       const req = [client.date, client.id];
-
       const sql =
-        "SELECT todo.no, todo.is_checked, todo.content " +
+        "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
         "FROM todo " +
         "INNER JOIN user ON todo.user_no = user.no " +
-        "WHERE date_format( todo.created_date , '%Y-%m') = ? AND user.id = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) {
-          console.log("에러", err);
-          reject({ sucess: false, msg: "실패" });
-        }
-        resolve(client);
-      });
-    });
+        "LEFT JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
+        "WHERE todo.date = ? AND user.id = ? " +
+        "GROUP BY todo.no;";
+      const result = await db.query(sql, req);
+      return result[0];
+    } catch (e) {
+      console.log("getTodoList 에러 : ", e);
+    }
   }
 
-  static getTodoCount(client) {
-    return new Promise(async (resolve, reject) => {
+  static async getTodoCount(client) {
+    try {
       const req = [client.id, client.date];
       const sql =
         "SELECT DATE_FORMAT(todo.date, '%d') AS date, COUNT(*) AS cnt " +
@@ -33,83 +29,104 @@ class TodoStorage {
         "WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? " +
         "GROUP BY DATE_FORMAT(todo.date, '%Y-%m-%d') " +
         "ORDER BY date ASC;";
+      const result = await db.query(sql, req);
 
-      db.query(sql, req, (err, client) => {
-        if (err) {
-          console.log("에러", err);
-          reject({ sucess: false, msg: "실패" });
-        }
-        resolve(client);
-      });
-    });
+      return result[0];
+    } catch (e) {
+      console.log("getTodoCount 에러 : ", e);
+      return { success: false };
+    }
   }
 
-  static addTodoList(client) {
-    return new Promise(async (resolve, reject) => {
-      const no = await DataCheck.getUserNo(client.id);
-      const req = [no, client.date, client.content];
-
-      const sql = "INSERT INTO todo (user_no, date, content) VALUES (?,?,?)";
-
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log("에러 :", err);
-          reject({ sucess: false, msg: "실패" });
-        }
-        resolve({ sucess: true });
-      });
-    });
-  }
-
-  static editTodo(client) {
-    return new Promise((resolve, reject) => {
-      let sql;
-      let update;
-      if (client.is_checked == 0 || client.is_checked == 1) {
-        sql = "UPDATE todo SET is_checked= ? WHERE no= ?;";
-        update = client.is_checked;
-      } else {
-        sql = "UPDATE todo SET content= ? WHERE no= ?;";
-        update = client.content;
+  static async addTodoList(client, userNo) {
+    try {
+      const req = [userNo, client.date, client.title, client.content];
+      const sql =
+        "INSERT INTO todo (user_no, date, title,content) VALUES (?,?,?,?)";
+      const addResult = (await db.query(sql, req))[0].affectedRows;
+      if (addResult) {
+        return { success: true };
       }
-      const req = [update, client.id];
-
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false, msg: "수정 실패" });
-        }
-        resolve({ success: true });
-      });
-    });
+      return { success: false };
+    } catch (e) {
+      console.log("addTodoList 에러 : ", e);
+      return { success: false };
+    }
   }
 
-  static getUserNo(id) {
-    return new Promise((resolve, reject) => {
-      const req = [id];
+  static async editTodo(client) {
+    try {
+      const sql = "UPDATE todo SET content= ? WHERE no= ?;";
+      const req = [client.content, client.todoNo];
+      const editRsult = (await db.query(sql, req))[0].affectedRows;
+      if (editRsult) {
+        return { success: true };
+      }
 
-      const sql = "SELECT no FROM user WHERE id = ?;";
-
-      db.query(sql, req, (err, client) => {
-        if (err) reject(err);
-
-        resolve(client[0].no);
-      });
-    });
+      return { success: false };
+    } catch (e) {
+      console.log("editTodo 에러 : ", e);
+      return { success: false };
+    }
   }
 
-  static deleteTodo(client) {
-    return new Promise((resolve, reject) => {
+  static async editChecked(client) {
+    try {
+      const sql = "UPDATE todo SET is_checked= ? WHERE no= ?;";
+      const req = [client.is_checked, client.todoNo];
+      const editCheckResult = (await db.query(sql, req))[0].affectedRows;
+      if (editCheckResult) {
+        return { success: true };
+      }
+
+      return { success: false };
+    } catch (e) {
+      console.log("editChecked 에러 : ", e);
+      return { success: false };
+    }
+  }
+
+  static async deleteTodo(client) {
+    try {
       const sql = "DELETE FROM todo WHERE no= ?";
-      const req = [client.id];
-      db.query(sql, req, (err) => {
-        if (err) {
-          console.log(err);
-          reject({ success: false, msg: "일정 삭제 실패" });
-        }
-        resolve({ success: true });
-      });
-    });
+      const req = [client.todoNo];
+      const deleteResult = (await db.query(sql, req))[0].affectedRows;
+
+      if (deleteResult) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      console.log("deleteTodo 에러 : ", e);
+      return false;
+    }
+  }
+
+  static async getDate(todoNo) {
+    try {
+      const req = [todoNo];
+      const sql = "SELECT date FROM todo WHERE no = ?";
+      const result = (await db.query(sql, req))[0][0].date;
+
+      return result;
+    } catch (e) {
+      console.log("getDate 에러 : ", e);
+      return 0;
+    }
+  }
+
+  static async getTodoCnt(date) {
+    try {
+      const req = [date];
+      const sql = "SELECT COUNT(*) AS cnt FROM todo WHERE date = ?";
+      const result = (await db.query(sql, req))[0][0].cnt;
+
+      return result;
+    } catch (e) {
+      console.log("getTodoCnt 에러 : ", e);
+      return 0;
+    }
   }
 }
 
