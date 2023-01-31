@@ -6,7 +6,6 @@ class TodoLikeStorage {
     try {
       const sql = "INSERT INTO todo_likes (todo_no, liker_no) VALUES (?,?)";
       const req = [todo_no, user_no];
-      const result = { success: false };
       const addTodoLikeResult = (await db.query(sql, req))[0].affectedRows;
       if (addTodoLikeResult) {
         return { success: true };

@@ -57,7 +57,6 @@ class TodoStorage {
   static async editTodo(client) {
     try {
       const sql = "UPDATE todo SET content= ? WHERE no= ?;";
-
       const req = [client.content, client.todoNo];
       const editRsult = (await db.query(sql, req))[0].affectedRows;
       if (editRsult) {
