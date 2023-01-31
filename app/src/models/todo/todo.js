@@ -20,20 +20,28 @@ class Todo {
   async addTodoList(body) {
     const userNo = await DataCheck.getUserNo(body.id);
     const result = await TodoStorage.addTodoList(body, userNo);
-
-    return result;
+    if (result.affectedRows) {
+      return { success: true, todoNo: result.insertId };
+    }
+    return { success: false };
   }
 
   async editTodo(body) {
     const result = await TodoStorage.editTodo(body);
+    if (result) {
+      return { success: true };
+    }
 
-    return result;
+    return { success: false };
   }
 
   async editChecked(body) {
     const result = await TodoStorage.editChecked(body);
+    if (result) {
+      return { success: true };
+    }
 
-    return result;
+    return { success: false };
   }
 
   async deleteTodo(body) {

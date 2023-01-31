@@ -16,6 +16,7 @@ class TodoStorage {
       return result[0];
     } catch (e) {
       console.log("getTodoList 에러 : ", e);
+      return { success: false };
     }
   }
 
@@ -43,11 +44,9 @@ class TodoStorage {
       const req = [userNo, client.date, client.title, client.content];
       const sql =
         "INSERT INTO todo (user_no, date, title,content) VALUES (?,?,?,?)";
-      const addResult = (await db.query(sql, req))[0].affectedRows;
-      if (addResult) {
-        return { success: true };
-      }
-      return { success: false };
+      const addResult = (await db.query(sql, req))[0];
+
+      return addResult;
     } catch (e) {
       console.log("addTodoList 에러 : ", e);
       return { success: false };
@@ -59,11 +58,8 @@ class TodoStorage {
       const sql = "UPDATE todo SET content= ? WHERE no= ?;";
       const req = [client.content, client.todoNo];
       const editRsult = (await db.query(sql, req))[0].affectedRows;
-      if (editRsult) {
-        return { success: true };
-      }
 
-      return { success: false };
+      return editRsult;
     } catch (e) {
       console.log("editTodo 에러 : ", e);
       return { success: false };
@@ -75,11 +71,8 @@ class TodoStorage {
       const sql = "UPDATE todo SET is_checked= ? WHERE no= ?;";
       const req = [client.is_checked, client.todoNo];
       const editCheckResult = (await db.query(sql, req))[0].affectedRows;
-      if (editCheckResult) {
-        return { success: true };
-      }
 
-      return { success: false };
+      return editCheckResult;
     } catch (e) {
       console.log("editChecked 에러 : ", e);
       return { success: false };
