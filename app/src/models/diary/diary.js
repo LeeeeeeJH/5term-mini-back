@@ -3,13 +3,13 @@ const DataCheck = require("../dataCheck");
 const DiaryStorage = require("./diaryStorage");
 class Diary {
   constructor() {}
-  async createDiary(params, body) {
+  async createDiary(params, body, image) {
     const userNo = await DataCheck.getUserNo(params.userId);
     if (!userNo) {
       throw new Error("사용자 id 변환 에러");
     }
     try {
-      const response = DiaryStorage.createDiary(userNo, body);
+      const response = DiaryStorage.createDiary(userNo, body, image);
       return response;
     } catch (error) {
       throw new Error("다이어리 생성 오류");
@@ -25,9 +25,9 @@ class Diary {
     }
   }
 
-  async updateDiary(params, body) {
+  async updateDiary(params, body, image) {
     try {
-      const response = await DiaryStorage.updateDiary(params, body);
+      const response = await DiaryStorage.updateDiary(params, body, image);
       return response;
     } catch (error) {
       throw new Error("다이어리 수정 오류");

@@ -1,6 +1,7 @@
 "use strict";
 
 const db = require("../../config/db");
+
 class ProfileStorage {
   static async updateProfile(userId, body) {
     try {

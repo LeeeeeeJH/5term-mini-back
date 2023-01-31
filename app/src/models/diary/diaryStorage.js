@@ -2,9 +2,9 @@
 
 const db = require("../../config/db");
 class DiaryStorage {
-  static async createDiary(userNo, body) {
+  static async createDiary(userNo, body, image) {
     try {
-      const req = [userNo, body.date, body.title, body.content, body.image];
+      const req = [userNo, body.date, body.title, body.content, image];
       const sql = "INSERT INTO diary(user_no,date,title,content,image) VALUES(?,?,?,?,?);";
       await db.query(sql, req);
       const result = { success: true };
@@ -24,10 +24,10 @@ class DiaryStorage {
     }
   }
 
-  static async updateDiary(params, body) {
+  static async updateDiary(params, body, image) {
     try {
-      const req = [body.date, body.title, body.content, body.image, params.diaryNo];
-      const sql = "UPDATE diary SET date = ?,title = ?, content = ?, image = ? WHERE no = ?;";
+      const req = [body.title, body.content, image, params.diaryNo];
+      const sql = "UPDATE diary SET title = ?, content = ?, image = ? WHERE no = ?;";
       await db.query(sql, req);
       const result = { success: true };
       return result;
