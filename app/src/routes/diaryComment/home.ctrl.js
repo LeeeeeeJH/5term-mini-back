@@ -21,7 +21,7 @@ const diaryComment = {
   getDiaryComment: async (req, res) => {
     const diaryComment = new DiaryComment();
     const response = await diaryComment.readDiaryComment(req.params);
-    res.send(response);
+    res.json(response);
   },
 };
 
