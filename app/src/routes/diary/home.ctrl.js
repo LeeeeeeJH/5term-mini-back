@@ -5,7 +5,7 @@ const Diary = require("../../models/diary/diary");
 const diary = {
   createDiary: async (req, res) => {
     const diary = new Diary();
-    const response = await diary.createDiary(req.params, req.body, req.file.location);
+    const response = await diary.createDiary(req.params, req.body, req.file);
     return res.json(response);
   },
 
@@ -22,12 +22,12 @@ const diary = {
   getDiary: async (req, res) => {
     const diary = new Diary();
     const response = await diary.readDiary(req.params);
-    res.send(response);
+    return res.json(response);
   },
   getSelectDiary: async (req, res) => {
     const diary = new Diary();
     const response = await diary.readSelectDiary(req.params);
-    res.send(response);
+    return res.json(response);
   },
 };
 

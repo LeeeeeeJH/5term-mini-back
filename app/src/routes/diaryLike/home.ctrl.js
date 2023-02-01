@@ -14,7 +14,7 @@ const diaryLike = {
   getDiaryLike: async (req, res) => {
     const diaryLike = new DiaryLike();
     const response = await diaryLike.readDiaryLike(req.params);
-    res.send(response);
+    return res.json(response);
   },
 };
 

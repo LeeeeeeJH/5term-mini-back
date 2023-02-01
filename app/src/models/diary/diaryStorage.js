@@ -2,9 +2,10 @@
 
 const db = require("../../config/db");
 class DiaryStorage {
-  static async createDiary(userNo, body, image) {
+  static async createDiary(userNo, body, imgUrl, imgKey) {
+    const imgNo = await this.uploadDiaryImg(imgUrl, imgKey);
     try {
-      const req = [userNo, body.date, body.title, body.content, image];
+      const req = [userNo, body.date, body.title, body.content, imgNo];
       const sql = "INSERT INTO diary(user_no,date,title,content,image) VALUES(?,?,?,?,?);";
       await db.query(sql, req);
       const result = { success: true };
@@ -15,6 +16,7 @@ class DiaryStorage {
   }
   static async deleteDiary(params) {
     try {
+      await this.deleteDiaryImg(params.diaryNo);
       const sql = "DELETE FROM diary WHERE no = ?;";
       await db.query(sql, params.diaryNo);
       const result = { success: true };
@@ -57,6 +59,29 @@ class DiaryStorage {
       return diaries[0];
     } catch (error) {
       throw new Error("다이어리 월별 db 조회 오류");
+    }
+  }
+
+  static async uploadDiaryImg(imgUrl, imgKey) {
+    try {
+      const req = [imgUrl, imgKey];
+      const sql = "INSERT INTO diary_image(image_url,image_key)VALUES (?,?);";
+      const result = await db.query(sql, req);
+      return result[0].insertId;
+    } catch (error) {
+      throw new Error("diary image db 삽입 오류");
+    }
+  }
+
+  static async deleteDiaryImg(diaryNo) {
+    try {
+      const req = [diaryNo];
+      const sql = "DELETE FROM diary_image WHERE no = (SELECT image FROM diary WHERE no = ?);";
+      await db.query(sql, req);
+      const result = { success: true };
+      return result;
+    } catch (error) {
+      throw new Error("다이어리 db 삭제 오류");
     }
   }
 }

@@ -6,12 +6,12 @@ const profile = {
   getProfile: async (req, res) => {
     const profile = new Profile();
     const response = await profile.readProfile(req.params);
-    res.send(response);
+    return res.json(response);
   },
   getFriendProfile: async (req, res) => {
     const profile = new Profile();
     const response = await profile.readFriendProfile(req.params);
-    res.send(response);
+    return res.json(response);
   },
   updateProfile: async (req, res) => {
     const profile = new Profile();
