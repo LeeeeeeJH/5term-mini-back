@@ -14,10 +14,13 @@ class DataCheck {
   }
 
   static async checkEmail(email) {
-    const sql = "SELECT id, password FROM user WHERE email = ?;";
-    const result = await db.query(sql, email);
-
-    return result[0][0];
+    try {
+      const sql = "SELECT id, password FROM user WHERE email = ?;";
+      const result = await db.query(sql, email);
+      return result[0][0];
+    } catch (e) {
+      console.log("checkEmail 에러 : ", e);
+    }
   }
 }
 
