@@ -17,6 +17,9 @@ class DataCheck {
     try {
       const sql = "SELECT id, password FROM user WHERE email = ?;";
       const result = await db.query(sql, email);
+      if (!result[0][0]) {
+        return false;
+      }
       return result[0][0];
     } catch (e) {
       console.log("checkEmail 에러 : ", e);

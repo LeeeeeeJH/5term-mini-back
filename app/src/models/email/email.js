@@ -18,9 +18,8 @@ class Mail {
       const info = await transporter.sendMail({
         from: `"HARU" <wnswns012@gmail.com>`,
         to: `${email}`,
-        subject: "인증번호",
-        text: "번호",
-        html: `<p>번호 : ${content}</p>`,
+        subject: content.subject,
+        html: content.html,
       });
 
       if (info.messageId) {
