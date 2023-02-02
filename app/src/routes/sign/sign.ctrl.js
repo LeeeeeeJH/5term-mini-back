@@ -1,6 +1,5 @@
 "use strict";
 
-// const router = express.Router();
 const User = require("../../models/user/user");
 
 const sign = {
