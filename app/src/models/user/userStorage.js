@@ -1,7 +1,6 @@
 "use strict";
 
 const db = require("../../config/db");
-const User = require("./user");
 
 class UserStorage {
   static async login(user) {

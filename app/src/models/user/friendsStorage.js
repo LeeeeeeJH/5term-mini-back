@@ -1,7 +1,6 @@
 "use strict";
 
 const db = require("../../config/db");
-const Friends = require("./friends");
 const DataCheck = require("../dataCheck");
 
 class FriendsStorage {
