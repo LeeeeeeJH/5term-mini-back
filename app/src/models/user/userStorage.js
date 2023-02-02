@@ -17,11 +17,10 @@ class UserStorage {
   static async idCheck(user) {
     try {
       const sql = "SELECT id FROM user WHERE id = ?";
-      console.log(user.id);
+
       const check = await db.query(sql, [user.id]);
-      console.log(check);
-      if (check[0][0]) return { success: true };
-      else return { success: false };
+      console.log(check[0][0]);
+      return check[0][0] == undefined ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
     }
@@ -30,9 +29,10 @@ class UserStorage {
   static async nicknameCheck(user) {
     try {
       const sql = "SELECT nickName FROM user WHERE nickName = ?";
+
       const check = await db.query(sql, [user.nickName]);
-      if (check[0][0]) return { success: true };
-      else return { success: false };
+      console.log(check[0]);
+      return check[0][0] == undefined ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
     }
