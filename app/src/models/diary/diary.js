@@ -9,10 +9,13 @@ class Diary {
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      const response = DiaryStorage.createDiary(userNo, body, image.location, image.key);
-      return response;
+      const diaryNo = await DiaryStorage.createDiary(userNo, body);
+      if (image) {
+        await DiaryStorage.uploadDiaryImg(diaryNo, image.location, image.key);
+      }
+      return { success: true };
     } catch (error) {
-      log.error;
+      console.error(error);
     }
   }
 
@@ -21,7 +24,7 @@ class Diary {
       const response = await DiaryStorage.deleteDiary(params);
       return response;
     } catch (error) {
-      throw new Error("다이어리 삭제 오류");
+      console.error(error);
     }
   }
 
@@ -30,23 +33,20 @@ class Diary {
       const response = await DiaryStorage.updateDiary(params, body, image);
       return response;
     } catch (error) {
-      throw new Error("다이어리 수정 오류");
+      console.error(error);
     }
   }
 
   async readDiary(params) {
-    const userNo = await DataCheck.getUserNo(params.userId);
-    if (!userNo) {
-      throw new Error("사용자 id 변환 에러");
-    }
     try {
-      const response = await DiaryStorage.readDiary(userNo, params);
-      if (!response) {
-        return "데이터 없음";
+      const userNo = await DataCheck.getUserNo(params.userId);
+      if (!userNo) {
+        throw new Error("사용자 id 변환 에러");
       }
-      return response;
+      const diary = await DiaryStorage.readDiary(userNo, params);
+      return diary;
     } catch (error) {
-      throw new Error("다이어리 조회 오류");
+      console.error(error);
     }
   }
 
@@ -63,7 +63,7 @@ class Diary {
       }
       return diaryDay.map(Number);
     } catch (error) {
-      throw new Error("월별 다이어리 존재 일 조회 에러");
+      console.error(error);
     }
   }
 }
