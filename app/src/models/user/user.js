@@ -27,22 +27,33 @@ class User {
 
   async register(user) {
     //중복확인 아이디 닉네임
-    const phoneNum = "010-" + user.senterPhoneNum + "-" + user.lastPhoneNum;
-    const email = user.firstEmaile + user.lastEmaile;
-    const values = [
-      user.id,
-      user.password,
-      user.name,
-      phoneNum,
-      email,
-      user.nickName,
-    ];
-    const insetResult = await UserStorage.register(values);
-    if (!insetResult.affectedRows) {
-      //에러처리
+    const idCheck = await UserStorage.idCheck(user);
+    if (idCheck.success === true) {
+      return { success: false, error: "id 중복" };
     }
 
-    return insetResult;
+    const nicknameCheck = await UserStorage.nicknameCheck(user);
+    if (nicknameCheck.success === true) {
+      return { success: false, error: "닉네임 중복" };
+    }
+    if (idCheck.success === false && nicknameCheck.success === false) {
+      const phoneNum = "010-" + user.senterPhoneNum + "-" + user.lastPhoneNum;
+      const email = user.firstEmaile + user.lastEmaile;
+      const values = [
+        user.id,
+        user.password,
+        user.name,
+        phoneNum,
+        email,
+        user.nickName,
+      ];
+      const insetResult = await UserStorage.register(values);
+      if (!insetResult.affectedRows) {
+        //에러처리
+      }
+
+      return insetResult;
+    }
   }
 }
 

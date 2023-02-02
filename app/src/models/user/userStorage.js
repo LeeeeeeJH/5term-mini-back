@@ -17,7 +17,9 @@ class UserStorage {
   static async idCheck(user) {
     try {
       const sql = "SELECT id FROM user WHERE id = ?";
+      console.log(user.id);
       const check = await db.query(sql, [user.id]);
+      console.log(check);
       if (check[0][0]) return { success: true };
       else return { success: false };
     } catch (err) {
