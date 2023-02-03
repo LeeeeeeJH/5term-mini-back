@@ -5,13 +5,12 @@ class TodoCommentStorage {
   static async getComment(client) {
     try {
       const req = [client.date, client.id];
-      const sql =
-        "SELECT todo_comment.no, todo_comment.content, writer.id AS writer " +
-        "FROM todo_comment " +
-        "INNER JOIN user ON todo_comment.user_no = user.no " +
-        "INNER JOIN user AS writer ON todo_comment.writer_no = writer.no " +
-        "WHERE todo_comment.date = ? AND user.id = ? " +
-        "GROUP BY todo_comment.no;";
+      const sql = `SELECT todo_comment.no, todo_comment.content, writer.id AS writer 
+        FROM todo_comment 
+        INNER JOIN user ON todo_comment.user_no = user.no 
+        INNER JOIN user AS writer ON todo_comment.writer_no = writer.no 
+        WHERE DATE_FORMAT(todo_comment.date, '%Y-%c-%e') = ? AND user.id = ? 
+        GROUP BY todo_comment.no;`;
       const result = await db.query(sql, req);
 
       return result[0];
@@ -24,7 +23,7 @@ class TodoCommentStorage {
   static async addComment(client, user_no, writer_no) {
     try {
       const sql =
-        "INSERT INTO todo_comment (user_no, writer_no, date, content) VALUES (?,?,?,?);";
+        "INSERT INTO todo_comment (user_no, writer_no, date, content) VALUES (?,?,DATE_FORMAT(?, '%Y-%c-%e'),?);";
 
       const req = [user_no, writer_no, client.date, client.content];
       const addResult = (await db.query(sql, req))[0].affectedRows;

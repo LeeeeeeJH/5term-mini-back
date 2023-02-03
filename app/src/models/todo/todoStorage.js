@@ -4,14 +4,14 @@ const db = require("../../config/db");
 class TodoStorage {
   static async getTodoList(client) {
     try {
+      console.log(client);
       const req = [client.date, client.id];
-      const sql =
-        "SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' " +
-        "FROM todo " +
-        "INNER JOIN user ON todo.user_no = user.no " +
-        "LEFT JOIN todo_likes ON todo.`no` = todo_likes.todo_no " +
-        "WHERE todo.date = ? AND user.id = ? " +
-        "GROUP BY todo.no;";
+      const sql = `SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' 
+        FROM todo 
+        INNER JOIN user ON todo.user_no = user.no 
+        LEFT JOIN todo_likes ON todo.no = todo_likes.todo_no 
+        WHERE DATE_FORMAT(todo.date, '%Y-%c-%e') = ? AND user.id = ? 
+        GROUP BY todo.no;`;
       const result = await db.query(sql, req);
       return result[0];
     } catch (e) {
@@ -23,13 +23,12 @@ class TodoStorage {
   static async getTodoCount(client) {
     try {
       const req = [client.id, client.date];
-      const sql =
-        "SELECT DATE_FORMAT(todo.date, '%d') AS date, COUNT(*) AS cnt " +
-        "FROM todo " +
-        "INNER JOIN user ON todo.user_no = user.no " +
-        "WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? " +
-        "GROUP BY DATE_FORMAT(todo.date, '%Y-%m-%d') " +
-        "ORDER BY date ASC;";
+      const sql = `SELECT DATE_FORMAT(todo.date, '%e') AS date, COUNT(*) AS cnt 
+        FROM todo 
+        INNER JOIN user ON todo.user_no = user.no 
+        WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%c') = ? 
+        GROUP BY DATE_FORMAT(todo.date, '%Y-%c-%e') 
+        ORDER BY DATE_FORMAT(todo.date, '%d') ASC;`;
       const result = await db.query(sql, req);
 
       return result[0];
@@ -43,7 +42,7 @@ class TodoStorage {
     try {
       const req = [userNo, client.date, client.title, client.content];
       const sql =
-        "INSERT INTO todo (user_no, date, title,content) VALUES (?,?,?,?)";
+        "INSERT INTO todo (user_no, date, title,content) VALUES (?,DATE_FORMAT(?, '%Y-%c-%e'),?,?)";
       const addResult = (await db.query(sql, req))[0];
 
       return addResult;
