@@ -9,7 +9,7 @@ class Diary {
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      const diaryNo = await DiaryStorage.createDiary(userNo, body);
+      const diaryNo = await DiaryStorage.createDiary(userNo, params.date, body);
       if (image) {
         await DiaryStorage.uploadDiaryImg(diaryNo, image.location, image.key);
       }
@@ -28,9 +28,9 @@ class Diary {
     }
   }
 
-  async updateDiary(params, body, image) {
+  async updateDiary(params, body) {
     try {
-      const response = await DiaryStorage.updateDiary(params, body, image);
+      const response = await DiaryStorage.updateDiary(params, body);
       return response;
     } catch (error) {
       console.error(error);

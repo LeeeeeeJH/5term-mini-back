@@ -16,7 +16,7 @@ const diary = {
   },
   updateDiary: async (req, res) => {
     const diary = new Diary();
-    const response = await diary.updateDiary(req.params, req.body, req.file.location);
+    const response = await diary.updateDiary(req.params, req.body);
     return res.json(response);
   },
   getDiary: async (req, res) => {
