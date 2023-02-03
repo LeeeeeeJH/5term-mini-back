@@ -5,15 +5,14 @@ class TodoCommentStorage {
   static async getComment(client) {
     try {
       const req = [client.date, client.id];
-      const sql =
-        "SELECT todo_comment.no, todo_comment.content, writer.id AS writer " +
-        "FROM todo_comment " +
-        "INNER JOIN user ON todo_comment.user_no = user.no " +
-        "INNER JOIN user AS writer ON todo_comment.writer_no = writer.no " +
-        "WHERE todo_comment.date = ? AND user.id = ? " +
-        "GROUP BY todo_comment.no;";
-      const result = await db.query(sql, req);
+      const sql = `SELECT todo_comment.no, todo_comment.content, writer.id AS writer 
+        FROM todo_comment 
+        INNER JOIN user ON todo_comment.user_no = user.no 
+        INNER JOIN user AS writer ON todo_comment.writer_no = writer.no
+        WHERE todo_comment.date = ? AND user.id = ? 
+        GROUP BY todo_comment.no;`;
 
+      const result = await db.query(sql, req);
       return result[0];
     } catch (e) {
       console.log("getComment 에러 : ", e);
@@ -25,9 +24,10 @@ class TodoCommentStorage {
     try {
       const sql =
         "INSERT INTO todo_comment (user_no, writer_no, date, content) VALUES (?,?,?,?);";
-
       const req = [user_no, writer_no, client.date, client.content];
+
       const addResult = (await db.query(sql, req))[0].affectedRows;
+
       if (addResult) {
         return { success: true };
       }
@@ -44,6 +44,7 @@ class TodoCommentStorage {
       const sql = "UPDATE todo_comment SET content= ? WHERE no= ?;";
       const req = [client.content, client.cmtNo];
       const editResult = (await db.query(sql, req))[0].affectedRows;
+
       if (editResult) {
         return { success: true };
       }
@@ -58,9 +59,11 @@ class TodoCommentStorage {
   static async deleteComment(client) {
     try {
       let sql, req;
+
       if (client === 0) {
         return (result.success = true);
       }
+
       if (client.cmtNo) {
         sql = "DELETE FROM todo_comment WHERE no= ?";
         req = client.cmtNo;
@@ -68,7 +71,9 @@ class TodoCommentStorage {
         sql = "DELETE FROM todo_comment WHERE date= ?";
         req = client;
       }
+
       const delResult = (await db.query(sql, req))[0].affectedRows;
+
       if (delResult) {
         return { success: true };
       }
