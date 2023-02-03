@@ -13,13 +13,15 @@ class Friends {
       let receiverListAddtag = [];
 
       for (let friend of receiverList) {
-        receiverListAddtag.push(Object.values(friend) + "receiver");
+        receiverListAddtag.push(Object.values(friend));
+        receiverListAddtag[receiverList.indexOf(friend)].push("receiver");
       }
 
       let senderList = await FriendsStorage.getSenderList(user);
       let senderListAddtag = [];
       for (let friend of senderList) {
-        senderListAddtag.push(Object.values(friend) + "sender");
+        senderListAddtag.push(Object.values(friend));
+        senderListAddtag[senderList.indexOf(friend)].push("sender");
       }
 
       let friendsList = [];
@@ -29,7 +31,7 @@ class Friends {
       for (let arr of senderListAddtag) {
         friendsList.push(arr);
       }
-      console.log(friendsList);
+
       let friendsProfileList = await FriendsStorage.getFriendProfile(
         friendsList
       );

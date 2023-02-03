@@ -31,12 +31,13 @@ class FriendsStorage {
 
   static async getFriendProfile(friendsList) {
     try {
-      const sql = "SELECT nickName, image FROM user WHERE no = ?";
+      console.log(friendsList);
+      const sql =
+        "SELECT user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
       for (let user of friendsList) {
         let profile = await db.query(sql, user[0]);
-        let profileArray = Object.values(profile[0][0]);
-        friendsList.unshift(profileArray[0]);
-        friendsList.unshift(profileArray[1]);
+        user.push(...Object.values(profile[0][0]));
+        console.log(user);
       }
 
       return friendsList;
