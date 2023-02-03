@@ -10,13 +10,13 @@ class Mail {
         port: 587,
         secure: false,
         auth: {
-          user: "wnswns012@gmail.com",
-          pass: "fdzzrbkkaipvvkvy",
+          user: process.env.Email_id,
+          pass: process.env.Email_password,
         },
       });
 
       const info = await transporter.sendMail({
-        from: `"HARU" <wnswns012@gmail.com>`,
+        from: `"HARU Service" <wnswns012@gmail.com>`,
         to: `${email}`,
         subject: content.subject,
         html: content.html,

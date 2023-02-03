@@ -1,6 +1,7 @@
 "use strict";
 const Email = require("../email/email");
 const DataCheck = require("../dataCheck");
+const findAccountContent = require("./findAccountContent");
 
 class FindAccount {
   async id(client) {
@@ -11,9 +12,8 @@ class FindAccount {
         return { success: false, msg: "존재하지 않는 이메일입니다." };
       }
       const emailResult = await Email.send(client.email, {
-        subject: "인증번호",
-        text: "인증번호",
-        html: `<p>인증번호 : ${authenticationNumber}</p>`,
+        subject: "HARU 아이디 찾기 인증번호",
+        html: findAccountContent("아이디", account, authenticationNumber),
       });
       if (emailResult && account) {
         return { success: true, authenticationNumber, id: account.id };
@@ -35,8 +35,8 @@ class FindAccount {
         };
       }
       const emailResult = await Email.send(client.email, {
-        subject: "인증번호",
-        html: `<p>인증번호 : ${authenticationNumber}</p>`,
+        subject: "HARU 비밀번호 찾기 인증번호",
+        html: findAccountContent("비밀번호", account, authenticationNumber),
       });
       if (emailResult && account) {
         return {

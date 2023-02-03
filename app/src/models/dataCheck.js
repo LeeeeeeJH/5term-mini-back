@@ -15,7 +15,7 @@ class DataCheck {
 
   static async checkEmail(email) {
     try {
-      const sql = "SELECT id, password FROM user WHERE email = ?;";
+      const sql = "SELECT id, password, nickname FROM user WHERE email = ?;";
       const result = await db.query(sql, email);
       if (!result[0][0]) {
         return false;
