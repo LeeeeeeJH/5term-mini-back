@@ -4,7 +4,6 @@ const db = require("../../config/db");
 const DataCheck = require("../dataCheck");
 
 class FriendsStorage {
-  // url nickname is_aceppted tag
   static async getReceiverList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
@@ -31,13 +30,11 @@ class FriendsStorage {
 
   static async getFriendProfile(friendsList) {
     try {
-      console.log(friendsList);
       const sql =
         "SELECT user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
       for (let user of friendsList) {
         let profile = await db.query(sql, user[0]);
         user.push(...Object.values(profile[0][0]));
-        console.log(user);
       }
 
       return friendsList;
