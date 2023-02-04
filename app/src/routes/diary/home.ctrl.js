@@ -16,18 +16,18 @@ const diary = {
   },
   updateDiary: async (req, res) => {
     const diary = new Diary();
-    const response = await diary.updateDiary(req.params, req.body);
+    const response = await diary.updateDiary(req.params, req.body, req.file);
     return res.json(response);
   },
   getDiary: async (req, res) => {
     const diary = new Diary();
     const response = await diary.readDiary(req.params);
-    return res.json(response);
+    res.json(response);
   },
   getSelectDiary: async (req, res) => {
     const diary = new Diary();
     const response = await diary.readSelectDiary(req.params);
-    return res.json(response);
+    res.json(response);
   },
 };
 

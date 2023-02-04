@@ -3,8 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const ctrl = require("./home.ctrl");
-const diary = "diary";
-const { upload, delete_file } = require("../../config/s3");
+const { upload } = require("../../config/s3");
 
 router.get("/:userId/months/:date", ctrl.diary.getSelectDiary); //처음에 프론트단에 사용자의 데이터 조회
 router.get("/:userId/:date", ctrl.diary.getDiary); //해당하는 날짜의 다이어리 조회

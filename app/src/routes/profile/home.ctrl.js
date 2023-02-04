@@ -8,14 +8,9 @@ const profile = {
     const response = await profile.readProfile(req.params);
     return res.json(response);
   },
-  getFriendProfile: async (req, res) => {
-    const profile = new Profile();
-    const response = await profile.readFriendProfile(req.params);
-    return res.json(response);
-  },
   updateProfile: async (req, res) => {
     const profile = new Profile();
-    const response = await profile.updateProfile(req.params, req.body);
+    const response = await profile.updateProfile(req.params, req.body, req.file);
     return res.json(response);
   },
 };

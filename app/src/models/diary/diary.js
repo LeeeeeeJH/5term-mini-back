@@ -1,5 +1,6 @@
 "use strict";
 const DataCheck = require("../dataCheck");
+const { uploadDiaryImg } = require("./diaryStorage");
 const DiaryStorage = require("./diaryStorage");
 class Diary {
   constructor() {}
@@ -9,7 +10,7 @@ class Diary {
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      const diaryNo = await DiaryStorage.createDiary(userNo, params.date, body);
+      const diaryNo = await DiaryStorage.createDiary(userNo, body);
       if (image) {
         await DiaryStorage.uploadDiaryImg(diaryNo, image.location, image.key);
       }
@@ -28,10 +29,18 @@ class Diary {
     }
   }
 
-  async updateDiary(params, body) {
+  async updateDiary(params, body, img) {
     try {
-      const response = await DiaryStorage.updateDiary(params, body);
-      return response;
+      const userNo = await DataCheck.getUserNo(params.userId);
+      if (!userNo) {
+        throw new Error("사용자 id 변환 에러");
+      }
+      const diaryInfo = await DiaryStorage.readDiary(userNo, params);
+      if (!diaryInfo.image && img) {
+        await DiaryStorage.uploadDiaryImg(diaryImg.no, img.location, img.key);
+      }
+      await DiaryStorage.updateDiary(params, body, img);
+      return { success: true };
     } catch (error) {
       console.error(error);
     }

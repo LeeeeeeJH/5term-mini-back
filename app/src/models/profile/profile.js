@@ -1,16 +1,8 @@
 "use strict";
 const ProfileStorage = require("./profileStorage");
+const DataCheck = require("../dataCheck");
 class Profile {
   constructor() {}
-
-  async updateProfile({ userId }, body) {
-    try {
-      const response = await ProfileStorage.updateProfile(userId, body);
-      return response;
-    } catch (err) {
-      throw new Error("프로필 수정 오류");
-    }
-  }
 
   async readProfile({ userId }) {
     try {
@@ -21,12 +13,20 @@ class Profile {
     }
   }
 
-  async readFriendProfile({ userId }) {
+  async updateProfile({ userId }, userInfo, img) {
     try {
-      const response = await ProfileStorage.readFriendProfile(userId);
-      return response;
+      const userNo = await DataCheck.getUserNo(userId);
+      if (!userNo) {
+        throw new Error("사용자 id 변환 에러");
+      }
+      const profileInfo = await ProfileStorage.readProfile(userNo);
+      if (!profileInfo.image && img) {
+        await ProfileStorage.uploadProfileImg(userNo, userInfo, img.location, img.key);
+      }
+      await ProfileStorage.updateProfile(userNo, img);
+      return { success: true };
     } catch (err) {
-      throw new Error("친구 프로필 db 조회 오류");
+      throw new Error("프로필 수정 오류");
     }
   }
 }
