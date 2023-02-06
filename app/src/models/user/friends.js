@@ -11,33 +11,22 @@ class Friends {
   async getList(user) {
     try {
       let receiverList = await FriendsStorage.getReceiverList(user);
-      let receiverListAddtag = [];
-
-      for (let friend of receiverList) {
-        receiverListAddtag.push(Object.values(friend));
-        receiverListAddtag[receiverList.indexOf(friend)].push("receiver");
-      }
-
       let senderList = await FriendsStorage.getSenderList(user);
-      let senderListAddtag = [];
-      for (let friend of senderList) {
-        senderListAddtag.push(Object.values(friend));
-        senderListAddtag[senderList.indexOf(friend)].push("sender");
-      }
-
       let friendsList = [];
-      for (let arr of receiverListAddtag) {
-        friendsList.push(arr);
+      let response = [];
+      for (let friends of senderList) {
+        friendsList.push(friends.sender);
       }
-      for (let arr of senderListAddtag) {
-        friendsList.push(arr);
+      for (let friends of receiverList) {
+        friendsList.push(friends.receiver);
       }
-
-      let friendsProfileList = await FriendsStorage.getFriendProfile(
-        friendsList
-      );
-
-      return friendsProfileList;
+      for (let friendsNo of friendsList) {
+        let friendsinfo = await FriendsStorage.getUserInfo(friendsNo);
+        let info = [];
+        info.push(...Object.values(friendsinfo[0][0]));
+        response.push(info);
+      }
+      return response;
     } catch (error) {
       console.log(error);
     }
@@ -65,6 +54,7 @@ class Friends {
         return { success: false };
       }
       const response = await FriendsStorage.search(userNo);
+
       return response;
     } catch (err) {
       console.log(err);

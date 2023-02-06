@@ -8,7 +8,7 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT receiver, is_aceppted FROM friends_list WHERE sender = ?";
+        "SELECT receiver FROM friends_list WHERE sender = ? AND is_aceppted = 1";
       let list = await db.query(sql, userNo);
       return list[0];
     } catch (err) {
@@ -19,7 +19,7 @@ class FriendsStorage {
     try {
       const userNo = await DataCheck.getUserNo(user);
       const sql =
-        "SELECT sender, is_aceppted FROM friends_list WHERE receiver = ?";
+        "SELECT sender FROM friends_list WHERE receiver = ? AND is_aceppted = 1";
       let list = await db.query(sql, userNo);
 
       return list[0];
@@ -28,16 +28,12 @@ class FriendsStorage {
     }
   }
 
-  static async getFriendProfile(friendsList) {
+  static async getUserInfo(no) {
     try {
       const sql =
-        "SELECT user.name, user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
-      for (let user of friendsList) {
-        let profile = await db.query(sql, user[0]);
-        user.push(...Object.values(profile[0][0]));
-      }
-
-      return friendsList;
+        "SELECT user_image.image_url, user.nickname, user.no FROM user_image JOIN user ON user_image.user_no = user.no WHERE user_image.user_no = ?";
+      const userInfo = db.query(sql, no);
+      return userInfo;
     } catch (err) {
       console.log(err);
     }
