@@ -4,7 +4,6 @@ const db = require("../../config/db");
 class TodoStorage {
   static async getTodoList(client) {
     try {
-      console.log(client);
       const req = [client.date, client.id];
       const sql = `SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' 
         FROM todo 
@@ -26,7 +25,7 @@ class TodoStorage {
       const sql = `SELECT DATE_FORMAT(todo.date, '%e') AS date, COUNT(*) AS cnt 
         FROM todo 
         INNER JOIN user ON todo.user_no = user.no 
-        WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%c') = ? 
+        WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? 
         GROUP BY DATE_FORMAT(todo.date, '%Y-%c-%e') 
         ORDER BY DATE_FORMAT(todo.date, '%d') ASC;`;
       const result = await db.query(sql, req);
@@ -54,8 +53,8 @@ class TodoStorage {
 
   static async editTodo(client) {
     try {
-      const sql = "UPDATE todo SET content= ? WHERE no= ?;";
-      const req = [client.content, client.todoNo];
+      const sql = "UPDATE todo SET content= ?, title= ? WHERE no= ?;";
+      const req = [client.content, client.title, client.todoNo];
       const editRsult = (await db.query(sql, req))[0].affectedRows;
 
       return editRsult;
@@ -118,6 +117,21 @@ class TodoStorage {
     } catch (e) {
       console.log("getTodoCnt 에러 : ", e);
       return 0;
+    }
+  }
+
+  static async likeCheck(todoNo, userNo) {
+    try {
+      const req = [todoNo, userNo];
+      const sql = "SELECT no FROM todo_likes WHERE todo_no= ? AND liker_no= ?";
+      const result = (await db.query(sql, req))[0][0];
+      console.log(result);
+      if (result) {
+        return true;
+      }
+    } catch (error) {
+      console.log("likeCheck 에러 : ", error);
+      return false;
     }
   }
 }

@@ -11,6 +11,22 @@ class Todo {
     return result;
   }
 
+  async getFriendTodoList(params) {
+    console.log("접속");
+    const todoList = await TodoStorage.getTodoList(params);
+    const userNo = await DataCheck.getUserNo(params.userId);
+    for (const todo of todoList) {
+      console.log(todo);
+      const likeCheck = await TodoStorage.likeCheck(todo.no, userNo);
+      if (likeCheck) {
+        todo["likeChecked"] = 1;
+      } else {
+        todo["likeChecked"] = 0;
+      }
+    }
+    return todoList;
+  }
+
   async getTodoCnt(params) {
     const result = await TodoStorage.getTodoCount(params);
 
