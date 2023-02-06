@@ -31,7 +31,7 @@ class FriendsStorage {
   static async getFriendProfile(friendsList) {
     try {
       const sql =
-        "SELECT user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
+        "SELECT user.name, user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
       for (let user of friendsList) {
         let profile = await db.query(sql, user[0]);
         user.push(...Object.values(profile[0][0]));
@@ -68,6 +68,16 @@ class FriendsStorage {
       const sql = "DELETE FROM friends_list WHERE no = ?";
       db.query(sql, [user.no]);
       return { success: true };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  static async search(userNo) {
+    try {
+      const sql =
+        "SELECT user.name, user.nickname, user_image.image_url FROM user JOIN user_image ON user.no = user_image.user_no WHERE user.no = ?";
+      const result = await db.query(sql, userNo);
+      return result[0][0];
     } catch (err) {
       console.log(err);
     }

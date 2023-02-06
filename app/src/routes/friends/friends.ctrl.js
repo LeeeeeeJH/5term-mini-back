@@ -31,6 +31,12 @@ const friends = {
 
     return res.json(response);
   },
+
+  search: async (req, res) => {
+    const request = new Friends(req.body);
+    const response = await request.search(req.body);
+    return res.json(response);
+  },
 };
 
 module.exports = { friends };

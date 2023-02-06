@@ -55,6 +55,12 @@ class User {
       return insetResult;
     }
   }
+
+  async search(user) {
+    const result = await UserStorage.search(user);
+    console.log(result);
+    return result;
+  }
 }
 
 module.exports = User;

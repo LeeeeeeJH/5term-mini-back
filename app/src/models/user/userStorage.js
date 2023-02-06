@@ -19,7 +19,6 @@ class UserStorage {
       const sql = "SELECT id FROM user WHERE id = ?";
 
       const check = await db.query(sql, [user.id]);
-      console.log(check[0][0]);
       return check[0][0] == undefined ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
@@ -31,7 +30,6 @@ class UserStorage {
       const sql = "SELECT nickName FROM user WHERE nickName = ?";
 
       const check = await db.query(sql, [user.nickName]);
-      console.log(check[0]);
       return check[0][0] == undefined ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
