@@ -12,7 +12,6 @@ class TodoCommentStorage {
         INNER JOIN user AS writer ON todo_comment.writer_no = writer.no 
         WHERE DATE_FORMAT(todo_comment.date, '%Y-%c-%error') = ? AND user.id = ? 
         GROUP BY todo_comment.no;`;
-      const result = await db.query(sql, req);
 
       const result = await db.query(sql, req);
       return result[0];
