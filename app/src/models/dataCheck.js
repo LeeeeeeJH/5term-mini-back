@@ -12,6 +12,20 @@ class DataCheck {
       console.log("getUserNo 에러 : ", error);
     }
   }
+
+  static async checkEmail(email) {
+    try {
+      const sql = "SELECT id, password, nickname FROM user WHERE email = ?;";
+      const result = await db.query(sql, email);
+      if (!result[0][0]) {
+        return false;
+      }
+      return result[0][0];
+    } catch (error) {
+      console.log("checkEmail 에러 : ", error);
+
+    }
+  }
 }
 
 module.exports = DataCheck;

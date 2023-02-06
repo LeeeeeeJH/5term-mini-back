@@ -22,6 +22,7 @@ class TodoStorage {
   static async getTodoCount(client) {
     try {
       const req = [client.id, client.date];
+
       const sql = `SELECT DATE_FORMAT(todo.date, '%e') AS date, COUNT(*) AS cnt 
         FROM todo 
         INNER JOIN user ON todo.user_no = user.no 
@@ -41,6 +42,7 @@ class TodoStorage {
     try {
       const req = [userNo, client.date, client.title, client.content];
       const sql =
+
         "INSERT INTO todo (user_no, date, title,content) VALUES (?,DATE_FORMAT(?, '%Y-%c-%e'),?,?)";
 
       const addResult = (await db.query(sql, req))[0];
