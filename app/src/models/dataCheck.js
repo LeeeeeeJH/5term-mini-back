@@ -20,7 +20,7 @@ class DataCheck {
     const sql = "SELECT no FROM user WHERE nickname = ?;";
     const result = await db.query(sql, nickname);
 
-    return result[0][0].no;
+    return result[0][0]?.no;
   }
 }
 
