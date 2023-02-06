@@ -11,6 +11,14 @@ const friends = {
     return res.json(response);
   },
 
+  getWaitingList: async (req, res) => {
+    const user = req.params.userId;
+    const request = new Friends(user);
+    const response = await request.getWaitingList(user);
+
+    return res.json(response);
+  },
+
   send: async (req, res) => {
     const request = new Friends(req.body);
     const response = await request.send(req.body);

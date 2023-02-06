@@ -39,6 +39,18 @@ class FriendsStorage {
     }
   }
 
+  static async getWaitingList(user) {
+    try {
+      const userNo = await DataCheck.getUserNo(user);
+      const sql =
+        "SELECT sender FROM friends_list WHERE receiver = ? AND is_aceppted = 0";
+      let list = await db.query(sql, userNo);
+      return list[0];
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   static async send(user) {
     try {
       const sql = "INSERT INTO friends_list (sender,receiver) VALUES (?,?)";

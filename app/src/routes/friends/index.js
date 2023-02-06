@@ -7,6 +7,7 @@ const ctrl = require("./friends.ctrl");
 
 // 친구목록 조회
 router.get("/:userId", ctrl.friends.getList);
+router.get("/:userId/waiting", ctrl.friends.getWaitingList);
 // 친구요청 보내기
 router.post("/request", ctrl.friends.send);
 // 친구요청 수락

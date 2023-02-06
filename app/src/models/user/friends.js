@@ -32,6 +32,22 @@ class Friends {
     }
   }
 
+  async getWaitingList(user) {
+    const waitingList = await FriendsStorage.getWaitingList(user);
+    let friendsList = [];
+    let response = [];
+    for (let friends of waitingList) {
+      friendsList.push(friends.sender);
+    }
+    for (let friendsNo of friendsList) {
+      let friendsinfo = await FriendsStorage.getUserInfo(friendsNo);
+      let info = [];
+      info.push(...Object.values(friendsinfo[0][0]));
+      response.push(info);
+    }
+    return response;
+  }
+
   async send(body) {
     const response = await FriendsStorage.send(body);
     return response;
