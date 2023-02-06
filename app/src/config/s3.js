@@ -18,11 +18,10 @@ const upload = multer({
     acl: "public-read",
     key: (req, file, cb) => {
       // const ext = path.extname(file.originalname);
-      const id = `diaryId-${req.params.userId}-${req.params.date}`;
+      let id = `diaryId-${req.params.userId}-${req.params.date}`;
       const uploadDirectory = req.query.directory ?? "";
       if (uploadDirectory === "user") {
         id = `userNo-${req.params.userId}`;
-        return id;
       }
       cb(null, `${uploadDirectory}/` + `${id}`);
     },
