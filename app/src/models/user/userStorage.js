@@ -47,6 +47,16 @@ class UserStorage {
       throw err;
     }
   }
+
+  static async insertDefaultImage(userNo) {
+    const url =
+      "https://haruserver.s3.ap-northeast-2.amazonaws.com/user/default+profil.jpg";
+    const key = "user/default profil.jpg";
+    const sql =
+      "INSERT INTO user_image (user_no, image_url, image_key) VALUES (?,?,?)";
+    const insetResult = await db.query(sql, [userNo, url, key]);
+    return insetResult[0];
+  }
 }
 
 module.exports = UserStorage;

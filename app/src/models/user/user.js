@@ -52,6 +52,7 @@ class User {
         //에러처리
       }
 
+      await UserStorage.insertDefaultImage(insetResult.insertId);
       return insetResult;
     }
   }
