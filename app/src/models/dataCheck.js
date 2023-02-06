@@ -23,6 +23,7 @@ class DataCheck {
       return result[0][0];
     } catch (error) {
       console.log("checkEmail 에러 : ", error);
+
     }
   }
 }

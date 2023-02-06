@@ -4,7 +4,6 @@ const db = require("../../config/db");
 class TodoStorage {
   static async getTodoList(client) {
     try {
-      console.log(client);
       const req = [client.date, client.id];
       const sql = `SELECT todo.no, todo.is_checked, todo.title, todo.content, COUNT(todo_likes.todo_no) AS 'likesCnt' 
         FROM todo 
@@ -14,8 +13,8 @@ class TodoStorage {
         GROUP BY todo.no;`;
       const result = await db.query(sql, req);
       return result[0];
-    } catch (e) {
-      console.log("getTodoList 에러 : ", e);
+    } catch (error) {
+      console.log("getTodoList 에러 : ", error);
       return { success: false };
     }
   }
@@ -27,16 +26,14 @@ class TodoStorage {
       const sql = `SELECT DATE_FORMAT(todo.date, '%e') AS date, COUNT(*) AS cnt 
         FROM todo 
         INNER JOIN user ON todo.user_no = user.no 
-        WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%c') = ? 
+        WHERE user.id = ? AND DATE_FORMAT(todo.date, '%Y-%m') = ? 
         GROUP BY DATE_FORMAT(todo.date, '%Y-%c-%e') 
         ORDER BY DATE_FORMAT(todo.date, '%d') ASC;`;
-      const result = await db.query(sql, req);
-
 
       const result = await db.query(sql, req);
       return result[0];
-    } catch (e) {
-      console.log("getTodoCount 에러 : ", e);
+    } catch (error) {
+      console.log("getTodoCount 에러 : ", error);
       return { success: false };
     }
   }
@@ -47,26 +44,24 @@ class TodoStorage {
       const sql =
 
         "INSERT INTO todo (user_no, date, title,content) VALUES (?,DATE_FORMAT(?, '%Y-%c-%e'),?,?)";
-      const addResult = (await db.query(sql, req))[0];
-
 
       const addResult = (await db.query(sql, req))[0];
       return addResult;
-    } catch (e) {
-      console.log("addTodoList 에러 : ", e);
+    } catch (error) {
+      console.log("addTodoList 에러 : ", error);
       return { success: false };
     }
   }
 
   static async editTodo(client) {
     try {
-      const sql = "UPDATE todo SET content= ? WHERE no= ?;";
-      const req = [client.content, client.todoNo];
+      const sql = "UPDATE todo SET content= ?, title= ? WHERE no= ?;";
+      const req = [client.content, client.title, client.todoNo];
 
       const editRsult = (await db.query(sql, req))[0].affectedRows;
       return editRsult;
-    } catch (e) {
-      console.log("editTodo 에러 : ", e);
+    } catch (error) {
+      console.log("editTodo 에러 : ", error);
       return { success: false };
     }
   }
@@ -78,8 +73,8 @@ class TodoStorage {
 
       const editCheckResult = (await db.query(sql, req))[0].affectedRows;
       return editCheckResult;
-    } catch (e) {
-      console.log("editChecked 에러 : ", e);
+    } catch (error) {
+      console.log("editChecked 에러 : ", error);
       return { success: false };
     }
   }
@@ -90,14 +85,13 @@ class TodoStorage {
       const req = [client.todoNo];
 
       const deleteResult = (await db.query(sql, req))[0].affectedRows;
-
       if (deleteResult) {
         return true;
       }
 
       return false;
-    } catch (e) {
-      console.log("deleteTodo 에러 : ", e);
+    } catch (error) {
+      console.log("deleteTodo 에러 : ", error);
       return false;
     }
   }
@@ -109,8 +103,8 @@ class TodoStorage {
 
       const result = (await db.query(sql, req))[0][0].date;
       return result;
-    } catch (e) {
-      console.log("getDate 에러 : ", e);
+    } catch (error) {
+      console.log("getDate 에러 : ", error);
       return 0;
     }
   }
@@ -122,9 +116,26 @@ class TodoStorage {
 
       const result = (await db.query(sql, req))[0][0].cnt;
       return result;
-    } catch (e) {
-      console.log("getTodoCnt 에러 : ", e);
+    } catch (error) {
+      console.log("getTodoCnt 에러 : ", error);
       return 0;
+    }
+  }
+
+  static async likeCheck(todoNo, userNo) {
+    try {
+      const req = [todoNo, userNo];
+      const sql = "SELECT no FROM todo_likes WHERE todo_no= ? AND liker_no= ?";
+
+      const result = (await db.query(sql, req))[0][0];
+
+      if (result) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log("likeCheck 에러 : ", error);
+      return false;
     }
   }
 }

@@ -10,14 +10,14 @@ class TodoCommentStorage {
         INNER JOIN user ON todo_comment.user_no = user.no 
 
         INNER JOIN user AS writer ON todo_comment.writer_no = writer.no 
-        WHERE DATE_FORMAT(todo_comment.date, '%Y-%c-%e') = ? AND user.id = ? 
+        WHERE DATE_FORMAT(todo_comment.date, '%Y-%c-%error') = ? AND user.id = ? 
         GROUP BY todo_comment.no;`;
       const result = await db.query(sql, req);
 
       const result = await db.query(sql, req);
       return result[0];
-    } catch (e) {
-      console.log("getComment 에러 : ", e);
+    } catch (error) {
+      console.log("getComment 에러 : ", error);
       return { success: false };
     }
   }
@@ -37,8 +37,8 @@ class TodoCommentStorage {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("addComment 에러 : ", e);
+    } catch (error) {
+      console.log("addComment 에러 : ", error);
       return { success: false };
     }
   }
@@ -54,8 +54,8 @@ class TodoCommentStorage {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("editComment 에러 : ", e);
+    } catch (error) {
+      console.log("editComment 에러 : ", error);
       return { success: false };
     }
   }
@@ -83,8 +83,8 @@ class TodoCommentStorage {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("deleteComment 에러 : ", e);
+    } catch (error) {
+      console.log("deleteComment 에러 : ", error);
       return { success: false };
     }
   }

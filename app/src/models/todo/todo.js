@@ -11,6 +11,20 @@ class Todo {
     return result;
   }
 
+  async getFriendTodoList(params) {
+    const todoList = await TodoStorage.getTodoList(params);
+    const userNo = await DataCheck.getUserNo(params.userId);
+    for (const todo of todoList) {
+      const likeCheck = await TodoStorage.likeCheck(todo.no, userNo);
+      if (likeCheck) {
+        todo["likeChecked"] = true;
+      } else {
+        todo["likeChecked"] = false;
+      }
+    }
+    return todoList;
+  }
+
   async getTodoCnt(params) {
     const result = await TodoStorage.getTodoCount(params);
 
