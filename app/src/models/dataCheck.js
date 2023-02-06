@@ -8,8 +8,8 @@ class DataCheck {
       const result = await db.query(sql, id);
 
       return result[0][0].no;
-    } catch (e) {
-      console.log("getUserNo 에러 : ", e);
+    } catch (error) {
+      console.log("getUserNo 에러 : ", error);
     }
   }
 
@@ -21,8 +21,8 @@ class DataCheck {
         return false;
       }
       return result[0][0];
-    } catch (e) {
-      console.log("checkEmail 에러 : ", e);
+    } catch (error) {
+      console.log("checkEmail 에러 : ", error);
     }
   }
 }

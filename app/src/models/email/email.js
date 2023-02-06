@@ -27,8 +27,8 @@ class Mail {
       }
 
       return false;
-    } catch (e) {
-      console.log("send 에러 : ", e);
+    } catch (error) {
+      console.log("send 에러 : ", error);
     }
   }
 }

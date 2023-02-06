@@ -23,8 +23,8 @@ class FindAccount {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("FindAccount.id 에러 : ", e);
+    } catch (error) {
+      console.log("FindAccount.id 에러 : ", error);
     }
   }
 
@@ -54,8 +54,8 @@ class FindAccount {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("FindAccount.password 에러 : ", e);
+    } catch (error) {
+      console.log("FindAccount.password 에러 : ", error);
     }
   }
 }
