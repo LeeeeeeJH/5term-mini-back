@@ -15,7 +15,6 @@ class DiaryStorage {
   }
   static async deleteDiary(params) {
     try {
-      await this.deleteDiaryImg(params.diaryNo);
       const sql = `DELETE FROM diary 
       WHERE no = ?;`;
       await db.query(sql, params.diaryNo);
@@ -26,12 +25,10 @@ class DiaryStorage {
     }
   }
 
-  static async updateDiary(params, body, img) {
+  static async updateDiary(params, body) {
     try {
-      const req = [body.title, body.content, img.location, img.key, params.diaryNo, params.diaryNo];
-      const sql = `UPDATE diary AS d,diary_image AS img 
-      SET d.title = ?, d.content = ?, img.image_url = ?, img.image_key = ? 
-      WHERE d.no = ? AND img.diary_no = ?;`;
+      const req = [params.date, body.title, body.content, params.diaryNo];
+      const sql = `UPDATE diary SET date = DATE_FORMAT(?,'%Y-%c-%e'), title = ?, content = ? WHERE no = ?;`;
       await db.query(sql, req);
       const result = { success: true };
       return result;
@@ -69,16 +66,6 @@ class DiaryStorage {
       throw new Error("다이어리 월별 db 조회 오류");
     }
   }
-  static async deleteDiaryImg(diaryNo) {
-    try {
-      const sql = `DELETE FROM diary_image 
-      WHERE diary_no = ?`;
-      await db.query(sql, diaryNo);
-      return { succss: true };
-    } catch (error) {
-      throw new Error("diary image db 삽입 오류");
-    }
-  }
 
   static async uploadDiaryImg(diaryNo, imgUrl, imgKey) {
     try {
@@ -89,6 +76,28 @@ class DiaryStorage {
       return { succss: true };
     } catch (error) {
       throw new Error("diary image db 삽입 오류");
+    }
+  }
+
+  static async deleteDiaryImg(diaryNo) {
+    try {
+      const sql = `DELETE FROM diary_image 
+      WHERE diary_no = ?`;
+      await db.query(sql, diaryNo);
+      return { succss: true };
+    } catch (error) {
+      throw new Error("diary image db 삽입 오류");
+    }
+  }
+  static async updateDiaryImg(params, imgUrl, imgKey) {
+    try {
+      const req = [imgUrl, imgKey, params.diaryNo];
+      const sql = `UPDATE diary_image SET image_url = ?, image_key = ? WHERE diary_no = ?;`;
+      await db.query(sql, req);
+      const result = { success: true };
+      return result;
+    } catch (error) {
+      throw new Error("다이어리 db 수정 오류");
     }
   }
 }
