@@ -2,9 +2,16 @@
 const Todo = require("../../models/todo/todo");
 
 const todo = {
-  getInfo: async (req, res) => {
+  getTodoList: async (req, res) => {
     const todo = new Todo();
     const response = await todo.getTodoList(req.params);
+
+    return res.json(response);
+  },
+
+  getFriendTodoList: async (req, res) => {
+    const todo = new Todo();
+    const response = await todo.getFriendTodoList(req.params);
 
     return res.json(response);
   },

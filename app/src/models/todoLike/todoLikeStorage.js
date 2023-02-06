@@ -12,8 +12,8 @@ class TodoLikeStorage {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("addTodoLike 에러 : ", e);
+    } catch (error) {
+      console.log("addTodoLike 에러 : ", error);
       return { success: false };
     }
   }
@@ -28,8 +28,8 @@ class TodoLikeStorage {
       }
 
       return { success: false };
-    } catch (e) {
-      console.log("deleteTodoLike 에러 : ", e);
+    } catch (error) {
+      console.log("deleteTodoLike 에러 : ", error);
       return { success: false };
     }
   }
