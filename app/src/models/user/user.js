@@ -8,11 +8,11 @@ class User {
   }
   async login(user) {
     const check = await UserStorage.login(user);
-    if (check[0][0]) {
-      if (check[0][0].password === user.password) {
-        return { success: true };
-      } else return { success: false };
-    } else return { success: false };
+
+    if (check[0][0].password === user.password) {
+      return { success: true };
+    }
+    return { success: false };
   }
 
   async check(user) {
