@@ -14,6 +14,7 @@ class Diary {
       return { success: true };
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 
@@ -24,6 +25,7 @@ class Diary {
       return response;
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 
@@ -38,6 +40,7 @@ class Diary {
       return { success: true };
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 
@@ -51,6 +54,7 @@ class Diary {
       return diary;
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 
@@ -68,6 +72,7 @@ class Diary {
       return diaryDay.map(Number);
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 }

@@ -14,6 +14,7 @@ class Profile {
       return response;
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 
@@ -29,6 +30,7 @@ class Profile {
       return { success: true };
     } catch (error) {
       console.error(error);
+      return { success: false };
     }
   }
 }
