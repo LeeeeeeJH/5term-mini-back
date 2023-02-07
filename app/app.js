@@ -5,7 +5,6 @@ const friends = require("./src/routes/friends");
 const user = require("./src/routes/user");
 
 const cors = require("cors");
-const home = require("./src/routes/home");
 const todo = require("./src/routes/todo");
 const todoLike = require("./src/routes/todoLike");
 const todoComment = require("./src/routes/todocomment");
@@ -20,7 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/friends", friends);
 app.use("/sign", user);
-app.use("/", home);
 app.use("/todo", todo);
 app.use("/todoLike", todoLike);
 app.use("/todoComment", todoComment);
