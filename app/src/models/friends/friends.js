@@ -10,8 +10,8 @@ class Friends {
 
   async getList(user) {
     try {
-      let receiverList = await FriendsStorage.getReceiverList(user);
-      let senderList = await FriendsStorage.getSenderList(user);
+      const receiverList = await FriendsStorage.getReceiverList(user);
+      const senderList = await FriendsStorage.getSenderList(user);
       let friendsList = [];
       let response = [];
       for (let friends of senderList) {
