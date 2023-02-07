@@ -49,18 +49,12 @@ class User {
       ];
       const insetResult = await UserStorage.register(values);
       if (!insetResult.affectedRows) {
-        throw new Error("회원가입 실패");
+        return { success: false };
       }
 
       await UserStorage.insertDefaultImage(insetResult.insertId);
       return { success: true };
     }
-  }
-
-  async search(user) {
-    const result = await UserStorage.search(user);
-    console.log(result);
-    return result;
   }
 }
 

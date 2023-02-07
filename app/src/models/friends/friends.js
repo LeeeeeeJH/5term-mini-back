@@ -10,23 +10,18 @@ class Friends {
 
   async getList(user) {
     try {
-      const receiverList = await FriendsStorage.getReceiverList(user);
-      const senderList = await FriendsStorage.getSenderList(user);
+      let receiverList = await FriendsStorage.getReceiverList(user);
+      let senderList = await FriendsStorage.getSenderList(user);
       let friendsList = [];
-      let response = [];
       for (let friends of senderList) {
-        friendsList.push(friends.sender);
+        let info = [...Object.values(friends)];
+        friendsList.push(info);
       }
       for (let friends of receiverList) {
-        friendsList.push(friends.receiver);
+        let info = [...Object.values(friends)];
+        friendsList.push(info);
       }
-      for (let friendsNo of friendsList) {
-        let friendsinfo = await FriendsStorage.getUserInfo(friendsNo);
-        let info = [];
-        info.push(...Object.values(friendsinfo[0][0]));
-        response.push(info);
-      }
-      return response;
+      return friendsList;
     } catch (error) {
       console.log(error);
     }
@@ -34,18 +29,13 @@ class Friends {
 
   async getWaitingList(user) {
     const waitingList = await FriendsStorage.getWaitingList(user);
+    console.log(waitingList);
     let friendsList = [];
-    let response = [];
     for (let friends of waitingList) {
-      friendsList.push(friends.sender);
+      let info = [...Object.values(friends)];
+      friendsList.push(info);
     }
-    for (let friendsNo of friendsList) {
-      let friendsinfo = await FriendsStorage.getUserInfo(friendsNo);
-      let info = [];
-      info.push(...Object.values(friendsinfo[0][0]));
-      response.push(info);
-    }
-    return response;
+    return friendsList;
   }
 
   async send(body) {

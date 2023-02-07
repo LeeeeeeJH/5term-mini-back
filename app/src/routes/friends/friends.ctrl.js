@@ -3,7 +3,7 @@
 const Friends = require("../../models/friends/friends");
 
 const friends = {
-  getList: async (req, res) => {
+  getFriendsList: async (req, res) => {
     const user = req.params.userId;
     const request = new Friends(user);
     const response = await request.getList(user);
