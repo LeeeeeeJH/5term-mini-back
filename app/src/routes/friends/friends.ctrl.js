@@ -41,8 +41,10 @@ const friends = {
   },
 
   search: async (req, res) => {
-    const request = new Friends(req.body);
-    const response = await request.search(req.body);
+    const user = req.params.nickname;
+    const request = new Friends(user);
+    const response = await request.search(user);
+
     return res.json(response);
   },
 };

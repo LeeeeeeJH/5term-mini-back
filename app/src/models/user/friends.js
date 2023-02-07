@@ -63,9 +63,9 @@ class Friends {
     return response;
   }
 
-  async search(body) {
+  async search(nickname) {
     try {
-      const userNo = await DataCheck.getUserNoByNickname(body.nickname);
+      const userNo = await DataCheck.getUserNoByNickname(nickname);
       if (!userNo) {
         return { success: false };
       }
