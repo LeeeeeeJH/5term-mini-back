@@ -28,15 +28,15 @@ class User {
   async register(user) {
     //중복확인 아이디 닉네임
     const idCheck = await UserStorage.idCheck(user);
-    if (idCheck.success === true) {
+    if (idCheck.success) {
       return { success: false, error: "id 중복" };
     }
 
     const nicknameCheck = await UserStorage.nicknameCheck(user);
-    if (nicknameCheck.success === true) {
+    if (nicknameCheck.success) {
       return { success: false, error: "닉네임 중복" };
     }
-    if (idCheck.success === false && nicknameCheck.success === false) {
+    if (!idCheck.success && !nicknameCheck.success) {
       const phoneNum = "010-" + user.senterPhoneNum + "-" + user.lastPhoneNum;
       const email = user.firstEmaile + user.lastEmaile;
       const values = [
