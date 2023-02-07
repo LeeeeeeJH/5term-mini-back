@@ -1,40 +1,82 @@
 "use strict";
 
 const TodoStorage = require("./todoStorage");
+const todoCommentStorage = require("../todoComment/todoCommentStorage");
+const DataCheck = require("../dataCheck");
 
 class Todo {
-  constructor(body) {
-    this.body = body;
+  async getTodoList(params) {
+    const result = await TodoStorage.getTodoList(params);
+
+    return result;
   }
 
-  async getTodoList(body) {
-    const response = await TodoStorage.getTodoList(body);
+  async getFriendTodoList(params) {
+    const todoList = await TodoStorage.getTodoList(params);
+    const userNo = await DataCheck.getUserNo(params.userId);
+    for (const todo of todoList) {
+      const likeCheck = await TodoStorage.likeCheck(todo.no, userNo);
+      if (likeCheck) {
+        todo["likeChecked"] = true;
+      } else {
+        todo["likeChecked"] = false;
+      }
+    }
+    return todoList;
+  }
 
-    return response;
+  async getTodoCnt(params) {
+    const result = await TodoStorage.getTodoCount(params);
+
+    return result;
   }
 
   async addTodoList(body) {
-    const response = await TodoStorage.addTodoList(body);
-
-    return response;
-  }
-
-  async getTodoCnt(body) {
-    const response = await TodoStorage.getTodoCount(body);
-
-    return response;
+    const userNo = await DataCheck.getUserNo(body.id);
+    const result = await TodoStorage.addTodoList(body, userNo);
+    if (result.affectedRows) {
+      return { success: true, todoNo: result.insertId };
+    }
+    return { success: false };
   }
 
   async editTodo(body) {
-    const response = await TodoStorage.editTodo(body);
+    const result = await TodoStorage.editTodo(body);
+    if (result) {
+      return { success: true };
+    }
 
-    return response;
+    return { success: false };
+  }
+
+  async editChecked(body) {
+    const result = await TodoStorage.editChecked(body);
+    if (result) {
+      return { success: true };
+    }
+
+    return { success: false };
   }
 
   async deleteTodo(body) {
-    const response = await TodoStorage.deleteTodo(body);
+    try {
+      const date = await TodoStorage.getDate(body.todoNo);
+      const todoDelResult = await TodoStorage.deleteTodo(body);
+      const cnt = await TodoStorage.getTodoCnt(date);
+      if (cnt === 0) {
+        const cmtDelResult = todoCommentStorage.deleteComment(date);
+        if (todoDelResult && cmtDelResult) {
+          return { success: true };
+        }
+      }
+      if (todoDelResult) {
+        return { success: true };
+      }
 
-    return response;
+      return { success: false };
+    } catch (e) {
+      console.log("deleteTodo(models) 에러 : ", e);
+    }
   }
 }
 
