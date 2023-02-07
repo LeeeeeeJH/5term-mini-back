@@ -23,9 +23,9 @@ const todo = {
     return res.json(response);
   },
 
-  addTodo: async (req, res) => {
+  createTodo: async (req, res) => {
     const todo = new Todo();
-    const response = await todo.addTodoList(req.body);
+    const response = await todo.createTodoList(req.body);
 
     return res.json(response);
   },

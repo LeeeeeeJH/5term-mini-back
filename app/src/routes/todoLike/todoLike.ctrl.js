@@ -2,9 +2,9 @@
 const TodoLike = require("../../models/todoLike/todoLike");
 
 const todoLike = {
-  addTodoLike: async (req, res) => {
+  createTodoLike: async (req, res) => {
     const todoLike = new TodoLike();
-    const response = await todoLike.addTodoLike(req.body);
+    const response = await todoLike.createTodoLike(req.body);
 
     return res.json(response);
   },

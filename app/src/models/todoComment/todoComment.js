@@ -1,37 +1,50 @@
 "use strict";
 
 const TodoCommentStorage = require("./todoCommentStorage");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 
 class TodoComment {
   async getComment(params) {
-    const response = await TodoCommentStorage.getComment(params);
+    const result = await TodoCommentStorage.getComment(params);
 
-    return response;
+    return result;
   }
 
-  async addComment(body) {
+  async createComment(body) {
     const user_no = await DataCheck.getUserNo(body.user_id);
     const writer_no = await DataCheck.getUserNo(body.writer_id);
-    const response = await TodoCommentStorage.addComment(
+
+    const createResult = await TodoCommentStorage.createComment(
       body,
       user_no,
       writer_no
     );
 
-    return response;
+    if (!createResult.affectedRows) {
+      return { success: false };
+    }
+
+    return { success: true, cmtNo: createResult.insertId };
   }
 
   async editComment(body) {
-    const response = await TodoCommentStorage.editComment(body);
+    const editResult = await TodoCommentStorage.editComment(body);
 
-    return response;
+    if (!editResult) {
+      return { success: false };
+    }
+
+    return { success: true };
   }
 
   async deleteComment(body) {
-    const response = await TodoCommentStorage.deleteComment(body);
+    const deleteResult = await TodoCommentStorage.deleteComment(body);
 
-    return response;
+    if (!deleteResult) {
+      return { success: false };
+    }
+
+    return { success: true };
   }
 }
 

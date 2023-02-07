@@ -9,9 +9,9 @@ const todoComment = {
     return res.json(response);
   },
 
-  addTodoComment: async (req, res) => {
+  createTodoComment: async (req, res) => {
     const todoComment = new TodoComment();
-    const response = await todoComment.addComment(req.body);
+    const response = await todoComment.createComment(req.body);
 
     return res.json(response);
   },

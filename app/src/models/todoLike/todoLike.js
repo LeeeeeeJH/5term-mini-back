@@ -1,27 +1,30 @@
 "use strict";
 
 const TodoLikeStorage = require("./todoLikeStorage");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 
 class TodoLike {
-  async getTodoLikes(body) {
-    const result = await TodoLikeStorage.getTodoLikes(body);
-
-    return result;
-  }
-
-  async addTodoLike(body) {
+  async createTodoLike(body) {
     const user_no = await DataCheck.getUserNo(body.id);
+
     const result = await TodoLikeStorage.addTodoLike(body.todo_no, user_no);
 
-    return result;
+    if (!result) {
+      return { success: false };
+    }
+
+    return { success: true };
   }
 
   async deleteTodoLike(body) {
     const user_no = await DataCheck.getUserNo(body.id);
     const result = await TodoLikeStorage.deleteTodoLike(body.todo_no, user_no);
 
-    return result;
+    if (!result) {
+      return { success: false };
+    }
+
+    return { success: true };
   }
 }
 

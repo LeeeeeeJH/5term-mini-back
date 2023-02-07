@@ -1,6 +1,6 @@
 "use strict";
 const Email = require("../email/email");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("./dataCheck");
 const findAccountContent = require("./findAccountContent");
 
 class FindAccount {
@@ -18,7 +18,7 @@ class FindAccount {
         html: findAccountContent("아이디", account, authenticationNumber),
       });
 
-      if (emailResult && account) {
+      if (emailResult) {
         return { success: true, authenticationNumber, id: account.id };
       }
 

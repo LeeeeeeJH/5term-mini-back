@@ -1,5 +1,5 @@
 "use strict";
-const db = require("../config/db");
+const db = require("../../config/db");
 
 class DataCheck {
   static async getUserNo(id) {
@@ -23,7 +23,6 @@ class DataCheck {
       return result[0][0];
     } catch (error) {
       console.log("checkEmail 에러 : ", error);
-
     }
   }
 }

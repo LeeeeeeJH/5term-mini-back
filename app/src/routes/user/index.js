@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 
-const ctrl = require("./home.ctrl");
+const ctrl = require("./user.ctrl");
 
 // router.get("/",)
 router.post("/login", ctrl.sign.login);

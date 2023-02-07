@@ -1,6 +1,6 @@
 "use strict";
 
-const FindAccount = require("../../models/findAccount/findAccount");
+const FindAccount = require("../../models/user/findAccount");
 
 const findAccount = {
   id: async (req, res) => {
