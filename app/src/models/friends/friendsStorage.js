@@ -63,7 +63,7 @@ class FriendsStorage {
   }
   static aceppt(user) {
     try {
-      const sql = "UPDATE friends_list SET is_accepted = 1 WHERE no = ?";
+      const sql = "UPDATE friends_list SET is_aceppted = 1 WHERE no = ?";
       db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {

@@ -1,6 +1,6 @@
 "use strict";
 
-const Friends = require("../../models/user/friends");
+const Friends = require("../../models/friends/friends");
 
 const friends = {
   getList: async (req, res) => {
