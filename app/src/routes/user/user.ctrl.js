@@ -2,18 +2,27 @@
 
 const User = require("../../models/user/user");
 
-//로그인 회원가입
 const sign = {
-  login: (req, res) => {
-    return res.json({ sucess: true });
+  login: async (req, res) => {
+    const user = new User(req.body);
+    const response = await user.login(req.body);
+
+    return res.json(response);
   },
-  register: (req, res) => {
-    const user = new User();
-    const response = user.register();
+
+  check: async (req, res) => {
+    const user = new User(req.body);
+    const response = await user.check(req.body);
+
+    return res.json(response);
+  },
+
+  register: async (req, res) => {
+    const user = new User(req.body);
+    const response = await user.register(req.body);
+
     return res.json(response);
   },
 };
 
-module.exports = {
-  sign,
-};
+module.exports = { sign };
