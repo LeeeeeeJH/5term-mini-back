@@ -1,7 +1,6 @@
 "use strict";
 
 const User = require("../../models/user/user");
-const UserStorage = require("../../models/user/userStorage");
 
 //로그인 회원가입
 const sign = {
