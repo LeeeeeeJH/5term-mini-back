@@ -42,7 +42,6 @@ class TodoStorage {
     try {
       const req = [userNo, client.date, client.title, client.content];
       const sql =
-
         "INSERT INTO todo (user_no, date, title,content) VALUES (?,DATE_FORMAT(?, '%Y-%c-%e'),?,?)";
 
       const addResult = (await db.query(sql, req))[0];

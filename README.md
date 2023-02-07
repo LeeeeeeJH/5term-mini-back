@@ -1,9 +1,5 @@
 # 5term_mini_back
 
-
-
-
-
 커밋 전략 <br>
 add - 새로운 기능이나 파일이 추가되었을 때 <br>
 modify - 기존의 기능이 수정되었을 때 <br>

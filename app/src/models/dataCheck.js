@@ -16,6 +16,13 @@ class DataCheck {
     }
   }
 
+  static async getUserNoByNickname(nickname) {
+    const sql = "SELECT no FROM user WHERE nickname = ?;";
+    const result = await db.query(sql, nickname);
+
+    return result[0][0]?.no;
+  }
+
   static async checkEmail(email) {
     try {
       const sql = "SELECT id, password, nickname FROM user WHERE email = ?;";
@@ -26,7 +33,6 @@ class DataCheck {
       return result[0][0];
     } catch (error) {
       console.log("checkEmail 에러 : ", error);
-
     }
   }
 }

@@ -1,8 +1,10 @@
 "use strict";
 
 const express = require("express");
+const friends = require("./src/routes/friends");
+const user = require("./src/routes/user");
+
 const cors = require("cors");
-const home = require("./src/routes/home");
 
 const diary = require("./src/routes/diary");
 const diaryComment = require("./src/routes/diaryComment");
@@ -21,7 +23,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", home);
+app.use("/friends", friends);
+app.use("/sign", user);
 app.use("/diaries", diary);
 app.use("/diary-comments", diaryComment);
 app.use("/diary-likes", diaryLike);
