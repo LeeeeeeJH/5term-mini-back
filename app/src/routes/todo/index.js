@@ -9,6 +9,7 @@ router.get("/friendList/:id/:date/:userId", ctrl.todo.getFriendTodoList);
 router.get("/cnt/:id/:date", ctrl.todo.getCnt);
 router.post("/", ctrl.todo.addTodo);
 router.patch("/", ctrl.todo.editTodo);
+
 router.patch("/checked", ctrl.todo.editChecked);
 router.delete("/", ctrl.todo.deleteTodo);
 
