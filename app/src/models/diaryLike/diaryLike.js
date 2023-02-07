@@ -1,5 +1,5 @@
 "use strict";
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 const DiaryLikeStorage = require("./diaryLikeStorage");
 
 class DiaryLike {

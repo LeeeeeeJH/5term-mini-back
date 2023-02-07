@@ -1,7 +1,7 @@
 "use strict";
 
 let FriendsStorage = require("./friendsStorage");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 
 class Friends {
   constructor(body) {

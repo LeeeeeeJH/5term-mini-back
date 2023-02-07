@@ -1,6 +1,6 @@
 "use strict";
 const ProfileStorage = require("./profileStorage");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 class Profile {
   constructor() {}
 

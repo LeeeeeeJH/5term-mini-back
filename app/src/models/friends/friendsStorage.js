@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../../config/db");
-const DataCheck = require("../dataCheck");
+const DataCheck = require("../user/dataCheck");
 
 class FriendsStorage {
   static async getReceiverList(user) {
