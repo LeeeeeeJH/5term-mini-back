@@ -13,7 +13,6 @@ class Friends {
       let receiverList = await FriendsStorage.getReceiverList(user);
       let senderList = await FriendsStorage.getSenderList(user);
       let friendsList = [];
-      console.log(senderList);
       friendsList.push(...receiverList);
       friendsList.push(...senderList);
 
