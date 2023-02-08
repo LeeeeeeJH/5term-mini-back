@@ -11,6 +11,7 @@ class UserStorage {
       return check;
     } catch (err) {
       console.log(err);
+      return { success: false };
     }
   }
 
@@ -22,6 +23,7 @@ class UserStorage {
       return check[0][0] ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
+      return { success: false };
     }
   }
 
@@ -33,6 +35,7 @@ class UserStorage {
       return check[0][0] ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
+      return { success: false };
     }
   }
 
@@ -42,9 +45,11 @@ class UserStorage {
         "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
 
       const insetResult = await db.query(sql, values);
+      console.log(insetResult);
       return insetResult[0];
     } catch (err) {
-      throw err;
+      console.log(err);
+      return { success: false };
     }
   }
 

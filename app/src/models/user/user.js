@@ -7,12 +7,18 @@ class User {
     this.body = body;
   }
   async login(user) {
-    const check = await UserStorage.login(user);
+    try {
+      const check = await UserStorage.login(user);
 
-    if (check[0][0].password === user.password) {
-      return { success: true };
+      if (check[0][0].password === user.password) {
+        return { success: true };
+      }
+
+      return { success: false };
+    } catch (error) {
+      console.log(error);
+      return { success: false };
     }
-    return { success: false };
   }
 
   async check(user) {
@@ -27,6 +33,7 @@ class User {
 
   async register(user) {
     //중복확인 아이디 닉네임
+    console.log(user);
     const idCheck = await UserStorage.idCheck(user);
     if (idCheck.success) {
       return { success: false, error: "id 중복" };
