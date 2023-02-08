@@ -19,7 +19,7 @@ class UserStorage {
       const sql = "SELECT id FROM user WHERE id = ?";
 
       const check = await db.query(sql, [user.id]);
-      return check[0][0] ? { success: false } : { success: true };
+      return check[0][0] ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
     }
@@ -30,7 +30,7 @@ class UserStorage {
       const sql = "SELECT nickName FROM user WHERE nickName = ?";
 
       const check = await db.query(sql, [user.nickName]);
-      return check[0][0] ? { success: false } : { success: true };
+      return check[0][0] ? { success: true } : { success: false };
     } catch (err) {
       console.log(err);
     }
