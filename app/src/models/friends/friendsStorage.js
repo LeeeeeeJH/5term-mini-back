@@ -7,7 +7,7 @@ class FriendsStorage {
   static async getReceiverList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
-      const sql = `SELECT friends_list.receiver, user.nickname, user_image.image_url, friends_list.no 
+      const sql = `SELECT friends_list.receiver AS friend, user.nickname, user_image.image_url, friends_list.no AS 'friendListNo' 
       FROM friends_list
       INNER JOIN user ON user.no = friends_list.receiver 
       INNER JOIN user_image ON user_image.user_no = friends_list.receiver
@@ -21,7 +21,7 @@ class FriendsStorage {
   static async getSenderList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
-      const sql = `SELECT friends_list.sender, user.nickname, user_image.image_url, friends_list.no 
+      const sql = `SELECT friends_list.sender AS friend, user.nickname, user_image.image_url, friends_list.no AS friendListNo
       FROM friends_list
       INNER JOIN user ON user.no = friends_list.sender 
       INNER JOIN user_image ON user_image.user_no = friends_list.receiver
@@ -37,7 +37,7 @@ class FriendsStorage {
   static async getWaitingList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
-      const sql = `SELECT friends_list.sender, user.nickname, user_image.image_url, friends_list.no 
+      const sql = `SELECT friends_list.sender, user.nickname, friends_list.no 
       FROM friends_list
       INNER JOIN user ON user.no = friends_list.sender 
       INNER JOIN user_image ON user_image.user_no = friends_list.receiver

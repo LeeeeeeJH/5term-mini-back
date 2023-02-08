@@ -13,14 +13,10 @@ class Friends {
       let receiverList = await FriendsStorage.getReceiverList(user);
       let senderList = await FriendsStorage.getSenderList(user);
       let friendsList = [];
-      for (let friends of senderList) {
-        let info = [...Object.values(friends)];
-        friendsList.push(info);
-      }
-      for (let friends of receiverList) {
-        let info = [...Object.values(friends)];
-        friendsList.push(info);
-      }
+      console.log(senderList);
+      friendsList.push(...receiverList);
+      friendsList.push(...senderList);
+
       return friendsList;
     } catch (error) {
       console.log(error);
@@ -29,12 +25,9 @@ class Friends {
 
   async getWaitingList(user) {
     const waitingList = await FriendsStorage.getWaitingList(user);
-    console.log(waitingList);
     let friendsList = [];
-    for (let friends of waitingList) {
-      let info = [...Object.values(friends)];
-      friendsList.push(info);
-    }
+    friendsList.push(...waitingList);
+
     return friendsList;
   }
 
