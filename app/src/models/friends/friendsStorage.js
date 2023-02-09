@@ -14,8 +14,9 @@ class FriendsStorage {
       WHERE friends_list.sender = ? AND friends_list.is_aceppted = 1`;
       let list = await db.query(sql, userNo);
       return list[0];
-    } catch (err) {
-      console.log(err);
+    } catch (errpr) {
+      console.log(error);
+      return { success: false };
     }
   }
   static async getSenderList(user) {
@@ -28,8 +29,9 @@ class FriendsStorage {
       WHERE friends_list.receiver = ? AND friends_list.is_aceppted = 1`;
       let list = await db.query(sql, userNo);
       return list[0];
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
+      return { success: false };
     }
   }
 
@@ -42,8 +44,9 @@ class FriendsStorage {
       let list = await db.query(sql, userNo);
       console.log(list);
       return list[0];
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
+      return { success: false };
     }
   }
 
@@ -54,7 +57,8 @@ class FriendsStorage {
       db.query(sql, values);
       return { success: true };
     } catch (err) {
-      console.log(err);
+      console.log(error);
+      return { success: false };
     }
   }
   static aceppt(user) {
@@ -63,7 +67,8 @@ class FriendsStorage {
       db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {
-      console.log(err);
+      console.log(error);
+      return { success: false };
     }
   }
 
@@ -73,7 +78,8 @@ class FriendsStorage {
       db.query(sql, [user.no]);
       return { success: true };
     } catch (err) {
-      console.log(err);
+      console.log(error);
+      return { success: false };
     }
   }
   static async search(userNo) {
@@ -85,7 +91,7 @@ class FriendsStorage {
       const result = await db.query(sql, userNo);
       return result[0][0];
     } catch (err) {
-      console.log(err);
+      console.log(error);
       return { success: false };
     }
   }
