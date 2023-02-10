@@ -7,14 +7,14 @@ class FriendsStorage {
   static async getReceiverList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
-      const sql = `SELECT friends_list.receiver AS friend, user.nickname, user_image.image_url, friends_list.no AS friendListNo 
+      const sql = `SELECT friends_list.receiver AS friend, user.id, user.nickname, user_image.image_url, friends_list.no AS friendListNo 
       FROM friends_list
       INNER JOIN user ON user.no = friends_list.receiver 
       INNER JOIN user_image ON user_image.user_no = friends_list.receiver
       WHERE friends_list.sender = ? AND friends_list.is_aceppted = 1`;
       let list = await db.query(sql, userNo);
       return list[0];
-    } catch (errpr) {
+    } catch (error) {
       console.log(error);
       return { success: false };
     }
@@ -22,7 +22,7 @@ class FriendsStorage {
   static async getSenderList(user) {
     try {
       const userNo = await DataCheck.getUserNo(user);
-      const sql = `SELECT friends_list.sender AS friend, user.nickname, user_image.image_url, friends_list.no AS friendListNo
+      const sql = `SELECT friends_list.sender AS friend, user.id, user.nickname, user_image.image_url, friends_list.no AS friendListNo
       FROM friends_list
       INNER JOIN user ON user.no = friends_list.sender 
       INNER JOIN user_image ON user_image.user_no = friends_list.sender
@@ -50,48 +50,49 @@ class FriendsStorage {
     }
   }
 
-  static async send(user) {
+  static async send(senderId, receiverNickname) {
     try {
       const sql = "INSERT INTO friends_list (sender,receiver) VALUES (?,?)";
-      const values = [user.sender, user.receiver];
+      const values = [senderId, receiverNickname];
       db.query(sql, values);
       return { success: true };
-    } catch (err) {
-      console.log(error);
+    } catch (error) {
+      console.log("스토리지", error);
       return { success: false };
     }
   }
-  static aceppt(user) {
+  static async aceppt(user) {
     try {
       const sql = "UPDATE friends_list SET is_aceppted = 1 WHERE no = ?";
-      db.query(sql, [user.no]);
-      return { success: true };
-    } catch (err) {
+      const result = (await db.query(sql, [user.no]))[0].affectedRows;
+      return result;
+    } catch (error) {
       console.log(error);
-      return { success: false };
+      return false;
     }
   }
 
-  static reject(user) {
+  static async reject(user) {
     try {
       const sql = "DELETE FROM friends_list WHERE no = ?";
-      db.query(sql, [user.no]);
-      return { success: true };
-    } catch (err) {
+      const result = (await db.query(sql, [user.no]))[0].affectedRows;
+      return result;
+    } catch (error) {
       console.log(error);
-      return { success: false };
+      return false;
     }
   }
   static async search(userNo) {
     try {
-      const sql = `SELECT user.name, user.nickname, user_image.image_url 
-        FROM user INNER JOIN user_image 
+      const sql = `SELECT user.nickname, user_image.image_url
+        FROM user INNER JOIN user_image
         ON user.no = user_image.user_no 
         WHERE user.no = ?`;
       const result = await db.query(sql, userNo);
       return result[0][0];
-    } catch (err) {
+    } catch (error) {
       console.log(error);
+
       return { success: false };
     }
   }

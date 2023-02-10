@@ -20,10 +20,15 @@ const friends = {
   },
 
   send: async (req, res) => {
-    const request = new Friends(req.body);
-    const response = await request.send(req.body);
+    try {
+      const request = new Friends(req.body);
+      const response = await request.send(req.body);
 
-    return res.json(response);
+      return res.json(response);
+    } catch (error) {
+      console.log("컨트롤러", error);
+      return res.json({ success: false });
+    }
   },
 
   aceppt: async (req, res) => {
@@ -41,9 +46,13 @@ const friends = {
   },
 
   search: async (req, res) => {
-    const user = req.params.nickname;
+    const user = req.params.myNickname;
+    const search = req.params.nickname;
+    if (!user) {
+      return res.json({ success: false });
+    }
     const request = new Friends(user);
-    const response = await request.search(user);
+    const response = await request.search(user, search);
 
     return res.json(response);
   },

@@ -2,6 +2,7 @@
 
 let FriendsStorage = require("./friendsStorage");
 const DataCheck = require("../user/dataCheck");
+const { readSelectDiary } = require("../diary/diaryStorage");
 
 class Friends {
   constructor(body) {
@@ -35,27 +36,61 @@ class Friends {
   }
 
   async send(body) {
-    const response = await FriendsStorage.send(body);
-    return response;
+    try {
+      const senderNo = await DataCheck.getUserNo(body.senderId);
+      const receiverNo = await DataCheck.getUserNoByNickname(
+        body.receiverNickname
+      );
+      const isAceppted = await DataCheck.isAceppted(senderNo, receiverNo);
+
+      if (isAceppted == 0) {
+        return { success: false };
+      }
+
+      if (!senderNo || !receiverNo) {
+        return { success: false };
+      }
+      const response = await FriendsStorage.send(senderNo, receiverNo);
+      return response;
+    } catch (error) {
+      console.log("js" + error);
+      return { success: false };
+    }
   }
 
   async aceppt(body) {
     const response = await FriendsStorage.aceppt(body);
-    return response;
+    if (!response) {
+      return { success: false };
+    }
+    return { success: true };
   }
 
   async reject(body) {
     const response = await FriendsStorage.reject(body);
-    return response;
+    if (!response) {
+      return { success: false };
+    }
+    return { success: true };
   }
 
-  async search(nickname) {
+  async search(myNickname, yourNickname) {
     try {
-      const userNo = await DataCheck.getUserNoByNickname(nickname);
-      const response = await FriendsStorage.search(userNo);
+      const myNo = await DataCheck.getUserNoByNickname(myNickname);
+      const yourNo = await DataCheck.getUserNoByNickname(yourNickname);
+      const response = await FriendsStorage.search(yourNo);
+      const isAceppted = await DataCheck.isAceppted(myNo, yourNo);
+      response.listNo = isAceppted;
+
+      if (response.nickname) {
+        response.success = true;
+      } else {
+        response.success = false;
+      }
       return response;
     } catch (err) {
       console.log(err);
+      return { success: false };
     }
   }
 }
