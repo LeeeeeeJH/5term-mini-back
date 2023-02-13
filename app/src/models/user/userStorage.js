@@ -45,7 +45,6 @@ class UserStorage {
         "INSERT INTO user (id,password,name,phone,email,nickname) VALUES (?,?,?,?,?,?)";
 
       const insetResult = await db.query(sql, values);
-      console.log(insetResult);
       return insetResult[0];
     } catch (error) {
       console.log(error);

@@ -53,7 +53,7 @@ class TodoStorage {
 
       return createResult;
     } catch (error) {
-      console.log("addTodoList 에러 : ", error);
+      log("addTodoList 에러 : ", error);
       return { success: false };
     }
   }
