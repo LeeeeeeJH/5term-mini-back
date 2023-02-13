@@ -3,9 +3,6 @@ const db = require("../../config/db");
 
 class DataCheck {
   static async getUserNo(id) {
-    const sql = "SELECT no FROM user WHERE id = ?;";
-    const result = await db.query(sql, id);
-    return result[0][0].no;
     try {
       const sql = "SELECT no FROM user WHERE id = ?;";
       const result = await db.query(sql, id);
@@ -13,14 +10,20 @@ class DataCheck {
       return result[0][0].no;
     } catch (error) {
       console.log("getUserNo 에러 : ", error);
+      return { success: false };
     }
   }
 
   static async getUserNoByNickname(nickname) {
-    const sql = "SELECT no FROM user WHERE nickname = ?;";
-    const result = await db.query(sql, nickname);
+    try {
+      const sql = "SELECT no FROM user WHERE nickname = ?;";
+      const result = await db.query(sql, nickname);
 
-    return result[0][0]?.no;
+      return result[0][0]?.no;
+    } catch (error) {
+      console.log(error);
+      return { success: false };
+    }
   }
 
   static async checkEmail(email) {

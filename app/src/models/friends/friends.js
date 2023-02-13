@@ -10,17 +10,16 @@ class Friends {
 
   async getList(user) {
     try {
-      let receiverList = await FriendsStorage.getReceiverList(user);
-      let senderList = await FriendsStorage.getSenderList(user);
+      const receiverList = await FriendsStorage.getReceiverList(user);
+      const senderList = await FriendsStorage.getSenderList(user);
       let friendsList = [];
-      for (let friends of senderList) {
-        let info = [...Object.values(friends)];
-        friendsList.push(info);
-      }
-      for (let friends of receiverList) {
-        let info = [...Object.values(friends)];
-        friendsList.push(info);
-      }
+      friendsList.push(...receiverList);
+      friendsList.push(...senderList);
+      friendsList.sort((a, b) => {
+        if (a.nickname > b.nickname) return 1;
+        if (a.nickname < b.nickname) return -1;
+      });
+
       return friendsList;
     } catch (error) {
       console.log(error);
@@ -28,13 +27,10 @@ class Friends {
   }
 
   async getWaitingList(user) {
-    const waitingList = await FriendsStorage.getWaitingList(user);
-    console.log(waitingList);
+    const userNo = await DataCheck.getUserNo(user);
+    const waitingList = await FriendsStorage.getWaitingList(userNo);
     let friendsList = [];
-    for (let friends of waitingList) {
-      let info = [...Object.values(friends)];
-      friendsList.push(info);
-    }
+    friendsList.push(...waitingList);
     return friendsList;
   }
 
@@ -56,11 +52,7 @@ class Friends {
   async search(nickname) {
     try {
       const userNo = await DataCheck.getUserNoByNickname(nickname);
-      if (!userNo) {
-        return { success: false };
-      }
       const response = await FriendsStorage.search(userNo);
-
       return response;
     } catch (err) {
       console.log(err);
