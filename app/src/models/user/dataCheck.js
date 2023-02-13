@@ -18,15 +18,19 @@ class DataCheck {
 
   static async getUserNoByNickname(nickname) {
     try {
+      if (!nickname) {
+        throw "빈 값";
+      }
       const sql = "SELECT no FROM user WHERE nickname = ?;";
       const result = await db.query(sql, nickname);
+
       if (!result[0][0]) {
-        return false;
+        throw "없는 닉네임";
       }
       return result[0][0]?.no;
     } catch (error) {
       console.log(error);
-      throw new Error("getUserNoByNickname오류");
+      throw "getUserNoByNickname오류";
     }
   }
 
@@ -43,11 +47,14 @@ class DataCheck {
     }
   }
 
-  static async isAceppted(myNo, yourNo) {
+  static async getFriendList(myNo, yourNo) {
     try {
-      const sql =
-        "SELECT no AS listNo FROM friends_list WHERE ((sender = ? AND receiver = ?) OR (receiver = ? AND sender = ?)) AND is_aceppted = 1";
-      const result = await db.query(sql, [myNo, yourNo, myNo, yourNo]);
+      const sql = `SELECT no AS listNo FROM friends_list 
+        WHERE  sender IN (?,?) AND receiver IN (?,?)
+        AND is_aceppted = 1`;
+      const values = [myNo, yourNo, myNo, yourNo];
+
+      const result = await db.query(sql, values);
       if (!result[0][0]) {
         return 0;
       }

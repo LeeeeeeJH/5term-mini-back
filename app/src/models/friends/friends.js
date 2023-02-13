@@ -41,7 +41,7 @@ class Friends {
       const receiverNo = await DataCheck.getUserNoByNickname(
         body.receiverNickname
       );
-      const isAceppted = await DataCheck.isAceppted(senderNo, receiverNo);
+      const isAceppted = await DataCheck.getFriendList(senderNo, receiverNo);
 
       if (isAceppted == 0) {
         return { success: false };
@@ -74,12 +74,16 @@ class Friends {
     return { success: true };
   }
 
-  async search(myNickname, yourNickname) {
+  async search(myId, yourNickname) {
     try {
-      const myNo = await DataCheck.getUserNoByNickname(myNickname);
+      const myNo = await DataCheck.getUserNo(myId);
       const yourNo = await DataCheck.getUserNoByNickname(yourNickname);
+      if (myNo === yourNo) {
+        return { success: false };
+      }
+
       const response = await FriendsStorage.search(yourNo);
-      const isAceppted = await DataCheck.isAceppted(myNo, yourNo);
+      const isAceppted = await DataCheck.getFriendList(myNo, yourNo);
       response.listNo = isAceppted;
 
       if (response.nickname) {
@@ -87,6 +91,7 @@ class Friends {
       } else {
         response.success = false;
       }
+
       return response;
     } catch (err) {
       console.log(err);

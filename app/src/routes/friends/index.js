@@ -15,5 +15,5 @@ router.patch("/request", ctrl.friends.aceppt);
 // 친구요청 거절
 router.delete("/request", ctrl.friends.reject);
 
-router.get("/:myNickname/search/:nickname?", ctrl.friends.search);
+router.get("/:myId/search/:nickname?", ctrl.friends.search);
 module.exports = router;

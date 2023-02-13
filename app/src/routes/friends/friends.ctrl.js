@@ -46,7 +46,7 @@ const friends = {
   },
 
   search: async (req, res) => {
-    const user = req.params.myNickname;
+    const user = req.params.myId;
     const search = req.params.nickname;
     if (!user) {
       return res.json({ success: false });

@@ -42,7 +42,6 @@ class FriendsStorage {
       INNER JOIN user ON user.no = friends_list.sender
       WHERE friends_list.receiver = ? AND friends_list.is_aceppted = 0`;
       let list = await db.query(sql, userNo);
-      console.log(list);
       return list[0];
     } catch (error) {
       console.log(error);
@@ -50,10 +49,10 @@ class FriendsStorage {
     }
   }
 
-  static async send(senderId, receiverNickname) {
+  static async send(senderNo, receiverNo) {
     try {
       const sql = "INSERT INTO friends_list (sender,receiver) VALUES (?,?)";
-      const values = [senderId, receiverNickname];
+      const values = [senderNo, receiverNo];
       db.query(sql, values);
       return { success: true };
     } catch (error) {
@@ -86,7 +85,7 @@ class FriendsStorage {
     try {
       const sql = `SELECT user.nickname, user_image.image_url
         FROM user INNER JOIN user_image
-        ON user.no = user_image.user_no 
+        ON user.no = user_image.user_no
         WHERE user.no = ?`;
       const result = await db.query(sql, userNo);
       return result[0][0];
