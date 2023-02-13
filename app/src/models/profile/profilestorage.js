@@ -23,7 +23,7 @@ class ProfileStorage {
       const req = [
         userInfo.password,
         userInfo.name,
-        phone,
+        userInfo.phone,
         userInfo.email,
         userInfo.nickname,
         userInfo.mention,

@@ -30,9 +30,9 @@ class Profile {
         throw new Error("사용자 id 변환 에러");
       }
       if (body.isImage === true && !img) {
-        await ProfileStorage.updateProfile(userNo, body, phone);
+        await ProfileStorage.updateProfile(userNo, body);
       } else {
-        await ProfileStorage.updateProfile(userNo, body, phone);
+        await ProfileStorage.updateProfile(userNo, body);
         await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
       }
       return { success: true };
