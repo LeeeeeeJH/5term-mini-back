@@ -1,6 +1,7 @@
 "use strict";
 
 const db = require("../../config/db");
+require("dotenv").config();
 
 class ProfileStorage {
   static async readProfile(userNo) {
@@ -17,7 +18,7 @@ class ProfileStorage {
     }
   }
 
-  static async updateProfile(userNo, userInfo, phone) {
+  static async updateProfile(userNo) {
     try {
       const req = [
         userInfo.password,
@@ -42,6 +43,20 @@ class ProfileStorage {
   static async updateUserImg(userNo, imgUrl, imgKey) {
     try {
       const req = [imgUrl, imgKey, userNo];
+      const sql = `UPDATE user_image 
+      SET image_url = ?, image_key = ? 
+      WHERE user_no = ?;`;
+      await db.query(sql, req);
+      const result = { success: true };
+      return result;
+    } catch (error) {
+      throw new Error("프로필 db 수정 오류");
+    }
+  }
+
+  static async updateUserDefaultImg(userNo) {
+    try {
+      const req = [process.env.DefaultImgUrl, process.env.DefaultImgKey, userNo];
       const sql = `UPDATE user_image 
       SET image_url = ?, image_key = ? 
       WHERE user_no = ?;`;

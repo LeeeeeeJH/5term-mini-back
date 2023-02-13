@@ -7,7 +7,6 @@ const friends = {
     const user = req.params.userId;
     const request = new Friends(user);
     const response = await request.getList(user);
-
     return res.json(response);
   },
 

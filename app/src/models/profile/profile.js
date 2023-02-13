@@ -18,15 +18,19 @@ class Profile {
     }
   }
 
-  async updateProfile({ userId }, userInfo, img) {
+  async updateProfile({ userId }, body, img) {
     try {
-      const phone = "010-" + userInfo.midNum + "-" + userInfo.lastNum;
+      const phone = "010-" + body.midNum + "-" + body.lastNum;
       const userNo = await DataCheck.getUserNo(userId);
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      await ProfileStorage.updateProfile(userNo, userInfo, phone);
-      await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
+      if (body.isImage === true && !img) {
+        await ProfileStorage.updateProfile(userNo, body, phone);
+      } else {
+        await ProfileStorage.updateProfile(userNo, body, phone);
+        await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
+      }
       return { success: true };
     } catch (error) {
       console.error(error);
