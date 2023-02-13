@@ -5,7 +5,7 @@ class TodoCommentStorage {
   static async getComment({ date, id }) {
     try {
       const req = [date, id];
-      const sql = `SELECT todo_comment.no, todo_comment.content, writer.id AS writer 
+      const sql = `SELECT todo_comment.no, todo_comment.content,writer.id AS writer_id, writer.nickname AS writer 
         FROM todo_comment 
         INNER JOIN user ON todo_comment.user_no = user.no 
 
