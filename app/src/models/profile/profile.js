@@ -4,7 +4,6 @@ const DataCheck = require("../user/dataCheck");
 const NickCheck = require("../user/userStorage");
 class Profile {
   constructor() {}
-
   async readProfile({ userId }) {
     try {
       const userNo = await DataCheck.getUserNo(userId);

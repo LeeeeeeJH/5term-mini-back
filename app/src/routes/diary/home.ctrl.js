@@ -30,5 +30,5 @@ const diary = {
     res.json(response);
   },
 };
-//
+
 module.exports = { diary };
