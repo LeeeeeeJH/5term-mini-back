@@ -43,7 +43,7 @@ class Friends {
       );
       const isAceppted = await DataCheck.getFriendList(senderNo, receiverNo);
 
-      if (isAceppted == 0) {
+      if (!!isAceppted) {
         return { success: false };
       }
 
