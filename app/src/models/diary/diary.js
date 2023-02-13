@@ -35,8 +35,8 @@ class Diary {
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      await DiaryStorage.updateDiaryImg(params, img?.location, img?.key);
       await DiaryStorage.updateDiary(params, body);
+      await DiaryStorage.updateDiaryImg(params, img?.location, img?.key);
       return { success: true };
     } catch (error) {
       console.error(error);

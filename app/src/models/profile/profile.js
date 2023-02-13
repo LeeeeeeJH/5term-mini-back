@@ -1,6 +1,7 @@
 "use strict";
 const ProfileStorage = require("./profileStorage");
 const DataCheck = require("../user/dataCheck");
+const NickCheck = require("../user/userStorage");
 class Profile {
   constructor() {}
 
@@ -20,13 +21,20 @@ class Profile {
 
   async updateProfile({ userId }, userInfo, img) {
     try {
-      const phone = "010-" + userInfo.midNum + "-" + userInfo.lastNum;
+      const nicknameCheck = NickCheck.nicknameCheck(userInfo.nickname);
+      if (nicknameCheck.success) {
+        throw { success: false, error: "닉네임 중복" };
+      }
       const userNo = await DataCheck.getUserNo(userId);
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      await ProfileStorage.updateProfile(userNo, userInfo, phone);
-      await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
+      if (body.isImage === true && !img) {
+        await ProfileStorage.updateProfile(userNo, userInfo);
+      } else {
+        await ProfileStorage.updateProfile(userNo, userInfo);
+        await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
+      }
       return { success: true };
     } catch (error) {
       console.error(error);

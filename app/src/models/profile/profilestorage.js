@@ -1,6 +1,7 @@
 "use strict";
 
 const db = require("../../config/db");
+require("dotenv").config();
 
 class ProfileStorage {
   static async readProfile(userNo) {
@@ -17,12 +18,12 @@ class ProfileStorage {
     }
   }
 
-  static async updateProfile(userNo, userInfo, phone) {
+  static async updateProfile(userNo, userInfo) {
     try {
       const req = [
         userInfo.password,
         userInfo.name,
-        phone,
+        userInfo.phone,
         userInfo.email,
         userInfo.nickname,
         userInfo.mention,
