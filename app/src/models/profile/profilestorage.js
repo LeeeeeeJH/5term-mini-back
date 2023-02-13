@@ -53,20 +53,6 @@ class ProfileStorage {
       throw new Error("프로필 db 수정 오류");
     }
   }
-
-  static async updateUserDefaultImg(userNo) {
-    try {
-      const req = [process.env.DefaultImgUrl, process.env.DefaultImgKey, userNo];
-      const sql = `UPDATE user_image 
-      SET image_url = ?, image_key = ? 
-      WHERE user_no = ?;`;
-      await db.query(sql, req);
-      const result = { success: true };
-      return result;
-    } catch (error) {
-      throw new Error("프로필 db 수정 오류");
-    }
-  }
 }
 
 module.exports = ProfileStorage;
