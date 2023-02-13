@@ -18,7 +18,7 @@ class ProfileStorage {
     }
   }
 
-  static async updateProfile(userNo) {
+  static async updateProfile(userNo, userInfo) {
     try {
       const req = [
         userInfo.password,

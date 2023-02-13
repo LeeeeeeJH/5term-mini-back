@@ -19,20 +19,20 @@ class Profile {
     }
   }
 
-  async updateProfile({ userId }, body, img) {
+  async updateProfile({ userId }, userInfo, img) {
     try {
-      const nicknameCheck = NickCheck.nicknameCheck(body.nickname);
+      const nicknameCheck = NickCheck.nicknameCheck(userInfo.nickname);
       if (nicknameCheck.success) {
-        return { success: false, error: "닉네임 중복" };
+        throw { success: false, error: "닉네임 중복" };
       }
       const userNo = await DataCheck.getUserNo(userId);
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
       if (body.isImage === true && !img) {
-        await ProfileStorage.updateProfile(userNo, body);
+        await ProfileStorage.updateProfile(userNo, userInfo);
       } else {
-        await ProfileStorage.updateProfile(userNo, body);
+        await ProfileStorage.updateProfile(userNo, userInfo);
         await ProfileStorage.updateUserImg(userNo, img?.location, img?.key);
       }
       return { success: true };
