@@ -28,7 +28,7 @@ class Profile {
       if (!userNo) {
         throw new Error("사용자 id 변환 에러");
       }
-      if (body.isImage === true && !img) {
+      if (userInfo.isImage === true && !img) {
         await ProfileStorage.updateProfile(userNo, userInfo);
       } else {
         await ProfileStorage.updateProfile(userNo, userInfo);
