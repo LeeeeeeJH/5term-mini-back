@@ -20,17 +20,9 @@ class ProfileStorage {
 
   static async updateProfile(userNo, userInfo) {
     try {
-      const req = [
-        userInfo.password,
-        userInfo.name,
-        userInfo.phone,
-        userInfo.email,
-        userInfo.nickname,
-        userInfo.mention,
-        userNo,
-      ];
+      const req = [userInfo.password, userInfo.name, userInfo.phone, userInfo.email, userInfo.nickname, userNo];
       const sql = `UPDATE user 
-      SET password = ?, name = ?, phone = ?, email = ?, nickname = ?, mention = ? 
+      SET password = ?, name = ?, phone = ?, email = ?, nickname = ?
       WHERE no = ?;`;
       await db.query(sql, req);
       const result = { success: true };
